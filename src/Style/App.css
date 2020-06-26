@@ -1,0 +1,8 @@
+.MenuText {
+  color: #ffffff;
+  margin: 5px;
+}
+.MenuText:hover {
+  color: rgb(200, 190, 214);
+  cursor: pointer;
+}
