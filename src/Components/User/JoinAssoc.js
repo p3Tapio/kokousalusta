@@ -17,13 +17,12 @@ const JoinAssoc = ({ yhdistykset, setShowForm }) => {
 
         if (yhdistys && yhdistysPassword) {
             const body = JSON.stringify({ call: 'checkyhdistystiedot', name: yhdistys, password: yhdistysPassword })
-            console.log('submit fired: ')
             request.assoc(body)
                 .then((res) => { 
                     setNewMember()
                 })
                 .catch((err) => {
-                    alert("err"+err.response.data.message)
+                    alert(err.response.data.message)
                 })
         } else {
             alert("Täytä molemmat kentät!")

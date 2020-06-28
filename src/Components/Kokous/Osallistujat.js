@@ -6,7 +6,7 @@ const Osallistujat = ({members}) => {
             <h5 className="mt-4">Valitse kokousosallistujat</h5>
             <table className="table table-hover">
                 <thead>
-                    <tr className="table-primary"><th>Etunimi</th><th>Sukunimi</th><th>Sähköpostiosoite</th><th></th><th></th></tr>
+                    <tr className="table-primary"><th>Etunimi</th><th>Sukunimi</th><th>Sähköpostiosoite</th><th></th></tr>
                 </thead>
                 <tbody>
                     {members.map((item, key) =>
@@ -14,8 +14,8 @@ const Osallistujat = ({members}) => {
                             <td>{item.firstname}</td>
                             <td>{item.lastname}</td>
                             <td>{item.email}</td>
-                            <button className="btn btn-outline-primary btn-sm mt-1 mx-1">Osallistuja</button>
-                            <button className="btn btn-outline-primary btn-sm mt-1 mx-1">Varaosallistuja</button>
+                            <td className="text-center"><button className="btn btn-outline-primary btn-sm mt-1 mx-1">Osallistuja</button>
+                            <button className="btn btn-outline-primary btn-sm mt-1 mx-1">Varaosallistuja</button></td>
                         </tr>
                     )}
                 </tbody>
@@ -23,5 +23,4 @@ const Osallistujat = ({members}) => {
         </div>
     )
 }
-
 export default Osallistujat

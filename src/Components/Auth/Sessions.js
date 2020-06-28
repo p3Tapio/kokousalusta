@@ -2,11 +2,16 @@ export const setUserSession = (user, accessToken) => {
     sessionStorage.setItem('user', JSON.stringify(user))
     sessionStorage.setItem('token', accessToken)
 }
-export const setRole = (role) => {
-    sessionStorage.setItem('role', role)
+export const setSessionRole = (role) => {
+    sessionStorage.setItem('role', JSON.stringify(role))    //  yhdistyksen nimi ja rooli {yhdistys:yhdistys, role: role}
 }
-export const getRole = () => {
-    return sessionStorage.getItem('role') || null;
+export const getSessionRole = () => {
+    const userrole = sessionStorage.getItem('role')
+    if(userrole) return JSON.parse(userrole)
+    else return null 
+}
+export const removeRole = () => {
+    sessionStorage.removeItem('role')
 }
 export const getToken = () => {
     return sessionStorage.getItem('token') || null;

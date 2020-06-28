@@ -99,7 +99,7 @@ function joinYhdistys() {
             if (mysqli_num_rows($yhdCheck)>0){
                 $email = htmlspecialchars(strip_tags($_POST["email"])); 
                 $role = "member"; // ??? 
-                if($yhteys->multi_query("CALL jasenyydet_joinyhdistys('$email','$yhdistys', '$member', @response); SELECT @response as response;")) {
+                if($yhteys->multi_query("CALL jasenyydet_joinyhdistys('$email','$yhdistys', '$role', @response); SELECT @response as response;")) {
                     $yhteys->next_result(); 
                     $tulos = $yhteys->store_result(); 
                     $res = $tulos->fetch_object()->response;
