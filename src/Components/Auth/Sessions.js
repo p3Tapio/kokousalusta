@@ -10,7 +10,7 @@ export const getSessionRole = () => {
     if(userrole) return JSON.parse(userrole)
     else return null 
 }
-export const removeRole = () => {
+export const removeRole = () => {   // onko tämä käytössä? 
     sessionStorage.removeItem('role')
 }
 export const getToken = () => {

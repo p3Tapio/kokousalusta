@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import request from '../../Components/Shared/HttpRequests'
@@ -10,6 +10,8 @@ import { getSessionRole } from '../../Components/Auth/Sessions'
 const UusiKokous = () => {
 
     const { yhdistys } = useParams()
+    const [members, setMembers] = useState()
+
     const [showComponent, setShowComponent] = useState('perustiedot')
     let history = useHistory()
 
@@ -18,23 +20,30 @@ const UusiKokous = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
-    const [members, setMembers] = useState()
-    const [id, setId] = useState();
 
-    if (!kokousNro) {
-        const now = Date();
-        const pvmForm = { year: 'numeric' };
-        const body = JSON.stringify({ call: 'kokousnro', name: yhdistys })
-        request.kokous(body).then(res => {
-            setKokousNro(res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmForm))
-            setId(res.data.id_y)
-        })
-    } else {
-        const req = JSON.stringify({ call: 'getallmembers', name: yhdistys })
-        request.assoc(req).then(res => {
-            setMembers(res.data)
-        }).catch(err => console.log('err.response', err.response))
-    }
+    // const [id, setId] = useState();
+
+    useEffect(() => {
+
+        if (!kokousNro) {
+            const now = Date();
+            const pvmForm = { year: 'numeric' };
+            const body = JSON.stringify({ call: 'kokousnro', name: yhdistys })
+            request.kokous(body).then(res => {
+                setKokousNro(res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmForm))
+                // setId(res.data.id_y)
+            })
+        }
+        if (!members) {
+            const req = JSON.stringify({ call: 'getallmembers', name: yhdistys })
+            request.assoc(req).then(res => {
+                setMembers(res.data)
+            }).catch(err => console.log('err.response', err.response))
+
+        }
+    }, [kokousNro, yhdistys, members])
+
+
 
     const helpText = "Aloita kokous antamalla sille otsikko sekä alku- ja loppupäivämäärät. Kun olet valmis, paina seuraava-näppäintä, niin voit luoda esityslistan ja päättää voiko yhdistyksen jäsenet liittää omia esityksiään esityslistalle. Lopuksi näet yhteenveto-välilehdeltä luomasi kokouksen tiedot, missä voit tallentaa ja lähettää kutsun kokoukseen osallistujille."
 

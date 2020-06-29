@@ -36,8 +36,8 @@ export default function Navbar() {
         </>)
     }
     return (
-        <div className="navbar navbar-expand" style={navbar} onClick={toggleMenu}>
-            <p className="MenuText mt-2 ml-4" >
+        <div className="navbar navbar-expand w-100" style={navbar} onClick={toggleMenu}>
+            <p className="MenuText mt-2 ml-4 w-100" >
                 Menu
                 <Icon.Justify size={30} className="ml-3 fa-5x"  />
             </p>
@@ -68,12 +68,10 @@ const navbar = {
     color: 'white',
     backgroundColor: 'rgba(44,62,80, 0.9)',
     height:'75px',
-    padding:'10px'
+    padding:'10px', 
+    width: '100vw', 
+    position: 'relative',
+    marginLeft: '-50vw',
+    left: '50%',
+
 }
-
-
-// <Link style={{ color: "white", width: '150px' }} className="nav-link" to="/documents">Dokumentit</Link>
-// <Link style={{ color: "white", width: '250px' }} className="nav-link" to="/uusipoytakirja">Luo uusi dokumentti</Link>
-// const [shake, setShake] = useState(0);
-// setShake(1);
-// <Icon.Justify size={30} className="ml-3 burgerShake fa-5x" onAnimationEnd={() => setShake(0)} shake={shake} /> 
