@@ -1,17 +1,18 @@
-import React  from 'react'
+import React from 'react'
 import HelpPop from '../Shared/HelpPop'
 
-const Paatosvaltaisuus = ({ setShowComponent,handlePaatosvaltaChange, paatosvaltaisuus }) => {
-
+const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, paatosvaltaisuus }) => {
 
     const helpText = "Kokouksen päätösvaltaisuuden voi määritellä täyttämällä valitsemasi kentät. Tyhjäksi jätettyä kenttää ei huomioida kokouksen päätösvaltaisuuden määrittelyssä."
 
     return (
         <div className="mt-5">
             <div className="col-md-6  m-auto">
-                <div className="mb-4">
+                <div className="mb-2">
                     <h5>Kokouksen päätösvaltaisuus</h5>
-                    <HelpPop heading="Päätösvaltaisuus" text={helpText} btnText="Selite" placement="bottom" variant="link" style={{ marginBottom: "3px", marginLeft: "-10px" }} />
+                    <p style={{ marginTop: "-5px" }}>
+                        <HelpPop heading="Päätösvaltaisuus" text={helpText} btnText="Selite" placement="bottom" variant="link" style={{ marginBottom: "3px", marginLeft: "-10px" }} />
+                    </p>
                 </div>
                 <form>
                     <div class="form-group">
@@ -21,12 +22,12 @@ const Paatosvaltaisuus = ({ setShowComponent,handlePaatosvaltaChange, paatosvalt
                     </div>
                     <div class="form-group">
                         <label for="eistyslista">Aktiivisuus</label>
-                        <input type="number" min="0" step="1" class="form-control" name="aktiivisuus" onChange={handlePaatosvaltaChange}  value={paatosvaltaisuus.aktiivisuus}/>
+                        <input type="number" min="0" step="1" class="form-control" name="aktiivisuus" onChange={handlePaatosvaltaChange} value={paatosvaltaisuus.aktiivisuus} />
                         <small id="emailHelp" class="form-text text-muted">Kuinka monen käyttäjän on kommentoitava jotakin kohtaa tai kannatettava jotakin, jotta kokouksen päätösvaltaisuus täyttyy?</small>
                     </div>
                     <div class="form-group">
                         <label for="eistyslista">Kesto</label>
-                        <input type="number" min="0" step="1" class="form-control" name="kesto" onChange={handlePaatosvaltaChange}value={paatosvaltaisuus.kesto}/>
+                        <input type="number" min="0" step="1" class="form-control" name="kesto" onChange={handlePaatosvaltaChange} value={paatosvaltaisuus.kesto} />
                         <small id="emailHelp" class="form-text text-muted">Kuinka monta vuorokautta kokouksen on kestettävä, jotta kokous on päätösvaltainen?</small>
                     </div>
                 </form>
@@ -35,7 +36,6 @@ const Paatosvaltaisuus = ({ setShowComponent,handlePaatosvaltaChange, paatosvalt
                 </div>
             </div>
         </div>
-
     )
 }
 export default Paatosvaltaisuus

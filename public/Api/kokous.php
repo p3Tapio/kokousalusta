@@ -50,32 +50,15 @@ function getKokous() {
     $response = array("message"=> "error");
 
     if(isset($_POST["id"])) {
+
         $id = (int)$_POST["id"];
         $yhteys = connect(); 
-
-        if($yhteys->multi_query("CALL kokous_getkokous($id, @otsikko, @kokousnro, @startDate, @endDate);SELECT @otsikko as otsikko;SELECT @kokousnro as kokousnro;SELECT @startDate as startDate;SELECT @endDate as endDate; ")) {
-           
-            $yhteys->next_result(); 
-            $tulos = $yhteys->store_result(); 
-            $otsikko = $tulos->fetch_object()->otsikko; 
-            $yhteys->next_result(); 
-            $tulos = $yhteys->store_result(); 
-            $kokousnro = $tulos->fetch_object()->kokousnro; 
-            $yhteys->next_result(); 
-            $tulos = $yhteys->store_result(); 
-            $startDate = $tulos->fetch_object()->startDate; 
-            $yhteys->next_result(); 
-            $tulos = $yhteys->store_result(); 
-            $endDate = $tulos->fetch_object()->endDate; 
-            $response = array("otsikko"=> "$otsikko","kokousnro"=> "$kokousnro","startDate"=> "$startDate","endDate"=> "$endDate" );
-            $tulos->free();   
-    
-        } else {
-            $response['message'] = "Haku epäonnistui";
-            http_response_code(400);
-        }
-
+        $sql= "CALL kokous_getkokous('$id')";
+        $res = $yhteys->query($sql);
+        $row = mysqli_fetch_assoc($res);
+        echo json_encode($row, JSON_UNESCAPED_UNICODE); 
         mysqli_close($yhteys);
+        exit(); 
 
    } else {
         $response = array("message"=> "Tiedot puuttuu");
