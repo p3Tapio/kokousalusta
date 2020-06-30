@@ -41,7 +41,7 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
     } else if (showComponent === 'tulevat') {
         component =
             (<>
-                {menneet.length === 0
+                {tulevat.length === 0
                     ? <><h5>Yhdistyksellä ei ole tulevia kokouksia</h5></>
                     : <><h5 className="mt-4">Tulevat kokoukset</h5>
                         <KokousTable kokous={tulevat} yhdistys={yhdistys} />

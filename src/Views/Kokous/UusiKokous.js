@@ -5,7 +5,8 @@ import request from '../../Components/Shared/HttpRequests'
 import HelpPop from '../../Components/Shared/HelpPop'
 import Perustiedot from '../../Components/Kokous/Perustiedot'
 import Osallistujat from '../../Components/Kokous/Osallistujat'
-import { getSessionRole } from '../../Components/Auth/Sessions'
+import Paatosvaltaisuus from '../../Components/Kokous/Paatosvaltaisuus'
+import { getSessionRole, getUser } from '../../Components/Auth/Sessions'
 
 const UusiKokous = () => {
 
@@ -15,22 +16,23 @@ const UusiKokous = () => {
     const [showComponent, setShowComponent] = useState('perustiedot')
     let history = useHistory()
 
-    const [otsikko, setOtsikko] = useState('')
-    const [kokousNro, setKokousNro] = useState('')
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-
-
+    const [perustiedot, setPerustiedot] = useState({ otsikko: '', kokousNro: null, startDate: '', endDate: '' })
+    const [osallistujat, setOsallistujat] = useState()
+    const [puheenjohtaja, setPuheenjohtaja] = useState()
+    const [varalla, setVaralla] = useState([])
+    const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '' })
     // const [id, setId] = useState();
 
+    console.log('perustiedot', perustiedot)
     useEffect(() => {
 
-        if (!kokousNro) {
+        if (!perustiedot.kokousNro) {
+            console.log('perustiedot.kokousNro', perustiedot.kokousNro)
             const now = Date();
             const pvmForm = { year: 'numeric' };
             const body = JSON.stringify({ call: 'kokousnro', name: yhdistys })
             request.kokous(body).then(res => {
-                setKokousNro(res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmForm))
+                setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmForm) })
                 // setId(res.data.id_y)
             })
         }
@@ -38,26 +40,33 @@ const UusiKokous = () => {
             const req = JSON.stringify({ call: 'getallmembers', name: yhdistys })
             request.assoc(req).then(res => {
                 setMembers(res.data)
+                setOsallistujat(res.data.filter(x => x.email !== getUser().email))
+                setPuheenjohtaja(res.data.filter(x => x.email === getUser().email))
             }).catch(err => console.log('err.response', err.response))
-
         }
-    }, [kokousNro, yhdistys, members])
+    }, [members, perustiedot, yhdistys])
 
 
-
-    const helpText = "Aloita kokous antamalla sille otsikko sekä alku- ja loppupäivämäärät. Kun olet valmis, paina seuraava-näppäintä, niin voit luoda esityslistan ja päättää voiko yhdistyksen jäsenet liittää omia esityksiään esityslistalle. Lopuksi näet yhteenveto-välilehdeltä luomasi kokouksen tiedot, missä voit tallentaa ja lähettää kutsun kokoukseen osallistujille."
+    const helpText = "Aloita kokous antamalla sille otsikko sekä alku- ja loppupäivämäärät. Kun olet valmis, paina seuraava-näppäintä, niin voit luoda esityslistan ja päättää voiko yhdistyksen jäsenet liittää omia esityksiään esityslistalle. Seuraavaksi voit määritellä kokouksen osallistujat ja varaosallistujat. Lopuksi näet yhteenveto-välilehdeltä luomasi kokouksen tiedot, missä voit tallentaa ja lähettää kutsun kokoukseen osallistujille."
 
     const handleMenuClick = (ev) => {
         setShowComponent(ev.target.name)
     }
     const handlePerustiedotChange = (ev) => {
-        if (ev.target.name === 'otsikko') setOtsikko(ev.target.value)
-        else if (ev.target.name === 'kokousNro') setKokousNro(ev.target.value)
+        if (ev.target.name === 'otsikko') setPerustiedot({...perustiedot, otsikko: ev.target.value})
+        else if (ev.target.name === 'kokousnro') setPerustiedot({...perustiedot, kokousNro: ev.target.value})
+    }
+    const handlePaatosvaltaChange = (ev) => {
+        if (ev.target.name === 'esityslista') setPaatosvaltaisuus({ ...paatosvaltaisuus, esityslista: ev.target.value })
+        else if (ev.target.name === 'aktiivisuus') setPaatosvaltaisuus({ ...paatosvaltaisuus, aktiivisuus: ev.target.value })
+        else if (ev.target.name === 'kesto') setPaatosvaltaisuus({ ...paatosvaltaisuus, kesto: ev.target.value })
     }
 
     let component
-    if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} otsikko={otsikko} kokousNro={kokousNro} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />
-    else if (showComponent === 'osallistujat') component = <Osallistujat members={members} />
+    if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
+    else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
+    else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} />
+
     else component = <></>
 
 
@@ -73,6 +82,7 @@ const UusiKokous = () => {
                         <button className="btn btn-outline-primary btn-sm mx-1" name="perustiedot" onClick={handleMenuClick}>Perustiedot</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Esityslista</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="osallistujat" onClick={handleMenuClick}>Osallistujat</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" name="paatosvaltaisuus" onClick={handleMenuClick}>Päätösvaltaisuus</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Yhteenveto</button>
                         <HelpPop heading="Kokouksen luominen" text={helpText} btnText="Selitystä" placement="left" variant="btn btn-outline-danger btn-sm mx-1" />
                     </div>
@@ -114,3 +124,4 @@ export default UusiKokous
 
 
 
+// if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} otsikko={otsikko} kokousNro={kokousNro} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />

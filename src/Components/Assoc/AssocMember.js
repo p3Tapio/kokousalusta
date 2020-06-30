@@ -6,7 +6,7 @@ import HelpPop from '../Shared/HelpPop'
 
 const AssocMember = ({ yhdistys, kokoukset }) => {
     let history = useHistory()
-    const [showComponent, setShowComponent] = useState('tulevat')
+    const [showComponent, setShowComponent] = useState('kaynnissa')
     const helpText = <p >Valikosta voit valita haluamasi näkymän. </p>
 
     const handleMenuClick = (ev) => {
@@ -14,27 +14,13 @@ const AssocMember = ({ yhdistys, kokoukset }) => {
     }
 
     if (getSessionRole() && getSessionRole().role === 'member' && getSessionRole().yhdistys === yhdistys && kokoukset) {
-        let buttons
-        if (showComponent === 'tulevat') {
-            buttons = (<>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="kaynnissa" onClick={handleMenuClick}>Käynnissä olevat kokoukset</button>
-            </>)
-        } else if (showComponent === 'kaynnissa') {
-            buttons = (<>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
-            </>)
-        } else {
-            buttons = (<>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="kaynnissa" onClick={handleMenuClick}>Käynnissä olevat kokoukset</button>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
-            </>)
-        }
+
         return (
             <div>
                 <div>
-                    {buttons}
+                    <button className="btn btn-outline-primary btn-sm mx-1" name="kaynnissa" onClick={handleMenuClick}>Käynnissä olevat kokoukset</button>
+                    <button className="btn btn-outline-primary btn-sm mx-1" name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
+                    <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>
                     <HelpPop heading="Yhdistyksen etusivu" text={helpText} btnText="Selitystä" placement="left" variant="btn btn-outline-danger btn-sm mx-1" />
                     <hr />
                 </div>

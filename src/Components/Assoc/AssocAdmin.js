@@ -16,35 +16,19 @@ const AssocAdmin = ({ kokoukset, members, yhdistys }) => {
     }
 
     let component
-    if (showComponent === 'tulevat' || showComponent === 'menneet' || showComponent==='kaynnissa') component = <Kokouslistat kokoukset={kokoukset} showComponent={showComponent} yhdistys={yhdistys} />
+    if (showComponent === 'tulevat' || showComponent === 'menneet' || showComponent === 'kaynnissa') component = <Kokouslistat kokoukset={kokoukset} showComponent={showComponent} yhdistys={yhdistys} />
     else if (showComponent === 'jasenet') component = <Jasenlista members={members} />
     else component = <></>
 
     if (getSessionRole() && getSessionRole().role === 'admin' && getSessionRole().yhdistys === yhdistys) {
-
-        let buttons
-        if (showComponent === 'tulevat') {
-            buttons = (<>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="kaynnissa" onClick={handleMenuClick}>Käynnissä olevat kokoukset</button>
-            </>)
-        } else if (showComponent === 'kaynnissa') {
-            buttons = (<>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
-            </>)
-        } else {
-            buttons = (<>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="kaynnissa" onClick={handleMenuClick}>Käynnissä olevat kokoukset</button>
-                <button className="btn btn-outline-primary btn-sm mx-1" name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
-            </>)
-        }
-
+        
         return (
             <div>
                 <div>
                     <div className="d-flex justify-content-center">
-                        {buttons}
+                        <button className="btn btn-outline-primary btn-sm mx-1" name="kaynnissa" onClick={handleMenuClick}>Käynnissä olevat kokoukset</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="jasenet" onClick={handleMenuClick}>Yhdistyksen jäsenet</button>
                         <HelpPop heading="Yhdistyksen etusivu" text={helpText} btnText="Selitystä" placement="left" variant="btn btn-outline-danger btn-sm mx-1" />
                     </div>

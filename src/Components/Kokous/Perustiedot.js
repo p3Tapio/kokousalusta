@@ -3,21 +3,21 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import fi from 'date-fns/locale/fi';
 
-const Perustiedot = ({ setShowComponent, handlePerustiedotChange, otsikko, kokousNro, endDate, setEndDate, startDate, setStartDate }) => {
+const Perustiedot = ({ setShowComponent, handlePerustiedotChange, perustiedot,setPerustiedot }) => {
 
     registerLocale('fi', fi)
 
     return (
-        <>
+        <div className="col-md-6  m-auto">
             <h5 className="mb-4">Kokouksen perustiedot</h5>
             <form >
                 <div className="form-group">
                     <label>Otsikko</label>
-                    <input type="text" className="form-control" name="otsikko" onChange={handlePerustiedotChange} value={otsikko} />
+                    <input type="text" className="form-control" name="otsikko" onChange={handlePerustiedotChange} value={perustiedot.otsikko} />
                 </div>
                 <div className="form-group">
                     <label>Kokouksen numero</label>
-                    <input type="text" className="form-control" name="kokousnro" onChange={handlePerustiedotChange} value={kokousNro} />
+                    <input type="text" className="form-control" name="kokousnro" onChange={handlePerustiedotChange} value={perustiedot.kokousNro} />
                 </div>
                 <div className="form-group">
                     <label>Kokous alkaa</label><br />
@@ -26,11 +26,11 @@ const Perustiedot = ({ setShowComponent, handlePerustiedotChange, otsikko, kokou
                         locale="fi"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
-                        selected={startDate}
-                        onChange={date => setStartDate(date)}
+                        selected={perustiedot.startDate}
+                        onChange={date => setPerustiedot({...perustiedot, startDate:date})}
                         selectsStart
-                        startDate={startDate}
-                        endDate={endDate}
+                        startDate={perustiedot.startDate}
+                        endDate={perustiedot.endDate}
                     />
                 </div>
                 <div className="form-group">
@@ -39,20 +39,20 @@ const Perustiedot = ({ setShowComponent, handlePerustiedotChange, otsikko, kokou
                         locale="fi"
                         dateFormat="dd/MM/yyyy"
                         className="form-control"
-                        selected={endDate}
-                        onChange={date => setEndDate(date)}
+                        selected={perustiedot.endDate}
+                        onChange={date => setPerustiedot({...perustiedot, endDate:date})}
                         selectsEnd
-                        startDate={startDate}
-                        endDate={endDate}
-                        minDate={startDate}
+                        startDate={perustiedot.startDate}
+                        endDate={perustiedot.endDate}
+                        minDate={perustiedot.startDate}
                     />
                 </div>
                 <div className="form-group text-right">
-                    <button onClick={() => setShowComponent('esityslista')} type="submit" className="btn btn-outline-primary mt-3">Seuraava</button>
+                    <button onClick={() => setShowComponent('esityslista')} className="btn btn-outline-primary mt-3">Seuraava</button>
                 </div>
             </form>
             <hr />
-        </>
+        </div>
     )
 }
 export default Perustiedot
