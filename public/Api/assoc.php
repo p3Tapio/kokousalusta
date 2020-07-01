@@ -127,7 +127,7 @@ function joinYhdistys() {
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE);
 }
-function checkMembership() {    // TÄHÄN ROOLIN
+function checkMembership() { 
 
     $response = array("message"=> "error"); 
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Kokouslistat from './Kokouslistat'
 import Jasenlista from './Jasenlista'
 import HelpPop from '../Shared/HelpPop'
@@ -8,7 +8,7 @@ import { getSessionRole } from '../Auth/Sessions'
 const AssocAdmin = ({ kokoukset, members, yhdistys }) => {
 
     let history = useHistory()
-    const [showComponent, setShowComponent] = useState('tulevat')
+    const [showComponent, setShowComponent] = useState('kaynnissa')
     const helpText = <p >Valikon kautta voit valita haluamasi näkymän. Voit luoda uuden kokouksen painamalla uusi kokous -näppäintä. Näet myös tulevat ja käynnissä olevat kokoukset sekä menneiden kokouksien asiat valikon näppäimien kautta. Palveluun rekisteröityneet jäsenet saat näkyville yhdistyksen jäsenet -näppäintä painamalla. </p>
 
     const handleMenuClick = (ev) => {

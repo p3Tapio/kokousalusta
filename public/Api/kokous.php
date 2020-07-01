@@ -101,33 +101,29 @@ function getKokousNro() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 
 }
-function luoKokous() {
-
+function luoKokous() { 
+    
     $response = array( "message"=> "error");
-
-    if(isset($_POST['id_y']) && isset($_POST['email']) && isset($_POST['otsikko']) && isset($_POST['kokousNro']) && isset($_POST['startDate']) && isset($_POST['endDate'])) {
-       
+    
+    if(isset($_POST['id_y']) && isset($_POST['kokousnro']) && isset($_POST['startDate']) && isset($_POST['endDate'])) {
         $id_y = (int)($_POST['id_y']); 
-        $email = htmlspecialchars(strip_tags($_POST['email']));
         $otsikko = htmlspecialchars(strip_tags($_POST['otsikko']));
-        $kokousnro = (int)($_POST['kokousNro']);
+        $kokousnro =  (int)$_POST['kokousnro'];
         $startDate = htmlspecialchars(strip_tags($_POST['startDate'])); 
         $startDate = date('Y-m-d', strtotime($startDate));
         $endDate = htmlspecialchars(strip_tags($_POST['endDate'])); 
         $endDate = date('Y-m-d', strtotime($endDate));
 
-        $sql = "CALL kokous_insert($id_y, '$email', '$otsikko', $kokousnro, '$startDate', '$endDate')";
+        $sql = "CALL kokous_insert($id_y, '$otsikko', $kokousnro, '$startDate', '$endDate')";
         $yhteys = connect(); 
 
-        if($yhteys->query($sql)) {
-            $response['message'] = "Kokous tallennettu";
-        } else {
-            $response['message'] = "Tallennus epäonnistui";
+        if($yhteys->query($sql)) $response['message'] = "Kokous tallennettu";
+        else {
+            $response['message'] = "Tapahtui virhe. Tallennus epäonnistui.";
             http_response_code(400);
         }
         mysqli_close($yhteys);
     }
-
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 

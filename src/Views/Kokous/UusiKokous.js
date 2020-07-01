@@ -22,9 +22,8 @@ const UusiKokous = () => {
     const [puheenjohtaja, setPuheenjohtaja] = useState()
     const [varalla, setVaralla] = useState([])
     const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '' })
-    // const [id, setId] = useState();
+    const [id_y, setId_y] = useState();
 
-    console.log('perustiedot', perustiedot)
     useEffect(() => {
 
         if (!perustiedot.kokousNro) {
@@ -33,7 +32,7 @@ const UusiKokous = () => {
             const body = JSON.stringify({ call: 'kokousnro', name: yhdistys })
             request.kokous(body).then(res => {
                 setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmForm) })
-                // setId(res.data.id_y)
+                setId_y(res.data.id_y)
             })
         }
         if (!members) {
@@ -60,14 +59,13 @@ const UusiKokous = () => {
         if (ev.target.name === 'esityslista') setPaatosvaltaisuus({ ...paatosvaltaisuus, esityslista: ev.target.value })
         else if (ev.target.name === 'aktiivisuus') setPaatosvaltaisuus({ ...paatosvaltaisuus, aktiivisuus: ev.target.value })
         else if (ev.target.name === 'kesto') setPaatosvaltaisuus({ ...paatosvaltaisuus, kesto: ev.target.value })
-
     }
 
     let component
     if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} />
-    else if (showComponent === 'yhteenveto') component = <Yhteenveto perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus}/>
+    else if (showComponent === 'yhteenveto') component = <Yhteenveto perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y}/>
     else component = <></>
 
 
