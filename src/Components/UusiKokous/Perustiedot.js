@@ -10,7 +10,7 @@ const Perustiedot = ({ setShowComponent, handlePerustiedotChange, perustiedot,se
     return (
         <div className="col-md-6  m-auto">
             <h5 className="mb-4">Kokouksen perustiedot</h5>
-            <form >
+            <div >
                 <div className="form-group">
                     <label>Otsikko</label>
                     <input type="text" className="form-control" name="otsikko" onChange={handlePerustiedotChange} value={perustiedot.otsikko} />
@@ -47,10 +47,10 @@ const Perustiedot = ({ setShowComponent, handlePerustiedotChange, perustiedot,se
                         minDate={perustiedot.startDate}
                     />
                 </div>
-                <div className="form-group text-right">
+                <div className="text-right">
                     <button onClick={() => setShowComponent('esityslista')} className="btn btn-outline-primary mt-3">Seuraava</button>
                 </div>
-            </form>
+            </div>
             <hr />
         </div>
     )

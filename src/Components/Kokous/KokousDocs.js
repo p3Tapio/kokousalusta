@@ -7,7 +7,6 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
     const [kokousDocuments, setKokousDocuments] = useState([])
     const [document, setDocument] = useState([])
 
-
     useEffect(() => {
 
         const body = JSON.stringify({ call: 'getdocuments', kokousnro: kokous.kokousnro, yhdistys: yhdistys })
@@ -23,8 +22,6 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
         setShowTable(!showTable)
     }
 
-    console.log('getDocument', document)
-
     return (
         <div>
             {showTable
@@ -36,13 +33,12 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {kokousDocuments.map(item =>                 // name? otsikko? joku muu mikä? (tallennuksessa siis jsonissa eri kentässä ja tK:ssa sama)
+                        {kokousDocuments.map(item =>                 // name? otsikko? joku muu mikä? (tallennuksessa siis jsonissa eri kentässä ja tK:ssa sama --> Automaattisesti luotu ensimmäinen rivi)
                             <tr key={item.id}>
                                 <td>{item.type}</td><td><button className="btn btn-outline-primary btn-sm" onClick={() => handleOpenDocumentClick(item)}>avaa</button></td>
                             </tr>)}
                     </tbody>
                 </table>
-
                 : <DocumentView setShowTable={setShowTable} document={document}/>
             }
         </div >

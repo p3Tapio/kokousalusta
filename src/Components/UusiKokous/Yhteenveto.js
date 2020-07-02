@@ -4,7 +4,8 @@ import { getUser } from '../Auth/Sessions'
 import request from '../Shared/HttpRequests'
 
 const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
-    const user = getUser()
+
+    let user = getUser()
     const pvmForm = { month: 'numeric', day: 'numeric' };
     const start = (new Date(perustiedot.startDate)).toLocaleDateString('fi-FI', pvmForm)
     const end = (new Date(perustiedot.endDate)).toLocaleDateString('fi-FI', pvmForm)
@@ -33,14 +34,11 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
             <p>Ystävällisin terveisin <br/>${user.firstname} ${user.lastname}<br/><small>${yhdistys}</small></p>
             `)
 
-
     const editorContentChange = (kokouskutsu) => {
         setKokouskutsu(kokouskutsu)
     }
     const handleClickSaveAndSend = () => {
-        saveNewKokous()
-        saveDocumentKokouskutsu()
-
+        saveNewKokous() // POST:t "ketjutettu" koska muuten bäkkipuoli ei toiminut toivotusti
     }
     const saveNewKokous = () => {
 
@@ -53,8 +51,9 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
             endDate: perustiedot.endDate
         })
 
-        request.kokous(uusiKokous).then(() => {
-            console.log('Kokous tallennettu ', uusiKokous)
+        request.kokous(uusiKokous).then(res => {
+            console.log('Kokous tallennettu ', res.data)
+            saveDocumentKokouskutsu()   /// ks yllä
         }).catch(err => {
             alert(err.response.data.message)
         })
@@ -71,12 +70,27 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         console.log('kokouskutsuDocument', kokouskutsuDocument)
         request.documents(kokouskutsuDocument).then((res) => {
             console.log('res.data', res.data)
+            saveOsallistujat() /// ks yllä
         }).catch(err => {
             alert(err.response.data.message)
         })
     }
+    const saveOsallistujat = () => {
 
-    console.log('osallistujat', osallistujat.length)
+        let kokousosallistujat
+        kokousosallistujat = osallistujat.map(x => ({ rooli: 'osallistuja', ...x }))
+        user = Object.assign({ rooli: 'puheenjohtaja' }, user)
+        const call = { call: 'postosallistujat', id_y: id_y, kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5) }
+        kokousosallistujat = [user].concat(kokousosallistujat)
+        kokousosallistujat = [call].concat(kokousosallistujat)
+        const body = JSON.stringify(kokousosallistujat)
+
+        request.kokous(body).then(res => {
+            console.log('Osallistujatiedot tallennettu ', res.data)
+        }).catch(err => alert(err.response.data.message))
+
+    }
+
     if (!perustiedot.startDate || !perustiedot.endDate) {
         return (
             <div className="mt-5 mx-auto col-md-10">
@@ -101,19 +115,5 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         )
     }
 }
-
-// Oletusotsikko siis tyyppiä: ”Esityslista 5/2019 kokous alkaa 16.5. ja päättyy 12.6.” 
-// Järjestelmä tuottaa kutsuun myös oletussisällön, jossa ovat allekkain kokouksen sisältökohtien otsikot.
-// Neljä esityslistan kohtaa tulostuu automaattisesti.
-// - Kokouksen avaus pp.kk.vvvv
-// - Osallistujat
-// - Kokouksen päätösvaltaisuus
-// - Kokous päättyy pp.kk.vvvv. 
-// Kokous on päätösvaltainen,
-// jos vähintään n kpl kokousosallistujista on avannut esityslistan. Tila: Päätösvaltainen / Ei päätösvaltainen
-// jos vähintään n kpl kokousosallistujista on ottanut asioihin kantaa. Tila: Päätösvaltainen / Ei päätösvaltainen
-// jos kokous kestää vähintään n vuorokautta. Tila: Päätösvaltainen / Ei päätösvaltainen
-// Kohdan tai kohtien tila vaihtuu Ei päätösvaltaisesta Päätösvaltaiseksi automaattisesti, kun asetettu kriteeri
-// täyttyy. 
 
 export default Yhteenveto

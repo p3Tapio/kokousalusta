@@ -3,9 +3,10 @@ import { useParams, useHistory, Link } from 'react-router-dom'
 import { getSessionRole } from '../../Components/Auth/Sessions'
 import request from '../../Components/Shared/HttpRequests'
 import KokousDocs from '../../Components/Kokous/KokousDocs'
+import KokousOsallistujat from '../../Components/Kokous/KokousOsallistujat'
 
 const KokousDetails = () => {
-    
+
     let history = useHistory()
     const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
     const pvmYear = { year: 'numeric' };
@@ -32,17 +33,19 @@ const KokousDetails = () => {
     }
 
 
-
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
         if (kokous) {
             let component
             if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
+            else if (showComponent === 'osallistujat') component = <KokousOsallistujat />
             else component = <p>TO DO !!! </p>
+    
 
             let text
             if (Date.parse(kokous.endDate) < new Date()) text = "Kokous on päättynyt"
             else if (Date.parse(kokous.endDate) > new Date() && Date.parse(kokous.startDate) < new Date()) text = "Kokous on käynnissä"
             else text = "Kokous ei ole vielä alkanut"
+
 
             return (
                 <div className="col-md-10 mx-auto mt-5">
@@ -66,7 +69,7 @@ const KokousDetails = () => {
                         <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiat" >Asiakohdat</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
                         {getSessionRole().role === 'admin'
-                            ? <> <button className="btn btn-outline-primary btn-sm mx-1">Osallistujat</button>
+                            ? <> <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="osallistujat">Osallistujat</button>
                                 <button className="btn btn-outline-primary btn-sm mx-1">Kokousaika</button></>
                             : <></>
                         }
@@ -88,3 +91,16 @@ const KokousDetails = () => {
 
 export default KokousDetails
 
+// Oletusotsikko siis tyyppiä: ”Esityslista 5/2019 kokous alkaa 16.5. ja päättyy 12.6.” 
+// Järjestelmä tuottaa kutsuun myös oletussisällön, jossa ovat allekkain kokouksen sisältökohtien otsikot.
+// Neljä esityslistan kohtaa tulostuu automaattisesti.
+// - Kokouksen avaus pp.kk.vvvv
+// - Osallistujat
+// - Kokouksen päätösvaltaisuus
+// - Kokous päättyy pp.kk.vvvv. 
+// Kokous on päätösvaltainen,
+// jos vähintään n kpl kokousosallistujista on avannut esityslistan. Tila: Päätösvaltainen / Ei päätösvaltainen
+// jos vähintään n kpl kokousosallistujista on ottanut asioihin kantaa. Tila: Päätösvaltainen / Ei päätösvaltainen
+// jos kokous kestää vähintään n vuorokautta. Tila: Päätösvaltainen / Ei päätösvaltainen
+// Kohdan tai kohtien tila vaihtuu Ei päätösvaltaisesta Päätösvaltaiseksi automaattisesti, kun asetettu kriteeri
+// täyttyy. 
