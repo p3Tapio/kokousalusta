@@ -17,6 +17,9 @@
         case 'luokokous':
             luoKokous();
             break;
+        case 'getosallistujat':
+            getOsallistujat(); 
+            break; 
         default:
             http_response_code(404);
     }
@@ -161,6 +164,30 @@ function postOsallistujat() {
             mysqli_close($yhteys);
         }
     }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function getOsallistujat() {
+
+    $response = array( "message"=> "Osallistujien haku epäonnistui.");
+    http_response_code(400);
+
+    if(isset($_POST['id'])) {
+        $kokousId = (int)$_POST['id'];
+        $q = "CALL osallistujat_getosallistujat($kokousId)";
+        $yhteys = connect(); 
+       
+        $res = $yhteys->query($q);
+        $rows = []; 
+        while($row = mysqli_fetch_assoc($res)) {
+            $rows[] = $row; 
+        }
+        echo json_encode($rows, JSON_UNESCAPED_UNICODE); 
+        http_response_code(200);
+        mysqli_close($yhteys);
+        exit(); 
+        
+    }
+
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 

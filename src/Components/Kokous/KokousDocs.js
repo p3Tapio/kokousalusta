@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import DocumentView from '../../Components/Document/DocumentView'
+import DocumentReadOnly from '../../Components/Document/DocumentReadOnly'
 import request from '../Shared/HttpRequests'
 
 const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
@@ -17,7 +17,6 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
     }, [kokous.kokousnro, yhdistys])
 
     const handleOpenDocumentClick = (item) => {
-        console.log('item', item)
         setDocument(item)
         setShowTable(!showTable)
     }
@@ -39,7 +38,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
                             </tr>)}
                     </tbody>
                 </table>
-                : <DocumentView setShowTable={setShowTable} document={document}/>
+                : <DocumentReadOnly setShowTable={setShowTable} document={document}/>
             }
         </div >
     )

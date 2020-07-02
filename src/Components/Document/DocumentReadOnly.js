@@ -1,8 +1,7 @@
 import React from 'react'
 import { Editor } from "@tinymce/tinymce-react"
 
-const DocumentView = ({ setShowTable, document }) => {
-    console.log('document', document)
+const DocumentReadOnly = ({ setShowTable, document }) => {
 
     const print = () => window.tinymce.activeEditor.execCommand("mcePrint", true)
 
@@ -28,4 +27,4 @@ const DocumentView = ({ setShowTable, document }) => {
         </div>
     )
 }
-export default DocumentView
+export default DocumentReadOnly

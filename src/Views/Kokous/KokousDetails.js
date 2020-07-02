@@ -13,33 +13,50 @@ const KokousDetails = () => {
     const { yhdistys } = useParams()
     const { kokousId } = useParams()
     const [kokous, setKokous] = useState()
-    const [showComponent, setShowComponent] = useState()
+    const [puheenjohtaja, setPuheenjohtaja] = useState()
+    const [osallistujat, setOsallistujat] = useState()
+    const [jasenet, setJasenet] = useState()
+
+    const [showComponent, setShowComponent] = useState([])
     const [showTable, setShowTable] = useState(true)
 
-    useEffect(() => {
-
+    useEffect(() => {  console.log('-------------- USEEFFECT -------------------')
+       
         if (getSessionRole()) {
+
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
             request.kokous(body).then(res => {
                 setKokous(res.data)
             }).catch(err => console.log('err.response.data', err.response.data))
-        }
 
-    }, [kokousId])
+            const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId })
+            request.kokous(body2).then(res => {
+                setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
+                setPuheenjohtaja(res.data.filter(x=> x.role ==='puheenjohtaja'))
+            }).catch(err => console.log('err.response.data', err.response.data))
+
+            const req = JSON.stringify({ call: 'getallmembers', name: yhdistys })
+            request.assoc(req).then(res => {
+                setJasenet(res.data)
+            }).catch(err => console.log('err.response', err.response))
+        }
+       
+    }, [kokousId, yhdistys])
+
 
     const handleMenuClick = (ev) => {
         setShowComponent(ev.target.name)
-        if(ev.target.name === 'asiakirjat') setShowTable(true)
+        if (ev.target.name === 'asiakirjat') setShowTable(true)
     }
 
-
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
+
         if (kokous) {
             let component
             if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
-            else if (showComponent === 'osallistujat') component = <KokousOsallistujat />
+            else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} />
             else component = <p>TO DO !!! </p>
-    
+
 
             let text
             if (Date.parse(kokous.endDate) < new Date()) text = "Kokous on päättynyt"
@@ -70,11 +87,11 @@ const KokousDetails = () => {
                         <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
                         {getSessionRole().role === 'admin'
                             ? <> <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="osallistujat">Osallistujat</button>
-                                <button className="btn btn-outline-primary btn-sm mx-1">Kokousaika</button></>
+                                <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="?">Kokousaika</button></>
                             : <></>
                         }
-                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="menneet">Äänestä ja voita</button>
-                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="jasenet" >Muuta juttua</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="?">Äänestä ja voita</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="?" >Muuta juttua</button>
                     </div>
                     <hr />
                     {component}
@@ -91,16 +108,14 @@ const KokousDetails = () => {
 
 export default KokousDetails
 
-// Oletusotsikko siis tyyppiä: ”Esityslista 5/2019 kokous alkaa 16.5. ja päättyy 12.6.” 
-// Järjestelmä tuottaa kutsuun myös oletussisällön, jossa ovat allekkain kokouksen sisältökohtien otsikot.
-// Neljä esityslistan kohtaa tulostuu automaattisesti.
-// - Kokouksen avaus pp.kk.vvvv
-// - Osallistujat
-// - Kokouksen päätösvaltaisuus
-// - Kokous päättyy pp.kk.vvvv. 
-// Kokous on päätösvaltainen,
-// jos vähintään n kpl kokousosallistujista on avannut esityslistan. Tila: Päätösvaltainen / Ei päätösvaltainen
-// jos vähintään n kpl kokousosallistujista on ottanut asioihin kantaa. Tila: Päätösvaltainen / Ei päätösvaltainen
-// jos kokous kestää vähintään n vuorokautta. Tila: Päätösvaltainen / Ei päätösvaltainen
-// Kohdan tai kohtien tila vaihtuu Ei päätösvaltaisesta Päätösvaltaiseksi automaattisesti, kun asetettu kriteeri
-// täyttyy. 
+/*
+
+Kokous on päätösvaltainen,
+jos vähintään n kpl kokousosallistujista on avannut esityslistan. Tila: Päätösvaltainen / Ei päätösvaltainen
+jos vähintään n kpl kokousosallistujista on ottanut asioihin kantaa. Tila: Päätösvaltainen / Ei päätösvaltainen
+jos kokous kestää vähintään n vuorokautta. Tila: Päätösvaltainen / Ei päätösvaltainen
+Kohdan tai kohtien tila vaihtuu Ei päätösvaltaisesta Päätösvaltaiseksi automaattisesti, kun asetettu kriteeri täyttyy. 
+
+
+
+*/ 
