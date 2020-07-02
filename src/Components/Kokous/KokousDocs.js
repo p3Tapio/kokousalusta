@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import DocumentView from '../../Components/Document/DocumentView'
 import request from '../Shared/HttpRequests'
 
-const KokousDocs = ({ kokous, yhdistys }) => {
+const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
 
     const [kokousDocuments, setKokousDocuments] = useState([])
+    const [document, setDocument] = useState([])
+
 
     useEffect(() => {
 
@@ -14,22 +17,35 @@ const KokousDocs = ({ kokous, yhdistys }) => {
 
     }, [kokous.kokousnro, yhdistys])
 
+    const handleOpenDocumentClick = (item) => {
+        console.log('item', item)
+        setDocument(item)
+        setShowTable(!showTable)
+    }
+
+    console.log('getDocument', document)
+
     return (
         <div>
-            <table className="table table-hover mt-4">
-                <thead>
-                <tr className="table-primary">
-                        <th>Kokousasiakirjat</th><th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {kokousDocuments.map((item, key) =>                 // name? otsikko? joku muu mikä? (tallennuksessa siis jsonissa eri kentässä ja tK:ssa sama)
-                        <tr key={key}>
-                            <td>{item.type}</td><td><button className="btn btn-outline-primary btn-sm">avaa</button></td>
-                        </tr>)}
-                </tbody>
-            </table>
-        </div>
+            {showTable
+                ?
+                < table className="table table-hover mt-4">
+                    <thead>
+                        <tr className="table-primary">
+                            <th>Kokousasiakirjat</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {kokousDocuments.map(item =>                 // name? otsikko? joku muu mikä? (tallennuksessa siis jsonissa eri kentässä ja tK:ssa sama)
+                            <tr key={item.id}>
+                                <td>{item.type}</td><td><button className="btn btn-outline-primary btn-sm" onClick={() => handleOpenDocumentClick(item)}>avaa</button></td>
+                            </tr>)}
+                    </tbody>
+                </table>
+
+                : <DocumentView setShowTable={setShowTable} document={document}/>
+            }
+        </div >
     )
 }
 

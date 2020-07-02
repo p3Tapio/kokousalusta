@@ -5,6 +5,7 @@ import request from '../../Components/Shared/HttpRequests'
 import KokousDocs from '../../Components/Kokous/KokousDocs'
 
 const KokousDetails = () => {
+    
     let history = useHistory()
     const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
     const pvmYear = { year: 'numeric' };
@@ -12,6 +13,7 @@ const KokousDetails = () => {
     const { kokousId } = useParams()
     const [kokous, setKokous] = useState()
     const [showComponent, setShowComponent] = useState()
+    const [showTable, setShowTable] = useState(true)
 
     useEffect(() => {
 
@@ -24,14 +26,17 @@ const KokousDetails = () => {
 
     }, [kokousId])
 
-    const handleMenuClick = (ev) => setShowComponent(ev.target.name)
-    console.log('showComponent', showComponent)
+    const handleMenuClick = (ev) => {
+        setShowComponent(ev.target.name)
+        if(ev.target.name === 'asiakirjat') setShowTable(true)
+    }
+
 
 
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
         if (kokous) {
             let component
-            if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} />
+            if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
             else component = <p>TO DO !!! </p>
 
             let text
@@ -47,7 +52,7 @@ const KokousDetails = () => {
                     <div className="mb-3">
                         <h4>{kokous.otsikko} </h4>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
                         <p>Kokouksen numero:</p>
                         <p> {kokous.kokousnro}/{(new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmYear)}</p>
                         <p>Kokouksen alku:</p>
@@ -58,8 +63,13 @@ const KokousDetails = () => {
                     </div>
                     <hr />
                     <div className="d-flex justify-content-center">
-                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiakirjat">Kokousasiakirjat</button>
-                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="tulevat" >Jotain juttuja</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiat" >Asiakohdat</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
+                        {getSessionRole().role === 'admin'
+                            ? <> <button className="btn btn-outline-primary btn-sm mx-1">Osallistujat</button>
+                                <button className="btn btn-outline-primary btn-sm mx-1">Kokousaika</button></>
+                            : <></>
+                        }
                         <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="menneet">Äänestä ja voita</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="jasenet" >Muuta juttua</button>
                     </div>
