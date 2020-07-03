@@ -115,13 +115,14 @@ function getKokousNro() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 
 }
-function luoKokous() { 
-    
-    $response = array( "message"=> "error");
+function luoKokous() {  
+    // uusiKokous {"call":"luokokous","id_y":"4","otsikko":"","kokousnro":"2","startDate":"2020-07-09T21:00:00.000Z","endDate":"2020-07-23T21:00:00.000Z",
+    //"paatosvaltaisuus":{"esityslista":"2","aktiivisuus":"2","kesto":"2","muu":"Joku muu mikä"}}
+    $response = array( "message"=>"Tapahtui virhe. Tallennus epäonnistui.");
     http_response_code(400);
 
-    if(isset($_POST['id_y']) && isset($_POST['kokousnro']) && isset($_POST['startDate']) && isset($_POST['endDate'])) {
-        echo $_POST['startDate'];
+    if(isset($_POST['id_y']) && isset($_POST['kokousnro']) && isset($_POST['startDate']) && isset($_POST['endDate']) && isset($_POST['paatosvaltaisuus'])) {
+
         $id_y = (int)($_POST['id_y']); 
         $otsikko = htmlspecialchars(strip_tags($_POST['otsikko']));
         $kokousnro =  (int)$_POST['kokousnro'];
@@ -129,17 +130,17 @@ function luoKokous() {
         $startDate = date('Y-m-d', strtotime($startDate));
         $endDate = htmlspecialchars(strip_tags($_POST['endDate'])); 
         $endDate = date('Y-m-d', strtotime($endDate));
+        $paatosv_esityslista = (int)$_POST['paatosvaltaisuus']['esityslista'];
+        $paatosv_aktiivisuus  = (int)$_POST['paatosvaltaisuus']['aktiivisuus'];
+        $paatosv_kesto  = (int)$_POST['paatosvaltaisuus']['kesto'];
+        $paatosv_muu  = htmlspecialchars(strip_tags($_POST['paatosvaltaisuus']['muu']));
 
-        $sql = "CALL kokous_insert($id_y, '$otsikko', $kokousnro, '$startDate', '$endDate')";
+        $sql = "CALL kokous_insert($id_y, '$otsikko', $kokousnro, $paatosv_esityslista, $paatosv_aktiivisuus, $paatosv_kesto, '$paatosv_muu', '$startDate', '$endDate')";
         $yhteys = connect(); 
 
         if($yhteys->query($sql)) {
             $response['message'] = "Kokous tallennettu";
             http_response_code(200);
-        }
-        else {
-            $response['message'] = "Tapahtui virhe. Tallennus epäonnistui.";
-            http_response_code(400);
         }
         mysqli_close($yhteys);
     }

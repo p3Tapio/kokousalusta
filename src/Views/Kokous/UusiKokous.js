@@ -21,7 +21,7 @@ const UusiKokous = () => {
     const [osallistujat, setOsallistujat] = useState()
     const [puheenjohtaja, setPuheenjohtaja] = useState()
     const [varalla, setVaralla] = useState([])
-    const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '' })
+    const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '', muu: ''  })
     const [id_y, setId_y] = useState();
 
     useEffect(() => {
@@ -56,9 +56,11 @@ const UusiKokous = () => {
         else if (ev.target.name === 'kokousnro') setPerustiedot({ ...perustiedot, kokousNro: ev.target.value })
     }
     const handlePaatosvaltaChange = (ev) => {
+        console.log('ev.target.name', ev.target.name)
         if (ev.target.name === 'esityslista') setPaatosvaltaisuus({ ...paatosvaltaisuus, esityslista: ev.target.value })
         else if (ev.target.name === 'aktiivisuus') setPaatosvaltaisuus({ ...paatosvaltaisuus, aktiivisuus: ev.target.value })
         else if (ev.target.name === 'kesto') setPaatosvaltaisuus({ ...paatosvaltaisuus, kesto: ev.target.value })
+        else if (ev.target.name === 'muu') setPaatosvaltaisuus({ ...paatosvaltaisuus, muu: ev.target.value })
     }
 
     let component

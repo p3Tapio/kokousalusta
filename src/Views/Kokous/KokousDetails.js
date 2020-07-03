@@ -20,7 +20,7 @@ const KokousDetails = () => {
 
     const [showComponent, setShowComponent] = useState([])
     const [showTable, setShowTable] = useState(true)
-
+    console.log('kokous', kokous)
     useEffect(() => {
 
         if (getSessionRole()) {
@@ -131,6 +131,7 @@ const KokousDetails = () => {
                         <p>Kokouksen päätös:</p>
                         <p>{(new Date(kokous.endDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
                         <small>({text})</small>
+                        Päätösvaltainen: {kokous.pv_muu}
                     </div>
                     <hr />
                     <div className="d-flex justify-content-center">

@@ -13,11 +13,12 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
     const osallistuu = osallistujat.map(x => '<li>' + x.firstname + ' ' + x.lastname + '<li>').join(' ')
 
     let paatosvalta = ''
-    if (paatosvaltaisuus.esityslista === '' && paatosvaltaisuus.aktiivisuus === '' && paatosvaltaisuus.kesto === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
+    if (paatosvaltaisuus.esityslista === '' && paatosvaltaisuus.aktiivisuus === '' && paatosvaltaisuus.kesto === '' && paatosvaltaisuus.muu === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
     else {
         if (paatosvaltaisuus.esityslista !== '') paatosvalta += `<p>Kokous on päätösvaltainen jos vähintään ${paatosvaltaisuus.esityslista} kpl kokousosallistujista on avannut esityslistan.</p>`
         if (paatosvaltaisuus.aktiivisuus !== '') paatosvalta += `<p>Kokous on päätösvaltainen jos vähintään ${paatosvaltaisuus.aktiivisuus} kpl kokousosallistujista on ottanut asioihin kantaa.</p>`
         if (paatosvaltaisuus.kesto !== '') paatosvalta += `<p>Kokous on päätösvaltainen jos kokous kestää vähintään ${paatosvaltaisuus.kesto} vuorokautta.</p>`
+        if(paatosvaltaisuus.muu !== '') paatosvalta += `<p>${paatosvaltaisuus.muu}</p>`
     }
 
     const [kokouskutsu, setKokouskutsu] = useState(`
@@ -48,7 +49,8 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
             otsikko: perustiedot.otsikko,
             kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5),
             startDate: perustiedot.startDate,
-            endDate: perustiedot.endDate
+            endDate: perustiedot.endDate,
+            paatosvaltaisuus: paatosvaltaisuus
         })
 
         request.kokous(uusiKokous).then(res => {
@@ -71,6 +73,7 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         request.documents(kokouskutsuDocument).then((res) => {
             console.log('res.data', res.data)
             saveOsallistujat() /// ks yllä
+            
         }).catch(err => {
             alert(err.response.data.message)
         })
@@ -86,6 +89,8 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         const body = JSON.stringify(kokousosallistujat)
 
         request.kokous(body).then(res => {
+            alert('Kokous on tallennettu ja muuta sellaista!')
+            window.location.reload(); 
             console.log('Osallistujatiedot tallennettu ', res.data)
         }).catch(err => alert(err.response.data.message))
 
