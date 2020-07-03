@@ -20,6 +20,15 @@
         case 'getosallistujat':
             getOsallistujat(); 
             break; 
+        case 'poistaosallistuja':
+            poistaOsallistuja();
+            break; 
+        case 'lisaaosallistuja':
+            lisaaOsallistuja();
+            break; 
+        case 'vaihdapvm':
+            vaihdaPvm(); 
+            break; 
         default:
             http_response_code(404);
     }
@@ -112,6 +121,7 @@ function luoKokous() {
     http_response_code(400);
 
     if(isset($_POST['id_y']) && isset($_POST['kokousnro']) && isset($_POST['startDate']) && isset($_POST['endDate'])) {
+        echo $_POST['startDate'];
         $id_y = (int)($_POST['id_y']); 
         $otsikko = htmlspecialchars(strip_tags($_POST['otsikko']));
         $kokousnro =  (int)$_POST['kokousnro'];
@@ -188,6 +198,67 @@ function getOsallistujat() {
         
     }
 
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function poistaOsallistuja() { // {"call":"poistaosallistuja","kokousid":"33","email":"esco@mail.com"}
+    $response = array( "message"=> "Osallistujan poistaminen epäonnistui.");
+    http_response_code(400);
+
+    if(isset($_POST['kokousid']) && isset($_POST['email'])) {
+        $kokousid = (int)$_POST['kokousid']; 
+        $email = htmlspecialchars(strip_tags($_POST['email']));
+        
+        $q = "CALL osallistujat_poistaosallistuja($kokousid, '$email')"; 
+        $yhteys = connect(); 
+
+        if($yhteys->query($q)) {
+            $response = array( "message"=> "Osallistuja poistettu.");
+            http_response_code(200);
+        }
+        mysqli_close($yhteys);
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function lisaaOsallistuja() {   // {"call":"lisaaosallistuja","kokousid":"33","yhdistys":"Kissaklubi","email":"testeri@mail.com"}
+
+    $response = array( "message"=> "Osallistujan lisääminen epäonnistui.");
+    http_response_code(400);
+    
+    if(isset($_POST['kokousid']) && isset($_POST['email']) && isset($_POST['yhdistys'])) {
+        $kokousid = (int)$_POST['kokousid']; 
+        $yhdistys = htmlspecialchars(strip_tags($_POST['yhdistys']));
+        $email = htmlspecialchars(strip_tags($_POST['email']));
+       
+        $q = "CALL osallistujat_lisaaosallistuja($kokousid, '$email','$yhdistys')"; 
+        $yhteys = connect(); 
+
+        if($yhteys->query($q)) {
+            $response = array( "message"=> "Osallistuja lisätty.");
+            http_response_code(200);
+        }
+        mysqli_close($yhteys);
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function vaihdaPvm() {//  body {"call":"vaihdapvm","kokousid":"33","enddate":"2020-08-15T00:00:00.000Z"}
+
+    $response = array( "message"=> "Päivämäärän muuttaminen epäonnistui.");
+    http_response_code(400);
+    
+    if(isset($_POST['kokousid']) && isset($_POST['enddate'])) {
+        $kokousid = (int)$_POST['kokousid']; 
+        $endDate = htmlspecialchars(strip_tags($_POST['enddate'])); 
+        $endDate = date('Y-m-d', strtotime($endDate));
+
+        $q = "CALL kokous_vaihdapaattymispaiva($kokousid, '$endDate')"; 
+        $yhteys = connect(); 
+
+        if($yhteys->query($q)) {
+            $response = array( "message"=> "Kokouksen päättymispäivämäärä vaihdettu");
+            http_response_code(200);
+        }
+    }
+    mysqli_close($yhteys);
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 

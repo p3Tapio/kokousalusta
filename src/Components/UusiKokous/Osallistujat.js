@@ -1,6 +1,4 @@
 import React from 'react'
-// PJ: Voi siirtää kokousosallistujan tilaan “Estynyt” ja voi nostaa nimeämänsä varakokousosallistujan varsinaiseksi kokousosallistujaksi  ????
-// Kokousosallistuja: Voi ilmoittaa esteellisyydestä yksittäiseen kokoukseen ja nimetä varakokousedustajan kokousosallistujaksi tilalleen  ????
 
 const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, varalla, setVaralla, setShowComponent }) => {
 
@@ -54,7 +52,7 @@ const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, varalla, s
                                         <td>{item.firstname}</td>
                                         <td>{item.lastname}</td>
                                         <td>{item.email}</td>
-                                        <td><button onClick={handleOsallistuuClick} className="btn btn-outline-primary btn-sm" name={item.email}>Siirrä kokousosallistujaksi</button></td>
+                                        <td><button onClick={handleOsallistuuClick} className="btn btn-outline-primary btn-sm" name={item.email} >Siirrä kokousosallistujaksi</button></td>
                                     </tr>
                                 )}
                             </tbody>

@@ -4,6 +4,7 @@ import { getSessionRole } from '../../Components/Auth/Sessions'
 import request from '../../Components/Shared/HttpRequests'
 import KokousDocs from '../../Components/Kokous/KokousDocs'
 import KokousOsallistujat from '../../Components/Kokous/KokousOsallistujat'
+import Kokousaika from '../../Components/Kokous/Kokousaika'
 
 const KokousDetails = () => {
 
@@ -20,8 +21,8 @@ const KokousDetails = () => {
     const [showComponent, setShowComponent] = useState([])
     const [showTable, setShowTable] = useState(true)
 
-    useEffect(() => {  console.log('-------------- USEEFFECT -------------------')
-       
+    useEffect(() => {
+
         if (getSessionRole()) {
 
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
@@ -32,7 +33,7 @@ const KokousDetails = () => {
             const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId })
             request.kokous(body2).then(res => {
                 setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
-                setPuheenjohtaja(res.data.filter(x=> x.role ==='puheenjohtaja'))
+                setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
             }).catch(err => console.log('err.response.data', err.response.data))
 
             const req = JSON.stringify({ call: 'getallmembers', name: yhdistys })
@@ -40,7 +41,7 @@ const KokousDetails = () => {
                 setJasenet(res.data)
             }).catch(err => console.log('err.response', err.response))
         }
-       
+
     }, [kokousId, yhdistys])
 
 
@@ -48,13 +49,63 @@ const KokousDetails = () => {
         setShowComponent(ev.target.name)
         if (ev.target.name === 'asiakirjat') setShowTable(true)
     }
+    const handleOsallistujatClick = (ev) => {
+
+        const henkilo = jasenet.find(x => x.email === ev.target.name)
+        let body
+        let runRequest = false
+
+        if (ev.target.id === 'varalle') {
+            if (window.confirm(`Haluatko perua osallistujan ${henkilo.firstname} ${henkilo.lastname} osallistumisoikeuden kokoukseen?`)) {
+                setOsallistujat(osallistujat.filter(x => x.email !== ev.target.name))
+                body = JSON.stringify({ call: 'poistaosallistuja', kokousid: kokousId, email: ev.target.name })
+                runRequest = true
+            }
+        } else if (ev.target.id === 'osallistujaksi') {
+            if (window.confirm(`Haluatko muuttaa henkilön ${henkilo.firstname} ${henkilo.lastname} kokousosallistujaksi?`)) {
+                setOsallistujat(osallistujat.concat(henkilo))
+                body = JSON.stringify({ call: 'lisaaosallistuja', kokousid: kokousId, yhdistys: yhdistys, email: ev.target.name })
+                runRequest = true
+            }
+        }
+        if (runRequest) {
+            console.log('body', body)
+            request.kokous(body).then(res => {
+                alert(res.data.message)
+            }).catch(err => {
+                alert(err.response.data.message)
+                console.log('err.response', err.response)
+            })
+        }
+    }
+
+    const handleVaihdaKokousaika = (date) => {
+
+        if (typeof date === 'object' && Date.parse(date) !== Date.parse(kokous.endDate)) {
+
+            const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
+            const uusiPvm = date.toISOString().split('T')[0]
+
+            if (window.confirm(`Haluatko vaihtaa kokouksen uudeksi päättymispäiväksi ${(new Date(uusiPvm)).toLocaleDateString('fi-FI', pvmForm)}?`)) {
+                setKokous({ ...kokous, endDate: uusiPvm })
+                const body = JSON.stringify({ call: 'vaihdapvm', kokousid: kokousId, enddate: date })
+                request.kokous(body).then(res => {
+                    alert(res.data.message)
+                }).catch(err => alert(err.response.data.message))
+            }
+            
+        } else {
+            alert("Määritä uusi päättymispäivä ennen tallentamista")
+        }
+    }
 
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
 
         if (kokous) {
             let component
             if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
-            else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} />
+            else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} handleOsallistujatClick={handleOsallistujatClick} />
+            else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} setkokous={setKokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
             else component = <p>TO DO !!! </p>
 
 
@@ -87,7 +138,7 @@ const KokousDetails = () => {
                         <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
                         {getSessionRole().role === 'admin'
                             ? <> <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="osallistujat">Osallistujat</button>
-                                <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="?">Kokousaika</button></>
+                                <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="kokousaika">Kokousaika</button></>
                             : <></>
                         }
                         <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="?">Äänestä ja voita</button>
@@ -114,8 +165,8 @@ Kokous on päätösvaltainen,
 jos vähintään n kpl kokousosallistujista on avannut esityslistan. Tila: Päätösvaltainen / Ei päätösvaltainen
 jos vähintään n kpl kokousosallistujista on ottanut asioihin kantaa. Tila: Päätösvaltainen / Ei päätösvaltainen
 jos kokous kestää vähintään n vuorokautta. Tila: Päätösvaltainen / Ei päätösvaltainen
-Kohdan tai kohtien tila vaihtuu Ei päätösvaltaisesta Päätösvaltaiseksi automaattisesti, kun asetettu kriteeri täyttyy. 
+Kohdan tai kohtien tila vaihtuu Ei päätösvaltaisesta Päätösvaltaiseksi automaattisesti, kun asetettu kriteeri täyttyy.
 
 
 
-*/ 
+*/
