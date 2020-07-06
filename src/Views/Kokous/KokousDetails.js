@@ -92,8 +92,7 @@ const KokousDetails = () => {
                 request.kokous(body).then(res => {
                     alert(res.data.message)
                 }).catch(err => alert(err.response.data.message))
-            }
-            
+            }   
         } else {
             alert("Määritä uusi päättymispäivä ennen tallentamista")
         }

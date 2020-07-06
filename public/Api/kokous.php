@@ -1,8 +1,9 @@
 <?php
+include("mailer.php");
 
- $_POST = json_decode(file_get_contents('php://input'), true); 
+$_POST = json_decode(file_get_contents('php://input'), true); 
 
- if(isset($_POST["call"])) {
+if(isset($_POST["call"])) {
     $call = htmlspecialchars(strip_tags($_POST["call"])); 
     switch ($call) {
         case 'getkokoukset':
@@ -17,6 +18,9 @@
         case 'luokokous':
             luoKokous();
             break;
+        case 'sendkokousinvite':
+            sendKokousInvite(); 
+            break; 
         case 'getosallistujat':
             getOsallistujat(); 
             break; 
@@ -116,15 +120,14 @@ function getKokousNro() {
 
 }
 function luoKokous() {  
-    // uusiKokous {"call":"luokokous","id_y":"4","otsikko":"","kokousnro":"2","startDate":"2020-07-09T21:00:00.000Z","endDate":"2020-07-23T21:00:00.000Z",
-    //"paatosvaltaisuus":{"esityslista":"2","aktiivisuus":"2","kesto":"2","muu":"Joku muu mikä"}}
+
     $response = array( "message"=>"Tapahtui virhe. Tallennus epäonnistui.");
     http_response_code(400);
 
     if(isset($_POST['id_y']) && isset($_POST['kokousnro']) && isset($_POST['startDate']) && isset($_POST['endDate']) && isset($_POST['paatosvaltaisuus'])) {
 
         $id_y = (int)($_POST['id_y']); 
-        $otsikko = htmlspecialchars(strip_tags($_POST['otsikko']));
+        $otsikko = strip_tags($_POST['otsikko']);
         $kokousnro =  (int)$_POST['kokousnro'];
         $startDate = htmlspecialchars(strip_tags($_POST['startDate'])); 
         $startDate = date('Y-m-d', strtotime($startDate));
@@ -171,9 +174,36 @@ function postOsallistujat() {
                 $response = array( "message"=> "Osallistujien tallennus epäonnistui.");
                 http_response_code(400);
             }
-
             mysqli_close($yhteys);
         }
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function sendKokousInvite() {
+    $response = array( "message"=> "Kokouskutsun lähetys epäonnistui.");
+    http_response_code(400);
+    if(isset($_POST['yhdistys']) && isset($_POST['aihe']) && isset($_POST['viesti']) && isset($_POST["osallistujat"])) {
+        $yhdistys = htmlspecialchars(strip_tags($_POST['yhdistys']));
+        $aihe = htmlspecialchars(strip_tags($_POST['aihe']));
+        $viesti = $_POST['viesti']; 
+        $emailerUsername = "";
+        $emailerPassword = ""; 
+
+        foreach($_POST['osallistujat'] as $item) {
+            $firstname = htmlspecialchars(strip_tags($item['firstname']));
+            $lastname = htmlspecialchars(strip_tags($item['lastname']));
+            $email = htmlspecialchars(strip_tags($item['email']));
+            $name = $firstname." ".$lastname;
+   
+            if(sendEmail($emailerUsername,$emailerPassword,$yhdistys,$email, $name,$aihe, $viesti)) {
+                $response = array( "message"=> "Kokouksen tallennus ja kokouskutsun lähetys onnistui.");
+                http_response_code(200);
+            } else {
+                $response = array( "message"=> "Kokouskutsun lähetys epäonnistui.");
+                http_response_code(400);
+            }
+        }
+
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
@@ -196,7 +226,6 @@ function getOsallistujat() {
         http_response_code(200);
         mysqli_close($yhteys);
         exit(); 
-        
     }
 
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
@@ -264,7 +293,6 @@ function vaihdaPvm() {//  body {"call":"vaihdapvm","kokousid":"33","enddate":"20
 }
 
 function connect() {
-
     $yhteys = new mysqli("localhost", "root", "", "kokous_db") or die("Connection fail ".mysqli_connect_error());
     $yhteys->set_charset("utf8");
     return $yhteys;
