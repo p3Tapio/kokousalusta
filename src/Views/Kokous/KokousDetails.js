@@ -78,14 +78,29 @@ const KokousDetails = () => {
             })
         }
     }
+    const handleVaihdaKokousaika = (date) => {
 
+        if (typeof date === 'object' && Date.parse(date) !== Date.parse(kokous.endDate)) {
+            const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
+            const uusiPvm = date.toISOString().split('T')[0]
+            if (window.confirm(`Haluatko vaihtaa kokouksen uudeksi päättymispäiväksi ${(new Date(uusiPvm)).toLocaleDateString('fi-FI', pvmForm)}?`)) {
+                setKokous({ ...kokous, endDate: uusiPvm })
+                const body = JSON.stringify({ call: 'vaihdapvm', kokousid: kokousId, enddate: date })
+                request.kokous(body).then(res => {
+                    alert(res.data.message)
+                }).catch(err => alert(err.response.data.message))
+            }
+        } else {
+            alert("Määritä uusi päättymispäivä ennen tallentamista")
+        }
+    }
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
 
         if (kokous) {
             let component
             if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
             else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} handleOsallistujatClick={handleOsallistujatClick} />
-            else if (showComponent === 'kokousaika') component = <Kokousaika kokousId={kokousId} kokous={kokous} setkokous={setKokous} />
+            else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous}  handleVaihdaKokousaika={handleVaihdaKokousaika} />
             else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
             else component = <p>TO DO !!! </p>
 
