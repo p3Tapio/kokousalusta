@@ -21,6 +21,9 @@ if(isset($_POST["call"])) {
         case 'sendkokousinvite':
             sendKokousInvite(); 
             break; 
+        case 'openkokous':
+            openKokous(); 
+            break; 
         case 'getosallistujat':
             getOsallistujat(); 
             break; 
@@ -45,9 +48,10 @@ function getKokoukset() {
 
     $response = array("message"=> "error");
 
-    if(isset($_POST["name"])) {
-        $name = htmlspecialchars(strip_tags($_POST["name"])); 
-        $sql= "CALL kokous_getkokoukset('$name')";
+    if(isset($_POST["yhdistys"]) && isset($_POST["email"])) {
+        $yhdistys = htmlspecialchars(strip_tags($_POST["yhdistys"])); 
+        $email = htmlspecialchars(strip_tags($_POST["email"])); 
+        $sql= "CALL kokous_getkokoukset('$yhdistys', '$email')";
         $yhteys = connect(); 
         $res = $yhteys->query($sql);
         $rows = []; 
@@ -63,6 +67,7 @@ function getKokoukset() {
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
+
 function getKokous() {
 
     $response = array("message"=> "error");
@@ -203,10 +208,27 @@ function sendKokousInvite() {
                 http_response_code(400);
             }
         }
-
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
+function openKokous() {
+    // {"call":"openkokous","id":"45"}
+    $response = array( "message"=> "Kokouksen avaaminen epäonnistui.");
+    http_response_code(400);
+
+    if(isset($_POST['id'])) {
+        $id = (int)$_POST['id'];
+        $q = "CALL kokous_openkokous($id)";
+        $yhteys = connect(); 
+        if($yhteys->query($q)) {
+            $response = array( "message"=> "Kokous on avattu osallistujille");
+            http_response_code(200);
+        }
+        mysqli_close($yhteys);
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);  
+}
+
 function getOsallistujat() {
 
     $response = array( "message"=> "Osallistujien haku epäonnistui.");
@@ -293,6 +315,7 @@ function vaihdaPvm() {//  body {"call":"vaihdapvm","kokousid":"33","enddate":"20
 }
 
 function connect() {
+
     $yhteys = new mysqli("localhost", "root", "", "kokous_db") or die("Connection fail ".mysqli_connect_error());
     $yhteys->set_charset("utf8");
     return $yhteys;

@@ -26,7 +26,7 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
                 {kaynnissa.length === 0
                     ? <><h5>Yhdistyksellä ei ole käynnissä olevia kokouksia</h5></>
                     : <><h5>Käynnissä olevat kokoukset</h5>
-                        <KokousTable kokous={kaynnissa} yhdistys={yhdistys} status="kaynnissa" />
+                        <KokousTable kokous={kaynnissa} yhdistys={yhdistys} status="kaynnissa"  />
                     </>}
             </>)
     } else if (showComponent === 'menneet') {
@@ -44,7 +44,7 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
                 {tulevat.length === 0
                     ? <><h5>Yhdistyksellä ei ole tulevia kokouksia</h5></>
                     : <><h5 className="mt-4">Tulevat kokoukset</h5>
-                        <KokousTable kokous={tulevat} yhdistys={yhdistys} status="tuleva"/>
+                        <KokousTable kokous={tulevat}  yhdistys={yhdistys} status="tuleva" />
                     </>}
             </>)
     } else component = <></>

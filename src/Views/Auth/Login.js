@@ -44,23 +44,26 @@ const Login = () => {
     const handleLoginSubmit = (ev) => {
 
         ev.preventDefault()
-        const login = JSON.stringify({ call: 'applogin', email, password })
 
-        request.appUser(login)
-            .then(res => {
-                alert(`Tervetuloa ${res.data.firstname} ${res.data.lastname}!`)
-                console.log('res.data', res.data)
-                const user = {
-                    firstname: res.data.firstname,
-                    lastname: res.data.lastname,
-                    email: email,
-                }
-                setUserSession(user, res.data.token)
-                history.push('/userpage')
+        if (email === '' || password === '') alert("Anna käyttäjätunnus ja salasana!")
+        else {
+            const login = JSON.stringify({ call: 'applogin', email, password })
 
-            }).catch(err => {
-                alert(err.response.data.message)
-            })
+            request.appUser(login)
+                .then(res => {
+                    alert(`Tervetuloa ${res.data.firstname} ${res.data.lastname}!`)
+                    const user = {
+                        firstname: res.data.firstname,
+                        lastname: res.data.lastname,
+                        email: email,
+                    }
+                    setUserSession(user, res.data.token)
+                    history.push('/userpage')
+
+                }).catch(err => {
+                    alert(err.response.data.message)
+                })
+        }
     }
 
     const helpText = "Kirjaudu järjestelmään sähköpostin ja salasanan avulla mikäli käytit niitä rekisteröityessäsi. Jos rekisteröidyit Facebook-tunnuksilla, käytä niitä myös kirjautumiseen. Mikäli unohdit tunnuksesi, voit saada ne paikasta x."
@@ -82,7 +85,7 @@ const Login = () => {
                         <button type="submit" className="btn btn-outline-primary mt-3">Kirjaudu</button>
                     </div>
                 </form>
-            
+
                 <div className="text-right">
                     <p>
                         <FacebookLogin
@@ -94,10 +97,10 @@ const Login = () => {
                             )}
                         />
                     </p>
-                    <hr/>
+                    <hr />
                     <p className="mr-3" style={{ lineHeight: '25px' }}>
                         Haluatko rekisteröityä käyttäjäksi? <Link to="/register" className="ml-1">Rekisteröidy</Link><br />  </p>
-                        <p style={{marginTop:"-20px"}}> Tarvitsetko apua? <HelpPop heading="Kirjautuminen" text={helpText} btnText="Klikkaa tästä!" placement="left" variant="link" style={{ marginBottom: "3px", marginLeft: "-10px" }}/> </p>
+                    <p style={{ marginTop: "-20px" }}> Tarvitsetko apua? <HelpPop heading="Kirjautuminen" text={helpText} btnText="Klikkaa tästä!" placement="left" variant="link" style={{ marginBottom: "3px", marginLeft: "-10px" }} /> </p>
                     <p className="mr-3"></p>
                 </div>
             </div>

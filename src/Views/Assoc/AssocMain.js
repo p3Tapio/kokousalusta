@@ -5,7 +5,7 @@ import request from '../../Components/Shared/HttpRequests'
 import AssocAdmin from '../../Components/Assoc/AssocAdmin'
 import AssocMember from '../../Components/Assoc/AssocMember'
 import { setSessionRole, getSessionRole } from '../../Components/Auth/Sessions'
-
+// https://localhost:3000/kokous/Kissaklubi/44
 
 const AssocMain = () => {
 
@@ -27,22 +27,21 @@ const AssocMain = () => {
         }).catch(() => history.push('/userpage'))
 
         if (role) {
-            const body = JSON.stringify({ call: 'getkokoukset', name: yhdistys });
+
+            const body = JSON.stringify({ call: 'getkokoukset', yhdistys: yhdistys, email:user.email });
             request.kokous(body).then(res => {
                 setKokoukset(res.data)
             }).catch(err => console.log('err.response', err.response))
         
             if (role === 'admin') {
-                const req = JSON.stringify({ call: 'getallmembers', name: yhdistys })
+                const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
                 request.assoc(req).then(res => {
                     setMembers(res.data)
                 }).catch(err => console.log('err.response', err.response))
             }
         }
-
-
+        
     }, [history, user.email, yhdistys, role]);
-
 
     if (getSessionRole() && kokoukset) {
         let component

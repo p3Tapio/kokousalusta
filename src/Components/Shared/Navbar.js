@@ -26,7 +26,7 @@ export default function Navbar() {
     if (getUser()) {
         menuItems = (<>
             <Link style={{ color: "white", width: '200px' }} className="nav-link" to="/userpage">Omat sivut</Link>
-            <p onClick={handleLogOut} style={{ color: "white", width: '250px', cursor: 'pointer'}} className="nav-link" >Kirjaudu ulos</p>
+            <p onClick={handleLogOut} style={{ color: "white", width: '250px', cursor: 'pointer' }} className="nav-link" >Kirjaudu ulos</p>
         </>)
     } else {
         menuItems = (<>
@@ -36,10 +36,10 @@ export default function Navbar() {
         </>)
     }
     return (
-        <div className="navbar navbar-expand w-100" style={navbar} onClick={toggleMenu}>
-            <p className="MenuText mt-2 ml-4 w-100" >
+        <div className="navbar navbar-expand" style={navbar} onClick={toggleMenu}>
+            <p className="MenuText mt-2 ml-5" >
                 Menu
-                <Icon.Justify size={30} className="ml-3 fa-5x"  />
+                <Icon.Justify size={30} className="ml-3 fa-5x" />
             </p>
             <div id="dropMenu" style={overlay} onClick={toggleMenu}>
                 {showMenu
@@ -67,11 +67,10 @@ const overlay = {
 const navbar = {
     color: 'white',
     backgroundColor: 'rgba(44,62,80, 0.9)',
-    height:'75px',
-    padding:'10px', 
-    width: '100vw', 
+    height: '75px',
+    padding: '10px',
     position: 'relative',
-    marginLeft: '-50vw',
-    left: '50%',
-
+    width: '100vw !important',
+    marginRight: '-50vw',
+    marginLeft: 'calc(-50vw + 50%)' 
 }

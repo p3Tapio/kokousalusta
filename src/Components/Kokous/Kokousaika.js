@@ -6,7 +6,6 @@ import fi from 'date-fns/locale/fi';
 const Kokousaika = ({ kokous,  handleVaihdaKokousaika }) => {
 
     const [pickerDate, setPickerDate] = useState(Date.parse(kokous.endDate))
-    const end = Date.parse(kokous.endDate)
     const start = Date.parse(kokous.startDate)
     registerLocale('fi', fi)
 

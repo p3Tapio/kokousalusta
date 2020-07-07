@@ -161,9 +161,9 @@ function checkMembership() {
 function getAllMembers() {
 
     $response = array("message"=> "error"); 
-    if(isset($_POST["name"])) {
-        $name = htmlspecialchars(strip_tags($_POST["name"])); 
-        $sql= "CALL jasenyydet_getallmembers('$name')";
+    if(isset($_POST["yhdistys"])) {
+        $yhdistys = htmlspecialchars(strip_tags($_POST["yhdistys"])); 
+        $sql= "CALL jasenyydet_getallmembers('$yhdistys')";
         $yhteys = connect(); 
         $res = $yhteys->query($sql);
         $rows = []; 

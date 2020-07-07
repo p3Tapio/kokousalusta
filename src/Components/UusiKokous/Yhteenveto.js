@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import {useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { TextEditor } from '../Document/TextEditor';
 import { getUser } from '../Auth/Sessions'
 import request from '../Shared/HttpRequests'
 
 const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
-    let history = useHistory() 
+    const [loading, setLoading] = useState(false)
+    let history = useHistory()
     let user = getUser()
     const pvmForm = { month: 'numeric', day: 'numeric' };
     const start = (new Date(perustiedot.startDate)).toLocaleDateString('fi-FI', pvmForm)
@@ -28,7 +29,10 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         setKokouskutsu(kokouskutsu)
     }
     const handleClickSaveAndSend = () => {
-        saveNewKokous() // POST:t "ketjutettu" koska muuten bäkkipuoli ei toiminut toivotusti
+        if (window.confirm('Haluatko tallentaa kokouksen ja lähettää kutsun osallistujille?')) {
+            setLoading(true)
+            saveNewKokous() // POST:t "ketjutettu" koska muuten bäkkipuoli ei toiminut toivotusti
+        }
     }
     const saveNewKokous = () => {
 
@@ -91,6 +95,7 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         const invite = JSON.stringify({ call: 'sendkokousinvite', yhdistys: yhdistys, aihe: aihe, viesti: runko, osallistujat: kokousosallistujat })
         request.kokous(invite).then(res => {
             alert(res.data.message)
+            setLoading(false)
             history.push('/assoc/Kissaklubi')
         }).catch(err => alert(err.response.data.message))
     }
@@ -107,14 +112,21 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
                 <h5 className="mb-4">Kokouksessa ei ole osallistujia. Lisää kokousosallistujat osallistujat-välilehdellä.</h5>
             </div>
         )
-    } else {
+    } else if (!loading) {
         return (
             <div className="mt-5 mx-auto col-md-10">
                 <h5 className="mb-4">Yhteenveto</h5>
+                <p className="mb-4">Tarkasta kokouksen tiedot. Painamalla ruudun pohjalla olevaa näppäintä kokous tallentuu ja järjestelmä lähettää kutsun osallistujille kokoukseen s-postitse.</p>
                 <TextEditor editorContentChange={editorContentChange} kokouskutsu={kokouskutsu} />
                 <div className="form-group text-right">
-                    <button className="btn btn-outline-primary mt-3" onClick={handleClickSaveAndSend}>Avaa kokous ja lähetä kokouskutsu</button>
+                    <button className="btn btn-outline-primary mt-3" onClick={handleClickSaveAndSend}>Tallenna ja lähetä kokouskutsu</button>
                 </div>
+            </div>
+        )
+    } else if (loading) {
+        return (
+            <div className="mt-5 mx-auto col-md-10">
+                <h5 className="mb-4">Pyyntöä käsitellään, odota hetki....</h5>
             </div>
         )
     }
