@@ -111,7 +111,8 @@ const KokousDetails = () => {
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
 
         if (kokous && kokousRooli) {
-            if (kokous.avoinna === "1" ) {
+
+            if (kokous.avoinna === "1" || kokousRooli==="puheenjohtaja") { 
 
                 let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />

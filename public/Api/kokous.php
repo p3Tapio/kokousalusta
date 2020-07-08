@@ -1,5 +1,4 @@
 <?php
-include("mailer.php");
 
 $_POST = json_decode(file_get_contents('php://input'), true); 
 
@@ -49,25 +48,49 @@ function getKokoukset() {
     $response = array("message"=> "error");
 
     if(isset($_POST["yhdistys"]) && isset($_POST["email"])) {
+
         $yhdistys = htmlspecialchars(strip_tags($_POST["yhdistys"])); 
         $email = htmlspecialchars(strip_tags($_POST["email"])); 
         $sql= "CALL kokous_getkokoukset('$yhdistys', '$email')";
         $yhteys = connect(); 
         $res = $yhteys->query($sql);
-        $rows = []; 
+        $kokousrows = []; 
+
         while($row = mysqli_fetch_assoc($res)) {
-            $rows[] = $row; 
+            $kokousrows[] = $row; 
         }
-        echo json_encode($rows, JSON_UNESCAPED_UNICODE); 
+
+        mysqli_close($yhteys);
+        $yhteys = connect(); 
+        $i = 0; 
+        $pjrows=[]; 
+
+        foreach($kokousrows as $x) {
+            $id = $kokousrows[$i]['id']; 
+            $sql = "CALL kokous_getpj($id)";
+           if($result = $yhteys->query($sql)) {
+                while($row = mysqli_fetch_assoc($result)) {
+                    if(!in_array($row, $pjrows)) {
+                        $pjrows[]=$row;   
+                    }     
+                }   
+           }
+           $kokousrows[$i] +=array('puheenjohtaja'=>$pjrows);
+           $pjrows = []; 
+            $i++;
+            mysqli_close($yhteys);
+            $yhteys = connect(); 
+        }
+        echo json_encode($kokousrows, JSON_UNESCAPED_UNICODE); 
         mysqli_close($yhteys);
         exit(); 
+
     } else {
         $response = array("message"=> "Tiedot puuttuu");
         http_response_code(400); 
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
-
 function getKokous() {
 
     $response = array("message"=> "error");
@@ -90,7 +113,6 @@ function getKokous() {
 
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
-
 function getKokousNro() {
 
     $response = array("message"=> "error");
@@ -185,21 +207,22 @@ function postOsallistujat() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 function sendKokousInvite() {
+    include("mailerdetails.php");
+    include("mailer.php"); 
     $response = array( "message"=> "Kokouskutsun lähetys epäonnistui.");
     http_response_code(400);
     if(isset($_POST['yhdistys']) && isset($_POST['aihe']) && isset($_POST['viesti']) && isset($_POST["osallistujat"])) {
         $yhdistys = htmlspecialchars(strip_tags($_POST['yhdistys']));
         $aihe = htmlspecialchars(strip_tags($_POST['aihe']));
         $viesti = $_POST['viesti']; 
-        $emailerUsername = "";
-        $emailerPassword = ""; 
 
         foreach($_POST['osallistujat'] as $item) {
-            $firstname = htmlspecialchars(strip_tags($item['firstname']));
+
+            $firstname = htmlspecialchars(strip_tags($item['firstname']));              
             $lastname = htmlspecialchars(strip_tags($item['lastname']));
             $email = htmlspecialchars(strip_tags($item['email']));
             $name = $firstname." ".$lastname;
-   
+     
             if(sendEmail($emailerUsername,$emailerPassword,$yhdistys,$email, $name,$aihe, $viesti)) {
                 $response = array( "message"=> "Kokouksen tallennus ja kokouskutsun lähetys onnistui.");
                 http_response_code(200);
@@ -228,7 +251,6 @@ function openKokous() {
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE);  
 }
-
 function getOsallistujat() {
 
     $response = array( "message"=> "Osallistujien haku epäonnistui.");
@@ -315,8 +337,8 @@ function vaihdaPvm() {//  body {"call":"vaihdapvm","kokousid":"33","enddate":"20
 }
 
 function connect() {
-
-    $yhteys = new mysqli("localhost", "root", "", "kokous_db") or die("Connection fail ".mysqli_connect_error());
+    include("dbdetails.php");
+    $yhteys = new mysqli($host, $user, $password, $db) or die("Connection fail ".mysqli_connect_error());
     $yhteys->set_charset("utf8");
     return $yhteys;
 }

@@ -27,7 +27,7 @@ const KokousTable = ({ kokous, yhdistys }) => {
             <div>
                 <table className="table table-hover">
                     <thead>
-                        <tr className="table-primary"><th>Kokous</th><th>kokousnro</th><th>alku</th><th>loppu</th><th></th><th></th></tr>
+                        <tr className="table-primary"><th>Kokous</th><th>kokousnro</th><th>alku</th><th>loppu</th><th>tila</th><th></th></tr>
                     </thead>
                     <tbody>
                         {kokous.map((item) =>
@@ -36,6 +36,7 @@ const KokousTable = ({ kokous, yhdistys }) => {
                                 <td>{item.kokousnro}/{(new Date(item.endDate)).toLocaleDateString('fi-FI', pvmYear)}</td>
                                 <td>{(new Date(item.startDate)).toLocaleDateString('fi-FI', pvmForm)}</td>
                                 <td>{(new Date(item.endDate)).toLocaleDateString('fi-FI', pvmForm)}</td>
+                                {/* adminille (vai pj:lle? if pj.email = user.email) oikeus tarkastella tietoja ennen avaamista  */}
                                 {item.avoinna === '1'
                                     ? <>
                                         <td>Kokoustila on avoinna</td>
@@ -43,8 +44,14 @@ const KokousTable = ({ kokous, yhdistys }) => {
                                     </>
                                     : <>
                                         <td>kokoustila on suljettu</td>
-                                        {item.role === 'puheenjohtaja' ? <td><button onClick={() => openKokous(item.id)} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary btn-sm btn-block" style={{ marginTop: '-5px' }}><FaKey /></button></td>
-                                            : <td></td>}
+                                        {item.role === 'puheenjohtaja' ? <>
+                                            <td>
+                                                <div style={{ whiteSpace: "nowrap" }}>
+                                                    <Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" style={{ marginTop: '-5px', display: "inline-block" }}><FaInfoCircle /></Link>
+                                                    <button onClick={() => openKokous(item.id)} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary" style={{ marginTop: '-5px', marginLeft: '2px', display: "inline-block" }}><FaKey /></button>
+                                                </div>
+                                            </td></>
+                                            : <><td></td></>}
                                     </>
                                 }
                             </tr>
@@ -58,3 +65,8 @@ const KokousTable = ({ kokous, yhdistys }) => {
     }
 }
 export default KokousTable
+
+
+
+        // let x = kokous.map(x => x.puheenjohtaja); x = x[0];
+        // const pjCheck = x.filter(item => item.email === user.email)

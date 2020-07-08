@@ -36,7 +36,7 @@ const UusiKokous = () => {
             })
         }
         if (!members) {
-            const req = JSON.stringify({ call: 'getallmembers', name: yhdistys })
+            const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
             request.assoc(req).then(res => {
                 setMembers(res.data)
                 setOsallistujat(res.data.filter(x => x.email !== getUser().email))

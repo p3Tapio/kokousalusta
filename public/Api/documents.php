@@ -67,8 +67,8 @@ function getDocuments() {
   
 
 function connect() {
-    
-    $yhteys = new mysqli("localhost", "root", "", "kokous_db") or die("Connection fail ".mysqli_connect_error());
+    include("dbdetails.php");
+    $yhteys = new mysqli($host, $user, $password, $db) or die("Connection fail ".mysqli_connect_error());
     $yhteys->set_charset("utf8");
     return $yhteys;
 }

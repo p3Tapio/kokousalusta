@@ -63,7 +63,7 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
             draft: 'false',
             content: kokouskutsu
         })
-        console.log('kokouskutsuDocument', kokouskutsuDocument)
+    
         request.documents(kokouskutsuDocument).then((res) => {
             console.log('res.data', res.data)
             saveOsallistujat() /// ks yllä
@@ -92,7 +92,7 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         const aihe = kokouskutsu.substring(4, kokouskutsu.indexOf("</h3>"))
         const runko = kokouskutsu.substring(kokouskutsu.indexOf("</h3>") + 5)
         const kokousosallistujat = [user].concat(osallistujat)
-        const invite = JSON.stringify({ call: 'sendkokousinvite', yhdistys: yhdistys, aihe: aihe, viesti: runko, osallistujat: kokousosallistujat })
+        const invite = JSON.stringify({ call: 'sendkokousinvite', yhdistys: yhdistys, aihe: aihe, viesti: runko, osallistujat: kokousosallistujat }) 
         request.kokous(invite).then(res => {
             alert(res.data.message)
             setLoading(false)
