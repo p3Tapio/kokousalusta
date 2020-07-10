@@ -25,7 +25,7 @@ const AssocAdmin = ({ kokoukset, members, yhdistys }) => {
         return (
             <div>
                 <div>
-                    <div className="d-flex justify-content-center">
+                    <div className="d-sm-flex  justify-content-center">
                         <button className="btn btn-outline-primary btn-sm mx-1" name="kaynnissa" onClick={handleMenuClick}>Käynnissä olevat kokoukset</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>

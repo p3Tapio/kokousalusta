@@ -8,8 +8,8 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
     return (
         <div>
             <div className="mb-4 mt-4">
-                <div class="float-right">
-                    <button className="btn btn-outline-danger" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
+                <div class="float-md-right">
+                    <button className="btn btn-outline-danger mb-2 ml-2" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
                 </div>
                 <div class="float-left">
                    {puheenjohtaja.length!==0

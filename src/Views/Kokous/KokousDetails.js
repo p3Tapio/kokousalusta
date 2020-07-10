@@ -144,7 +144,7 @@ const KokousDetails = () => {
                             <small>({text})</small>
                         </div>
                         <hr />
-                        <div className="d-flex justify-content-center">
+                        <div className="d-sm-flex justify-content-center">
                             <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiat" >Asiakohdat</button>
                             <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
                             <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="osallistujat">Osallistujat</button>

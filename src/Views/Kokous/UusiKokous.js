@@ -8,6 +8,7 @@ import Osallistujat from '../../Components/UusiKokous/Osallistujat'
 import Paatosvaltaisuus from '../../Components/UusiKokous/Paatosvaltaisuus'
 import Yhteenveto from '../../Components/UusiKokous/Yhteenveto'
 import { getSessionRole, getUser } from '../../Components/Auth/Sessions'
+import Esityslista from '../../Components/UusiKokous/Esityslista';
 
 const UusiKokous = () => {
 
@@ -18,6 +19,7 @@ const UusiKokous = () => {
     let history = useHistory()
 
     const [perustiedot, setPerustiedot] = useState({ otsikko: '', kokousNro: null, startDate: '', endDate: '' })
+    const [esityslista, setEsityslista] = useState() 
     const [osallistujat, setOsallistujat] = useState()
     const [puheenjohtaja, setPuheenjohtaja] = useState()
     const [varalla, setVaralla] = useState([])
@@ -65,6 +67,7 @@ const UusiKokous = () => {
 
     let component
     if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
+    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista}/>
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} />
     else if (showComponent === 'yhteenveto') component = <Yhteenveto perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y}/>
@@ -81,7 +84,7 @@ const UusiKokous = () => {
                 <div>
                     <div className="d-flex justify-content-center">
                         <button className="btn btn-outline-primary btn-sm mx-1" name="perustiedot" onClick={handleMenuClick}>Perustiedot</button>
-                        <button className="btn btn-outline-primary btn-sm mx-1" name="menneet" onClick={handleMenuClick}>Esityslista</button>
+                        <button className="btn btn-outline-primary btn-sm mx-1" name="esityslista" onClick={handleMenuClick}>Esityslista</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="osallistujat" onClick={handleMenuClick}>Osallistujat</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="paatosvaltaisuus" onClick={handleMenuClick}>Päätösvaltaisuus</button>
                         <button className="btn btn-outline-primary btn-sm mx-1" name="yhteenveto" onClick={handleMenuClick}>Kutsu kokous</button>

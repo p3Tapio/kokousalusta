@@ -40,15 +40,15 @@ const KokousTable = ({ kokous, yhdistys }) => {
                                 {item.avoinna === '1'
                                     ? <>
                                         <td>Kokoustila on avoinna</td>
-                                        <td><Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary btn-sm btn-block" style={{ marginTop: '-5px' }}><FaInfoCircle /></Link></td>
+                                        <td><Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" style={{ marginTop: '-5px' }}><FaInfoCircle /></Link></td>
                                     </>
                                     : <>
                                         <td>kokoustila on suljettu</td>
                                         {item.role === 'puheenjohtaja' ? <>
                                             <td>
                                                 <div style={{ whiteSpace: "nowrap" }}>
-                                                    <Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" style={{ marginTop: '-5px', display: "inline-block" }}><FaInfoCircle /></Link>
-                                                    <button onClick={() => openKokous(item.id)} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary" style={{ marginTop: '-5px', marginLeft: '2px', display: "inline-block" }}><FaKey /></button>
+                                                    <Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" style={{ marginTop: '-5px' }}><FaInfoCircle /></Link>
+                                                    <button onClick={() => openKokous(item.id)} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary" style={{ marginTop: '-5px', marginLeft: '2px'}}><FaKey /></button>
                                                 </div>
                                             </td></>
                                             : <><td></td></>}
