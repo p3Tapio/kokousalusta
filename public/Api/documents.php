@@ -18,8 +18,6 @@ if(isset($_POST["call"])) {
     http_response_code(400);
 }
 
-
-
 function postDocument() {
     $response = array("message"=> "error");
     if(isset($_POST["id_y"]) && isset($_POST["kokousnro"]) && isset($_POST["type"]) && isset($_POST["content"])) {

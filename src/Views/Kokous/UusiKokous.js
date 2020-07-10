@@ -9,7 +9,13 @@ import Paatosvaltaisuus from '../../Components/UusiKokous/Paatosvaltaisuus'
 import Yhteenveto from '../../Components/UusiKokous/Yhteenveto'
 import { getSessionRole, getUser } from '../../Components/Auth/Sessions'
 import Esityslista from '../../Components/UusiKokous/Esityslista';
+/*
 
+to DO: uusikok switch toiminta, nyt aina harmaa vaikka true
+osallistujien tallennus editoitaessa. 
+Refresh hukkaa tiedot --- joku getti? 
+
+*/ 
 const UusiKokous = () => {
 
     const { yhdistys } = useParams()
@@ -18,12 +24,13 @@ const UusiKokous = () => {
     const [showComponent, setShowComponent] = useState('perustiedot')
     let history = useHistory()
 
-    const [perustiedot, setPerustiedot] = useState({ otsikko: '', kokousNro: null, startDate: '', endDate: '' })
-    const [esityslista, setEsityslista] = useState() 
+    // const [kokousid, setKokousid] = useState(null)
+    const [perustiedot, setPerustiedot] = useState({ otsikko: '', kokousNro: null, kokousid: '', startDate: '', endDate: '', avoinna: false })
+    const [esityslista, setEsityslista] = useState()
     const [osallistujat, setOsallistujat] = useState()
     const [puheenjohtaja, setPuheenjohtaja] = useState()
     const [varalla, setVaralla] = useState([])
-    const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '', muu: ''  })
+    const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '', muu: '' })
     const [id_y, setId_y] = useState();
 
     useEffect(() => {
@@ -53,12 +60,35 @@ const UusiKokous = () => {
     const handleMenuClick = (ev) => {
         setShowComponent(ev.target.name)
     }
+
+    const saveKokous = () => {
+        const uusiKokous = JSON.stringify({
+            call: 'luokokous',
+            id_y: id_y,
+            kokousid: perustiedot.kokousid,
+            otsikko: perustiedot.otsikko,
+            kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5),
+            startDate: perustiedot.startDate,
+            endDate: perustiedot.endDate,
+            avoinna: perustiedot.avoinna,
+            paatosvaltaisuus: paatosvaltaisuus
+        })
+        request.kokous(uusiKokous).then(res => {
+            console.log('Kokous tallennettu ', res.data.kokousid)
+            if (res.data.kokousid !== "0") setPerustiedot({ ...perustiedot, kokousid: res.data.kokousid })
+        }).catch(err => {
+            alert(err.response.data.message)
+        })
+
+    }
     const handlePerustiedotChange = (ev) => {
+        console.log('ev.target.id', ev.target.id)
+        console.log('ev.target.value', ev.target.value)
         if (ev.target.name === 'otsikko') setPerustiedot({ ...perustiedot, otsikko: ev.target.value })
         else if (ev.target.name === 'kokousnro') setPerustiedot({ ...perustiedot, kokousNro: ev.target.value })
+        else if (ev.target.id === 'avaa') setPerustiedot({ ...perustiedot, avoinna: !perustiedot.avoinna })
     }
     const handlePaatosvaltaChange = (ev) => {
-        console.log('ev.target.name', ev.target.name)
         if (ev.target.name === 'esityslista') setPaatosvaltaisuus({ ...paatosvaltaisuus, esityslista: ev.target.value })
         else if (ev.target.name === 'aktiivisuus') setPaatosvaltaisuus({ ...paatosvaltaisuus, aktiivisuus: ev.target.value })
         else if (ev.target.name === 'kesto') setPaatosvaltaisuus({ ...paatosvaltaisuus, kesto: ev.target.value })
@@ -66,11 +96,11 @@ const UusiKokous = () => {
     }
 
     let component
-    if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
-    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista}/>
+    if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} saveKokous={saveKokous} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
+    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
-    else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} />
-    else if (showComponent === 'yhteenveto') component = <Yhteenveto perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y}/>
+    else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} saveKokous={saveKokous} />
+    else if (showComponent === 'yhteenveto') component = <Yhteenveto saveKokous={saveKokous} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y} />
     else component = <></>
 
 

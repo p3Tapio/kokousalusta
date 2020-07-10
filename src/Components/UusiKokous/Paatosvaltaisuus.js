@@ -5,9 +5,13 @@ import HelpPop from '../Shared/HelpPop'
 // joka on ”Kokouksen päätösvaltaisuuden toteaminen” sekä tyhjän kentän hyväksymisehdotuksen tekemistä
 // varten. Kohta toimii samoin kuin jos asiatyypiksi olisi valittu hyväksymisasia. 
 
-const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, paatosvaltaisuus }) => {
+const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, saveKokous, paatosvaltaisuus }) => {
 
     const helpText = "Kokouksen päätösvaltaisuuden voi määritellä täyttämällä valitsemasi kentät. Tyhjäksi jätettyä kenttää ei huomioida kokouksen päätösvaltaisuuden määrittelyssä."
+    const handleClick =() => {
+       setShowComponent('yhteenveto')
+       saveKokous() 
+    }
 
     return (
         <div className="mt-5">
@@ -41,7 +45,7 @@ const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, paatosval
                     </div>
                 </form>
                 <div classNameName="form-group text-right">
-                    <button onClick={() => setShowComponent('yhteenveto')} type="submit" className="btn btn-outline-primary mt-3">Seuraava</button>
+                    <button onClick={handleClick} type="submit" className="btn btn-outline-primary mt-3" >Seuraava</button>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ import { TextEditor } from '../Document/TextEditor';
 import { getUser } from '../Auth/Sessions'
 import request from '../Shared/HttpRequests'
 
-const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
+const Yhteenveto = ({ saveKokous, perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
     const [loading, setLoading] = useState(false)
     let history = useHistory()
     let user = getUser()
@@ -36,22 +36,10 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
     }
     const saveNewKokous = () => {
 
-        const uusiKokous = JSON.stringify({
-            call: 'luokokous',
-            id_y: id_y,
-            otsikko: perustiedot.otsikko,
-            kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5),
-            startDate: perustiedot.startDate,
-            endDate: perustiedot.endDate,
-            paatosvaltaisuus: paatosvaltaisuus
-        })
+        saveKokous()
+        saveDocumentKokouskutsu()   /// ks yllä
 
-        request.kokous(uusiKokous).then(res => {
-            console.log('Kokous tallennettu ', res.data)
-            saveDocumentKokouskutsu()   /// ks yllä
-        }).catch(err => {
-            alert(err.response.data.message)
-        })
+        
     }
     const saveDocumentKokouskutsu = () => {
 
@@ -63,7 +51,7 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
             draft: 'false',
             content: kokouskutsu
         })
-    
+
         request.documents(kokouskutsuDocument).then((res) => {
             console.log('res.data', res.data)
             saveOsallistujat() /// ks yllä
@@ -92,7 +80,8 @@ const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_
         const aihe = kokouskutsu.substring(4, kokouskutsu.indexOf("</h3>"))
         const runko = kokouskutsu.substring(kokouskutsu.indexOf("</h3>") + 5)
         const kokousosallistujat = [user].concat(osallistujat)
-        const invite = JSON.stringify({ call: 'sendkokousinvite', yhdistys: yhdistys, aihe: aihe, viesti: runko, osallistujat: kokousosallistujat }) 
+        const invite = JSON.stringify({ call: 'sendkokousinvite', yhdistys: yhdistys, aihe: aihe, viesti: runko, osallistujat: kokousosallistujat })
+        console.log('invite', invite)
         request.kokous(invite).then(res => {
             alert(res.data.message)
             setLoading(false)

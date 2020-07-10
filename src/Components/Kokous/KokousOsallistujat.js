@@ -4,7 +4,7 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
 
     jasenet = jasenet.filter(jasen => !osallistujat.find(({ email }) => jasen.email === email))
     jasenet = jasenet.filter(jasen => !puheenjohtaja.find(({ email }) => jasen.email === email))
-    console.log('puheenjohtaja', puheenjohtaja)
+   
     return (
         <div>
             <div className="mb-4 mt-4">
