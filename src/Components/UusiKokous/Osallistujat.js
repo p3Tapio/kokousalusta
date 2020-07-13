@@ -1,16 +1,18 @@
 import React from 'react'
 
-const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, varalla, setVaralla, setShowComponent }) => {
+const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, saveOsallistujat, varalla, setVaralla, setShowComponent }) => {
 
     const handleVaralleClick = (ev) => {
         const vara = osallistujat.filter(x => x.email === ev.target.name)
         setVaralla(varalla.concat(vara))
         setOsallistujat(osallistujat.filter(x => x.email !== ev.target.name))
+        saveOsallistujat()
     }
     const handleOsallistuuClick = (ev) => {
         const osallistuja = varalla.filter(x => x.email === ev.target.name)
         setOsallistujat(osallistujat.concat(osallistuja))
         setVaralla(varalla.filter(x => x.email !== ev.target.name))
+        saveOsallistujat()
     }
 
     return (
@@ -47,7 +49,7 @@ const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, varalla, s
                                 <tr className="table-primary"><th>Etunimi</th><th>Sukunimi</th><th>Sähköpostiosoite</th><th></th></tr>
                             </thead>
                             <tbody>
-                                {varalla.map((item, key) =>
+                                {varalla.filter(x => x.email !== puheenjohtaja[0].email).map((item, key) =>
                                     <tr key={key + item.firstname}>
                                         <td>{item.firstname}</td>
                                         <td>{item.lastname}</td>
@@ -62,7 +64,7 @@ const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, varalla, s
                 }
             </div>
             <div className="form-group text-right">
-                <button onClick={() => setShowComponent('paatosvaltaisuus')} type="submit" className="btn btn-outline-primary mt-3">Seuraava</button>
+                <button onClick={() => {setShowComponent('paatosvaltaisuus'); saveOsallistujat()}} type="submit" className="btn btn-outline-primary mt-3">Seuraava</button>
             </div>
             <hr />
         </div >

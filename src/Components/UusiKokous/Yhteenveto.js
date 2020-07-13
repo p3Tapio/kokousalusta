@@ -4,7 +4,7 @@ import { TextEditor } from '../Document/TextEditor';
 import { getUser } from '../Auth/Sessions'
 import request from '../Shared/HttpRequests'
 
-const Yhteenveto = ({ saveKokous, perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
+const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
     const [loading, setLoading] = useState(false)
     let history = useHistory()
     let user = getUser()
@@ -13,7 +13,7 @@ const Yhteenveto = ({ saveKokous, perustiedot, osallistujat, paatosvaltaisuus, y
     const end = (new Date(perustiedot.endDate)).toLocaleDateString('fi-FI', pvmForm)
     const nimi = perustiedot.otsikko === '' ? '' : `<h3>${perustiedot.otsikko}</h3>`
     const osallistuu = osallistujat.map(x => '<li>' + x.firstname + ' ' + x.lastname + '</li>').join(' ')
-
+    console.log('paatosvaltaisuus', paatosvaltaisuus)
     let paatosvalta = ''
     if (paatosvaltaisuus.esityslista === '' && paatosvaltaisuus.aktiivisuus === '' && paatosvaltaisuus.kesto === '' && paatosvaltaisuus.muu === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
     else {
@@ -36,10 +36,25 @@ const Yhteenveto = ({ saveKokous, perustiedot, osallistujat, paatosvaltaisuus, y
     }
     const saveNewKokous = () => {
 
-        saveKokous()
-        saveDocumentKokouskutsu()   /// ks yllä
-
-        
+        const uusiKokous = JSON.stringify({
+            call: 'luokokous',
+            id_y: id_y,
+            kokousid: perustiedot.kokousid,
+            otsikko: perustiedot.otsikko,
+            kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5),
+            startDate: perustiedot.startDate,
+            endDate: perustiedot.endDate,
+            avoinna: perustiedot.avoinna,
+            paatosvaltaisuus: paatosvaltaisuus,
+            valmis: true
+        })
+        console.log('uusiKokous', uusiKokous)
+        request.kokous(uusiKokous).then(res => {
+            console.log('Kokous tallennettu ', res.data)
+            saveDocumentKokouskutsu()   /// ks yllä
+        }).catch(err => {
+            alert(err.response.data.message)
+        })
     }
     const saveDocumentKokouskutsu = () => {
 
@@ -69,7 +84,7 @@ const Yhteenveto = ({ saveKokous, perustiedot, osallistujat, paatosvaltaisuus, y
         kokousosallistujat = [call].concat(kokousosallistujat)
         const body = JSON.stringify(kokousosallistujat)
 
-        request.kokous(body).then(res => {
+        request.osallistujat(body).then(res => {
             sendInviteEmail();
             console.log('Osallistujatiedot tallennettu ', res.data)
         }).catch(err => alert(err.response.data.message))

@@ -25,18 +25,18 @@ const KokousDetails = () => {
     const [showTable, setShowTable] = useState(true)
 
     useEffect(() => {
-
+        
         if (getSessionRole()) {
-
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
             request.kokous(body).then(res => {
                 setKokous(res.data)
             }).catch(err => console.log('err.response.data', err.response.data))
 
             const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId })
-            request.kokous(body2).then(res => {
+            request.osallistujat(body2).then(res => {
                 setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
                 setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
+                console.log('res.data', res.data)
                 const osal = res.data.filter(x => x.email === user.email)
                 if (osal[0]) {
                     setKokousRooli(osal[0].role)
@@ -83,7 +83,7 @@ const KokousDetails = () => {
         }
         if (runRequest) {
             console.log('body', body)
-            request.kokous(body).then(res => {
+            request.osallistujat(body).then(res => {
                 alert(res.data.message)
             }).catch(err => {
                 alert(err.response.data.message)

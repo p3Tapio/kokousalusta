@@ -6,7 +6,7 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
     const [tulevat, setTulevat] = useState([]);
     const [kaynnissa, setKaynnissa] = useState([]);
     const [menneet, setMenneet] = useState([]);
-
+    console.log('kokoukset', kokoukset)
     useEffect(() => {
         if (kokoukset) {
             kokoukset.map((item) => {

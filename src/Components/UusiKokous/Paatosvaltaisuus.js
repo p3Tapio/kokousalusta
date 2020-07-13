@@ -1,16 +1,12 @@
 import React from 'react'
 import HelpPop from '../Shared/HelpPop'
 
-// alusta tarjoaa puheenjohtajalle valmiina pelkän asiakohdan nimen,
-// joka on ”Kokouksen päätösvaltaisuuden toteaminen” sekä tyhjän kentän hyväksymisehdotuksen tekemistä
-// varten. Kohta toimii samoin kuin jos asiatyypiksi olisi valittu hyväksymisasia. 
-
-const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, saveKokous, paatosvaltaisuus }) => {
+const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, saveKokousDraft, paatosvaltaisuus }) => {
 
     const helpText = "Kokouksen päätösvaltaisuuden voi määritellä täyttämällä valitsemasi kentät. Tyhjäksi jätettyä kenttää ei huomioida kokouksen päätösvaltaisuuden määrittelyssä."
     const handleClick =() => {
        setShowComponent('yhteenveto')
-       saveKokous() 
+       saveKokousDraft() 
     }
 
     return (
@@ -44,7 +40,7 @@ const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, saveKokou
                         <small className="form-text text-muted">Kirjoita haluamasi päätösvaltaisuuskriteeri kenttään</small>
                     </div>
                 </form>
-                <div classNameName="form-group text-right">
+                <div className="form-group text-right">
                     <button onClick={handleClick} type="submit" className="btn btn-outline-primary mt-3" >Seuraava</button>
                 </div>
             </div>

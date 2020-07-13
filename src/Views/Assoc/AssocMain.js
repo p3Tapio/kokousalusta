@@ -5,7 +5,6 @@ import request from '../../Components/Shared/HttpRequests'
 import AssocAdmin from '../../Components/Assoc/AssocAdmin'
 import AssocMember from '../../Components/Assoc/AssocMember'
 import { setSessionRole, getSessionRole } from '../../Components/Auth/Sessions'
-// https://localhost:3000/kokous/Kissaklubi/44
 
 const AssocMain = () => {
 
@@ -30,7 +29,7 @@ const AssocMain = () => {
 
             const body = JSON.stringify({ call: 'getkokoukset', yhdistys: yhdistys, email:user.email });
             request.kokous(body).then(res => {
-                setKokoukset(res.data)
+                setKokoukset(res.data.filter(x=> x.valmis==="1"))
             }).catch(err => console.log('err.response', err.response))
         
             if (role === 'admin') {
