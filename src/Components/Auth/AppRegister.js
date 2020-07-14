@@ -27,7 +27,7 @@ const AppRegister = () => {
         } else {
 
             const user = JSON.stringify({ call: 'appreg', firstname, lastname, email, password })
-
+            
             request.appUser(user)
                 .then(res => {
                     alert('Rekisteröityminen onnistui! Kirjauduttuasi voit liittyä yhdistyksen alueelle ja tarkastella yhdistyksen kokousasioita.')

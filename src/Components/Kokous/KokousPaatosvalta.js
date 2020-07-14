@@ -16,7 +16,7 @@ const KokousPaatosvalta = ({ kokous }) => {
         const erotus_aika2 = now.getTime() - start.getTime()
         const erotus_pv2 = erotus_aika2 / (1000 * 3600 * 24)
 
-        if (erotus_pv >= kokous.pv_kesto || erotus_pv2 >= kokous.pv_kesto) tila_kesto = "Päätösvaltainen."  // testaus 
+        if (erotus_pv >= kokous.pv_kesto && erotus_pv2 >= kokous.pv_kesto) tila_kesto = "Päätösvaltainen."  // testaus 
     }
 
 

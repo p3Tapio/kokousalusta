@@ -1,4 +1,7 @@
-<?php
+<?php session_start();
+header("Access-Control-Allow-Origin:".$_SERVER['HTTP_ORIGIN']);
+header('Access-Control-Allow-Credentials: true');
+header("Access-Control-Allow-Headers: X-Accept-Charset,X-Accept,Content-Type,Authorization,Accept,Origin,Authorization, Origin, X-Requested-With, Content-Type, Accept, Accept-Language");
 
 $_POST = json_decode(file_get_contents('php://input'), true); 
 
@@ -178,7 +181,7 @@ function getAllMembers() {
 
 }
 function connect() {
-    include("dbdetails.php");
+    include("../dbdetails.php");
     $yhteys = new mysqli($host, $user, $password, $db) or die("Connection fail ".mysqli_connect_error());
     $yhteys->set_charset("utf8");
     return $yhteys;
