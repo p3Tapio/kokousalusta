@@ -1,8 +1,8 @@
-<?php session_start();
+<?php /*session_start();
 header("Access-Control-Allow-Origin:".$_SERVER['HTTP_ORIGIN']);
 header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Headers: X-Accept-Charset,X-Accept,Content-Type,Authorization,Accept,Origin,Authorization, Origin, X-Requested-With, Content-Type, Accept, Accept-Language");
-
+*/
 $_POST = json_decode(file_get_contents('php://input'), true); 
 
 if(isset($_POST['call'])) {

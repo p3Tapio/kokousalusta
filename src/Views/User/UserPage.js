@@ -14,6 +14,7 @@ const UserPage = () => {
 
         const body = JSON.stringify({ call: 'getmemberships', email: user.email })
         request.assoc(body).then(res => {
+            console.log("res.data", res.data)
             setYhdistykset(res.data)
         }).catch(err => {
             if (err.response.data) console.log('err.response.data', err.response.data)

@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const url = process.env.REACT_APP_HOST_URL
+// const url = process.env.REACT_APP_HOST_URL
+const url = "http://localhost/"
 
 const fbUser = body => axios.post(`${url}auth.php`, body).then(res => res)
 const appUser = body => axios.post(`${url}auth.php`, body, {withCredentials: true}).then(res => res)
