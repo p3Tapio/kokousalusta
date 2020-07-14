@@ -41,8 +41,8 @@ const UusiKokous = () => {
                     if (window.confirm('Yhdistyksellä on tallentamaton kokous. Haluatko jatkaa kokoustietojen täyttämistä vai aloittaa uudelleen?')) {
                  
                         const avoin = res.data.avoinna === "0" ? false : true
-                        const alkaa = res.data.startDate === "1970-01-01" ? null: new Date(res.data.startDate)
-                        const loppuu = res.data.endDate === "1970-01-01" ? null: new Date(res.data.endDate)
+                        const alkaa = res.data.startDate === "1970-01-01" ? '': new Date(res.data.startDate)
+                        const loppuu = res.data.endDate === "1970-01-01" ? '': new Date(res.data.endDate)
 
                         console.log('res.data.startDate', res.data.startDate)
                         setPerustiedot({
