@@ -6,15 +6,16 @@ header("Access-Control-Allow-Headers: X-Accept-Charset,X-Accept,Content-Type,Aut
 
 $flags = $_SESSION['kokous_flags']=1;
 $kohtaflags = $_SESSION['kohta_flags']=1;
-$user = $_SESSION['user_id']=1;
-
+$user = $_SESSION['user_id'];
 $kokous = $_SESSION['kokous_id'];
 
 
 include("../connect.php");
 
+
+
+
 if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
-	
 	$kohta = (int)$_POST['kohta'];
 	$vid = (int)$_POST['check_valitse'];
 	$sql = "CALL esityskohta_valitse('$kokous','$user','$kohta','$vid');";
@@ -22,6 +23,9 @@ if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
 	if($row = mysqli_fetch_assoc($result)) echo "[".$row['id'].",".$row['b']."]";
 	exit(0);
 }
+
+
+
 
 if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta'])){
 	$kohta = (int)$_POST['kohta'];
@@ -33,6 +37,8 @@ if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta'])){
 }
 
 
+
+
 if(isset($_POST['check_remove']) && isset($_POST['kohta'])){
 	
 	$kohta = (int)$_POST['kohta'];
@@ -41,6 +47,10 @@ if(isset($_POST['check_remove']) && isset($_POST['kohta'])){
 	$result = $con -> query($sql);
 	exit(0);
 }
+
+
+
+
 if(isset($_POST['check_uusi']) && isset($_POST['kohta'])){
 	
 	$kohta = (int)$_POST['kohta'];
@@ -48,6 +58,9 @@ if(isset($_POST['check_uusi']) && isset($_POST['kohta'])){
 	$result = $con -> query($sql);
 	exit(0);
 }
+
+
+
 
 if(isset($_POST['avaakohta'])){
 	$kohta = (int)$_POST['avaakohta'];
@@ -74,6 +87,9 @@ if(isset($_POST['avaakohta'])){
 	exit(0);
 }
 
+
+
+
 if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && isset($_POST['kohta'])){
 	$param = $_POST['param'];
 	$type = $_POST['save'];
@@ -98,9 +114,15 @@ if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && iss
 	exit(0);
 }
 
+
+
+
 if(isset($_POST['Uusi'])){ 
 	$sql = "CALL esityskohta_lisaa('$kokous','$user'); ";
+
 	
+
+
 	
 } else if (isset($_POST['NODE']) && isset($_POST['KOHDE'])){
 		$node = trim($_POST['NODE'],'r');
@@ -114,10 +136,16 @@ if(isset($_POST['Uusi'])){
 		$sql = "CALL esityskohdat('$kokous'); ";
  }
   
+
+
+
  $result = $con -> query($sql);
  while($row = mysqli_fetch_assoc($result)){
 	$rows[] = $row;
  }
+
+
+
 
  if (!isset($rows)) echo "[[],[]]";
  else echo json_encode([$rows]);

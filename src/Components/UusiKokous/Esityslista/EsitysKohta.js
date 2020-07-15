@@ -28,6 +28,7 @@ const EsitysKohta = ({type,title,id,alkaa,loppuu,auki=false,avaa,save}) => {
     <div className="esitys_item"  onClick= {this_avaa}>
       <div className="otsake"><ResizeTextArea edit={auki} id={id} sisus={title} save={this_save}/></div>
       <div>
+        
       {loppu}
       {alku} 
       {sisalto}

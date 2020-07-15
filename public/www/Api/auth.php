@@ -101,96 +101,80 @@ function appRegistration() {
 }
 function fbLogin() {
 
-    $response = array("message"=> "error"); 
+    $response = array("message"=> "Kirjautuminen epäonnistui"); 
+    http_response_code(400); 
 
     if(isset($_POST["email"]) && isset($_POST["fb_id"])) {
             
             $email = htmlspecialchars(strip_tags($_POST['email']));
-            $emailCheck = checkUserEmail($email);
+            $fb_id = htmlspecialchars(strip_tags($_POST['fb_id']));
+            $yhteys = connect(); 
 
-            if($emailCheck == 1) {
+            if($yhteys->multi_query("CALL users_fblogin('$fb_id','$email', @no); SELECT @no as no;")) {
 
-                $fb_id = htmlspecialchars(strip_tags($_POST['fb_id']));
-                $yhteys = connect(); 
-
-                if($yhteys->multi_query("CALL users_fblogin('$fb_id', @no); SELECT @no as no;")) {
-
-                    $yhteys->next_result(); 
-                    $tulos = $yhteys->store_result(); 
-                    $lkm = $tulos->fetch_object()->no;
-                    $tulos->free();  
-
-                    if($lkm == 1) {                 
-                        $token = tokenGen(); 
-                        $response = array("message"=> "Kirjautuminen onnistui",  "token"=>"$token");
-                    } else {
-                        $response = array("message"=> "Väärä käyttäjätunnus tai salasana"); 
-                        http_response_code(401); 
-                    }
-                } else {
-                    $response = array("message"=> "Kirjautuminen epäonnistui"); 
-                    http_response_code(400); 
-                }
-                mysqli_close($yhteys);
-            } else {
-                $response = array("message"=> "Väärä käyttäjätunnus tai salasana"); 
-                http_response_code(401); 
-            }
-    } else {
-        $response = array("message"=> "Kirjautuminen epäonnistui");
-        http_response_code(400); 
-    }
-    echo json_encode($response, JSON_UNESCAPED_UNICODE);
-
-}
-function appLogin() {
-
-    $response = array("message"=> "error"); 
-    if(isset($_POST["email"]) && isset($_POST["password"])) {
-        $email = htmlspecialchars(strip_tags($_POST['email']));
-        $emailCheck = checkUserEmail($email);
-
-        if($emailCheck == 1) {
-
-            $yhteys = connect();  
-            $password = htmlspecialchars(strip_tags($_POST['password']));
-
-            if($yhteys->multi_query("CALL users_applogin('$email', @password, @firstname, @lastname); SELECT @password as password; SELECT @firstname as firstname; SELECT @lastname as lastname;")) {
-                
                 $yhteys->next_result(); 
                 $tulos = $yhteys->store_result(); 
-                $dbpassword = $tulos->fetch_object()->password;
+                $lkm = $tulos->fetch_object()->no;
+                $tulos->free();  
 
-                if(password_verify($password, $dbpassword)) {
-    
-                    $yhteys->next_result(); 
-                    $tulos = $yhteys->store_result(); 
-                    $firstname = $tulos->fetch_object()->firstname;
-
-                    $yhteys->next_result(); 
-                    $tulos = $yhteys->store_result(); 
-                    $lastname = $tulos->fetch_object()->lastname; 
-                    
-                    $tulos->free();      
+                if($lkm != -1) {   
                     $token = tokenGen(); 
-                    $response = array("message"=> "Kirjautuminen onnistui", "firstname" => "$firstname", "lastname" => "$lastname", "token"=>"$token");
-                    // TODO tässä php sessioniin user variable (muista nollata kun kirjautuu ulos)
-                    // TODO? logout
-                    // jos joskus logout niin.. unset($_SESSION['user_id']);
-                    $_SESSION['user_id'] = 2;
+                    $_SESSION['user_id'] =  $lkm;
+                    $response = array("message"=> "Kirjautuminen onnistui",  "token"=>"$token");
+                    http_response_code(200);
                 } else {
                     $response = array("message"=> "Väärä käyttäjätunnus tai salasana"); 
                     http_response_code(401); 
                 }
+            }             
+            mysqli_close($yhteys);  
+    } 
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
+
+}
+function appLogin() {
+    $response = array("message"=> "Kirjautuminen epäonnistui");
+    http_response_code(400); 
+
+    if(isset($_POST["email"]) && isset($_POST["password"])) {
+        
+        $email = htmlspecialchars(strip_tags($_POST['email']));
+        $emailCheck = checkUserEmail($email);
+
+        $yhteys = connect();  
+        $password = htmlspecialchars(strip_tags($_POST['password']));
+        
+        if($yhteys->multi_query("CALL users_applogin('$email', @pssword, @firstname, @lastname, @id); SELECT @pssword as password; SELECT @firstname as firstname; SELECT @lastname as lastname;SELECT @id as id;")) {
+         
+            $yhteys->next_result(); 
+            $tulos = $yhteys->store_result(); 
+            $dbpassword = $tulos->fetch_object()->password;
+            if($password!=-1 /*&& password_verify($password, $dbpassword)*/) {
+         
+                $yhteys->next_result(); 
+                $tulos = $yhteys->store_result(); 
+                $firstname = $tulos->fetch_object()->firstname;
+
+                $yhteys->next_result(); 
+                $tulos = $yhteys->store_result(); 
+                $lastname = $tulos->fetch_object()->lastname; 
+
+                $yhteys->next_result(); 
+                $tulos = $yhteys->store_result(); 
+                $_SESSION['user_id'] = $tulos->fetch_object()->id; 
+                
+                $tulos->free();      
+                $token = tokenGen(); 
+                $response = array("message"=> "Kirjautuminen onnistui", "firstname" => "$firstname", "lastname" => "$lastname", "token"=>"$token");
+                http_response_code(200);
+                        
             } else {
-                $response = array("message"=> "Kirjautuminen epäonnistui");
-                http_response_code(400); 
+                $response = array("message"=> "Väärä käyttäjätunnus tai salasana"); 
+                http_response_code(401); 
             }
-            mysqli_close($yhteys);
-        } else {
-            $response = array("message"=> "Väärä käyttäjätunnus tai salasana"); 
-            http_response_code(401); 
-        }
+        } 
+        mysqli_close($yhteys);
+        
     } else {
         $response = array("message"=> "Tietoja puuttuu");
         http_response_code(400); 

@@ -19,7 +19,7 @@ function App() {
         <Navbar />
         <div className="container">
           <Switch>
-            <Route exact path='/' component={Home}/>
+            <Route exact path='/' component={Login}/>
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register} />
             <PrivateRoute path='/userpage' component={UserPage}/>
