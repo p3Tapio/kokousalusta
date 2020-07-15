@@ -1,5 +1,5 @@
 <?php session_start();
-header("Access-Control-Allow-Origin:".$_SERVER['HTTP_ORIGIN']); 
+header("Access-Control-Allow-Origin:".$_SERVER['HTTP_CONNECTION']);
 header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Headers: X-Accept-Charset,X-Accept,Content-Type,Authorization,Accept,Origin,Authorization, Origin, X-Requested-With, Content-Type, Accept, Accept-Language");
 
