@@ -1,0 +1,91 @@
+.ruutuvalinta {
+    border:none;padding-left:13px;
+    float:left;padding-top:5px;
+    padding-bottom:5px;
+    position:absolute;
+    left:30px;
+    color:#333;background-color: transparent;
+    margin:5px;
+    outline:0px solid transparent;
+    font-size:14px;
+    max-width:100%;
+    width:calc(100% - 33px);
+    
+}
+
+.valinta {margin-left:25px;margin-bottom:5px;height:0px;padding-bottom: 30px;padding-top:0px;position:relative;}
+
+
+.ruutu::before {
+	content:"";
+	position: absolute;
+	top:0px;
+	left:0px;
+	display:inline-block;
+	height:13px;
+	width:20px;
+	fill:#FFF;
+	background-size: 13px 13px;
+	background-image: url(./svg/check.svg);
+	background-repeat: no-repeat;
+}
+.remove {height:15px;width:15px;top:12px;right:-10px;z-index:20000;float:right;position:absolute;}
+.remove::before {
+    display:none;
+	content:"";
+	height:20px;
+	width:20px;
+	fill:#FFF;
+	background-size: 20px 20px;
+	background-image: url(./svg/ruksi.svg);
+	background-repeat: no-repeat;
+}
+ .ruutuvalinta:focus {
+    background-color: #eee;
+}
+
+.valinta:hover .ruutuvalinta {
+    background-color: #ddd;
+}
+.valinta:hover .remove::before {
+    display:block;
+    
+}
+
+.ruutu {
+    padding:1px;
+    height:12px;
+    width:12px;
+    margin:5px;
+    margin-top:10px;
+    position:absolute;
+    float:left;
+    clear:both;
+    border: 2px solid #fff;
+    outline: 2px solid #ddd;
+    background-color:#FFF;
+        
+}
+
+.green{
+    background-color:teal;color:white;border:2px solid teal;
+    opacity:0.6;
+}
+
+.uusi {
+    font-size:14px;
+    clear:both;
+    position:relative;
+    padding: 0px 25px 0px 25px;
+    color:#aaa;
+    opacity:0.8;
+    margin-left:30px;
+    margin-top:15px;
+    outline: 2px solid transparent;
+    background-color: transparent;
+    border:none;
+}
+.uusi:focus {
+    outline: 2px solid teal;
+}
+.ruutu:focus {outline: 2px solid teal}

@@ -8,7 +8,7 @@ import Osallistujat from '../../Components/UusiKokous/Osallistujat'
 import Paatosvaltaisuus from '../../Components/UusiKokous/Paatosvaltaisuus'
 import Yhteenveto from '../../Components/UusiKokous/Yhteenveto'
 import { getSessionRole, getUser } from '../../Components/Auth/Sessions'
-import Esityslista from '../../Components/UusiKokous/Esityslista';
+import Esityslista from '../../Components/UusiKokous/Esityslista/Esityslista';
 
 const UusiKokous = () => {
 
@@ -169,7 +169,7 @@ const UusiKokous = () => {
 
     let component
     if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} saveKokousDraft={saveKokousDraft} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
-    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista} />
+    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista} kokousid={perustiedot.kokousid} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} saveOsallistujat={saveOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} saveKokousDraft={saveKokousDraft} />
     else if (showComponent === 'yhteenveto') component = <Yhteenveto perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y} />

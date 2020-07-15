@@ -3,15 +3,15 @@ header("Access-Control-Allow-Origin:".$_SERVER['HTTP_CONNECTION']);
 header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Headers: X-Accept-Charset,X-Accept,Content-Type,Authorization,Accept,Origin,Authorization, Origin, X-Requested-With, Content-Type, Accept, Accept-Language");
 
-$kokous = $_SESSION['kokous_id']=1;
+
 $flags = $_SESSION['kokous_flags']=1;
 $kohtaflags = $_SESSION['kohta_flags']=1;
 $user = $_SESSION['user_id']=1;
 
+$kokous = $_SESSION['kokous_id'];
 
 
-
-include("connect.php");
+include("../connect.php");
 
 if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
 	
@@ -101,6 +101,7 @@ if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && iss
 if(isset($_POST['Uusi'])){ 
 	$sql = "CALL esityskohta_lisaa('$kokous','$user'); ";
 	
+	
 } else if (isset($_POST['NODE']) && isset($_POST['KOHDE'])){
 		$node = trim($_POST['NODE'],'r');
 		$kohde = trim($_POST['KOHDE'],'r');
@@ -108,14 +109,16 @@ if(isset($_POST['Uusi'])){
 		$result = $con -> query($sql);
 		exit(0);
 } else {
+		if(isset($_POST['kokous_id']))
+		$kokous = $_SESSION['kokous_id']=$_POST['kokous_id'];		
 		$sql = "CALL esityskohdat('$kokous'); ";
  }
- 
- 
+  
  $result = $con -> query($sql);
  while($row = mysqli_fetch_assoc($result)){
 	$rows[] = $row;
  }
+
  if (!isset($rows)) echo "[[],[]]";
  else echo json_encode([$rows]);
 

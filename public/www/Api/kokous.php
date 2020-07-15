@@ -95,8 +95,7 @@ function getKokous() {
     $response = array("message"=> "error");
 
     if(isset($_POST["id"])) {
-
-        $id = (int)$_POST["id"];
+        $_SESSION['kokous_id'] = $id = (int)$_POST["id"];
         $yhteys = connect(); 
         $sql= "CALL kokous_getkokous('$id')";
         $res = $yhteys->query($sql);

@@ -1,0 +1,22 @@
+.mielipide .areaText {
+    background-color: transparent;
+    padding-left: 25px;
+    height:auto;
+}
+.mteksti {
+    margin-left:25px;
+}
+.perustelu .areaText {
+    margin-left:25px;
+    width:calc(100% - 80px);
+    border:1px solid #ccc;
+    padding:5px;
+}
+.msend {
+    margin-left:25px;
+    width:calc(100% - 68px);
+    text-align: center;
+    background-color: #ccc;
+    color: white;
+    max-width:150px;
+}

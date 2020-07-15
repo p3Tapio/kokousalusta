@@ -6,6 +6,7 @@ import KokousDocs from '../../Components/Kokous/KokousDocs'
 import KokousOsallistujat from '../../Components/Kokous/KokousOsallistujat'
 import Kokousaika from '../../Components/Kokous/Kokousaika'
 import KokousPaatosvalta from '../../Components/Kokous/KokousPaatosvalta';
+import Esityslista from '../../Components/UusiKokous/Esityslista/Esityslista';
 
 const KokousDetails = () => {
 
@@ -21,7 +22,7 @@ const KokousDetails = () => {
     const [osallistujat, setOsallistujat] = useState()
     const [jasenet, setJasenet] = useState()
 
-    const [showComponent, setShowComponent] = useState([])
+    const [showComponent, setShowComponent] = useState("asiat")
     const [showTable, setShowTable] = useState(true)
 
     useEffect(() => {
@@ -116,6 +117,7 @@ const KokousDetails = () => {
 
                 let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
+                else if (showComponent === 'asiat') component = <Esityslista/> /*TODO*/
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
