@@ -41,7 +41,7 @@ const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, saveOsalli
                     :
                     <h6>Kokouksessa ei ole osallistujia</h6>
                 }
-                {varalla.length > 0
+                {varalla.length > 1
                     ? <>
                         <h5 className="mt-4">Muut yhdistyksen jäsenet</h5>
                         < table className="table table-hover">

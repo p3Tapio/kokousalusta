@@ -6,31 +6,30 @@ var timer;
 var updateParams = new URLSearchParams();
 
 const url = process.env.REACT_APP_HOST_URL
-const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="0", edit="true", otsakkeet=null}) => {
+const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="0", edit="true"} ) => {
     const [items,setItems] = useState([])
     const [auki,setAuki] = useState(0)
     let lisaa;
 
-    const paivita = (data) => {
-      setItems(data);
-      if(otsakkeet!=null) otsakkeet(data.map(x=>x.n))
-
-    }
+    
 
     useEffect(() => {
        let params = new URLSearchParams();
        if(kokousid!=="0") params.append ("kokous_id", kokousid)
        axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-          paivita(response.data[0])
+          setItems(response.data[0])
     })}, [])  
 
     const axiosSave = () => {axios.post(url+'data.php', updateParams, {withCredentials: true}).then((response) => {})}
 
     const save = (id,data,delay,type,kohta) => {
       if(updateParams.get("id")!==id || updateParams.get("type")!==type )axiosSave();
+        
         if(type==="otsake")
-          paivita(items.map(items => (items.id === id)?{ ...items, n:data}:items))
+          setItems(items.map(items => (items.id === id)?{ ...items, n:data}:items))
+          
           updateParams = new URLSearchParams();
+          
           if(type==="mielipide"){
             updateParams.append ("param", data[0])
             updateParams.append ("alku", data[1])    
@@ -39,8 +38,10 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
           } else {
             updateParams.append ("param", data)
           }
+          
           updateParams.append ("id", id);       
           updateParams.append ("kohta", kohta);
+          
           updateParams.append ("save", type)
           window.clearTimeout(timer);
           timer = setTimeout(function(){axiosSave()}, delay)
@@ -48,11 +49,12 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
       }
 
     const lisaaItem = () => {
-      var params = new URLSearchParams();
-      params.append('Uusi', 'value');
-      axios.post(url+'data.php', params, {withCredentials: true})
+    var params = new URLSearchParams();
+    params.append('Uusi', 'value');
+    axios.post(url+'data.php', params, {withCredentials: true})
       .then((response) => {
-        paivita(response.data[0])
+        setItems(response.data[0])
+        
         document.getElementById(response.data[0][response.data[0].length - 1].id).focus();
       }
         )}
@@ -70,12 +72,15 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
         
     }
     
+    
   
     if(edit) lisaa = <button className="lisaa_esitysitem" onClick = {lisaaItem}>Asiakohta</button>
 
     return (
       <div id="esitys_container"> 
+          
           {items.map(items => <EsitysKohta type={items.type} auki={auki===items.id} avaa={avaaItem} owner={items.o} type={items.type} title={items.n} id={items.id} save={save} key={items.id} alkaa={items.s} loppuu={items.e}/>)}
+          
           {lisaa}
       </div>
      )
