@@ -10,8 +10,7 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
     const [items,setItems] = useState([])
     const [auki,setAuki] = useState(0)
     let lisaa;
-
-    
+    console.log('kokousid', kokousid)
 
     useEffect(() => {
 /*
@@ -25,6 +24,7 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
        let params = new URLSearchParams();
        if(kokousid!=="0") params.append ("kokous_id", kokousid)
        axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
+         alert(response.data[0]);
           setItems(response.data[0])
     })}, [])  
 
@@ -80,10 +80,9 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
         
     }
     
-    
-  
-    if(edit) lisaa = <button className="lisaa_esitysitem" onClick = {lisaaItem}>Asiakohta</button>
 
+    if(edit) lisaa = <button className="lisaa_esitysitem" onClick = {lisaaItem}>Asiakohta</button>
+console.log('items', items)
     return (
       <div id="esitys_container"> 
           

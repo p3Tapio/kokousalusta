@@ -26,7 +26,7 @@ const UusiKokous = () => {
     const [varalla, setVaralla] = useState([])
     const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '', muu: '' })
     const [id_y, setId_y] = useState();
-
+    const [id_k, setId_k] = useState(); 
 
     useEffect(() => {
         const pvmYear = { year: 'numeric' };
@@ -84,6 +84,7 @@ const UusiKokous = () => {
                     }
                 } else {
                     getKokousNro()
+                 
                 }
             }).catch(err => console.log('err.response.data', err.response.data))
         }
@@ -107,23 +108,27 @@ const UusiKokous = () => {
         const pvmYear = { year: 'numeric' };
         const now = Date();
         const body = JSON.stringify({ call: 'kokousnro', yhdistys: yhdistys })
+        console.log('body', body)
         request.kokous(body).then(res => {
+            console.log('res.data --- getkokousnro', res.data)
             setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmYear) })
             setId_y(res.data.id_y)
+            setId_k(res.data.id_k)
+           
         })
-
+        
     }
     const handleMenuClick = (ev) => {
         
         if(ev.target.name==="yhteenveto"){
-
+            let x = ev.target.name
             let params2 = new URLSearchParams();
             params2.append ("otsakkeet", perustiedot.kokousid)
 
             request.data(params2).then(res => {
                 console.log("esityskohta_otsakkeet",res.data)
                 setEsityslista(res.data)
-                setShowComponent(ev.target.name)
+                setShowComponent(x)
             }) 
         } else {
             setShowComponent(ev.target.name)
@@ -132,7 +137,8 @@ const UusiKokous = () => {
         saveKokousDraft()
     }
     const saveKokousDraft = () => {
-
+        
+        console.log('saveKokousDraft()')
         const uusiKokous = JSON.stringify({
             call: 'luokokous',
             id_y: id_y,
@@ -183,7 +189,7 @@ const UusiKokous = () => {
 
     let component
     if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} saveKokousDraft={saveKokousDraft} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
-    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista_otsakkeet} kokousid={perustiedot.kokousid} />
+    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista_otsakkeet} kokousid={id_k} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} saveOsallistujat={saveOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} saveKokousDraft={saveKokousDraft} />
     else if (showComponent === 'yhteenveto') component = <Yhteenveto esityslista_otsakkeet={esityslista_otsakkeet} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y} 
@@ -196,7 +202,8 @@ const UusiKokous = () => {
             <div className="col-md-10 mx-auto mt-5">
                 <h2>{yhdistys}</h2>
                 <h4>Luo uusi kokous</h4>
-                <Link to={`/assoc/${yhdistys}`} onClick={()=> saveKokousDraft()}>Yhdistyksen pääsivu</Link>
+                {/* //  onClick={()=> saveKokousDraft()} --- TODO muokkaa siten ettei tallenusta tapahdu, jos muuta kuin kokousid ei ole asetettu  */}
+                <Link to={`/assoc/${yhdistys}`}>Yhdistyksen pääsivu</Link>
                 <hr />
                 <div>
                     <div className="d-flex justify-content-center">
