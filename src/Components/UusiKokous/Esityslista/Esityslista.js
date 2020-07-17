@@ -14,6 +14,14 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
     
 
     useEffect(() => {
+/*
+      let params2 = new URLSearchParams();
+      params2.append ("otsakkeet", kokousid)
+      axios.post(url+'data.php', params2, {withCredentials: true}).then((response) => {
+        console.log("FOO",response.data)
+      })
+*/
+
        let params = new URLSearchParams();
        if(kokousid!=="0") params.append ("kokous_id", kokousid)
        axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {

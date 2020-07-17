@@ -12,10 +12,22 @@ $kokous = $_SESSION['kokous_id'];
 
 include("../connect.php");
 
+if(isset($_POST['otsakkeet'])){
+	$kokous = (int)$_POST['otsakkeet'];
+	$sql = "CALL esityslista_otsakkeet('$kokous','$user')";
+	
+	$result = $con -> query($sql);
+	while($row = mysqli_fetch_assoc($result)){
+	   $rows[] = $row;
+	}
+	if (!isset($rows)) echo "[]";
+	else echo json_encode($rows);
+	exit(0);
+   
+}
 
 
-
-if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
+else if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
 	$kohta = (int)$_POST['kohta'];
 	$vid = (int)$_POST['check_valitse'];
 	$sql = "CALL esityskohta_valitse('$kokous','$user','$kohta','$vid');";
@@ -27,19 +39,19 @@ if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
 
 
 
-if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta'])){
+else if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta'])){
 	$kohta = (int)$_POST['kohta'];
 	$param = (int)$_POST['paatos_valitse'];
 	$sql = "CALL esityskohta_muuta_tyyppi('$kohta','$param','$kokous','$user')";
 	$result = $con -> query($sql);
-	echo $sql;
 	exit(0);
+	
 }
 
 
 
 
-if(isset($_POST['check_remove']) && isset($_POST['kohta'])){
+else if(isset($_POST['check_remove']) && isset($_POST['kohta'])){
 	
 	$kohta = (int)$_POST['kohta'];
 	$vid = (int)$_POST['check_remove'];
@@ -51,7 +63,7 @@ if(isset($_POST['check_remove']) && isset($_POST['kohta'])){
 
 
 
-if(isset($_POST['check_uusi']) && isset($_POST['kohta'])){
+else if(isset($_POST['check_uusi']) && isset($_POST['kohta'])){
 	
 	$kohta = (int)$_POST['kohta'];
 	$sql = "CALL esityskohta_valinnat_lisaa('$kohta','$kokous','$user')";
@@ -62,7 +74,7 @@ if(isset($_POST['check_uusi']) && isset($_POST['kohta'])){
 
 
 
-if(isset($_POST['avaakohta'])){
+else if(isset($_POST['avaakohta'])){
 	$kohta = (int)$_POST['avaakohta'];
 	$sql = "CALL esityskohta_data('$kohta','$kokous');";
 	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous');";
@@ -90,7 +102,7 @@ if(isset($_POST['avaakohta'])){
 
 
 
-if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && isset($_POST['kohta'])){
+else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && isset($_POST['kohta'])){
 	$param = $_POST['param'];
 	$type = $_POST['save'];
 	$id = $_POST['id'];
@@ -117,13 +129,8 @@ if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && iss
 
 
 
-if(isset($_POST['Uusi'])){ 
+else if(isset($_POST['Uusi'])){ 
 	$sql = "CALL esityskohta_lisaa('$kokous','$user'); ";
-
-	
-
-
-	
 } else if (isset($_POST['NODE']) && isset($_POST['KOHDE'])){
 		$node = trim($_POST['NODE'],'r');
 		$kohde = trim($_POST['KOHDE'],'r');

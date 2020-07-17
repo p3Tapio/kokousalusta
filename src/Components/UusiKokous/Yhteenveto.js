@@ -4,7 +4,7 @@ import { TextEditor } from '../Document/TextEditor';
 import { getUser } from '../Auth/Sessions'
 import request from '../Shared/HttpRequests'
 
-const Yhteenveto = ({ perustiedot, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
+const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
     const [loading, setLoading] = useState(false)
     let history = useHistory()
     let user = getUser()

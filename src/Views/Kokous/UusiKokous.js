@@ -20,7 +20,7 @@ const UusiKokous = () => {
     let history = useHistory()
 
     const [perustiedot, setPerustiedot] = useState({ otsikko: '', kokousNro: null, kokousid: '', startDate: '', endDate: '', avoinna: false })
-    const [esityslista, setEsityslista] = useState()
+    const [esityslista_otsakkeet, setEsityslista] = useState()
     const [osallistujat, setOsallistujat] = useState()
     const [puheenjohtaja, setPuheenjohtaja] = useState()
     const [varalla, setVaralla] = useState([])
@@ -114,7 +114,21 @@ const UusiKokous = () => {
 
     }
     const handleMenuClick = (ev) => {
+        
+        if(ev.target.name==="yhteenveto"){
+
+            let params2 = new URLSearchParams();
+            params2.append ("otsakkeet", perustiedot.kokousid)
+
+            request.data(params2).then(res => {
+                console.log("esityskohta_otsakkeet",res.data)
+                setEsityslista(res.data)
+            })
+         
+        }
+        
         setShowComponent(ev.target.name)
+        
         saveKokousDraft()
     }
     const saveKokousDraft = () => {
@@ -169,10 +183,11 @@ const UusiKokous = () => {
 
     let component
     if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} saveKokousDraft={saveKokousDraft} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
-    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista} kokousid={perustiedot.kokousid} />
+    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista_otsakkeet} kokousid={perustiedot.kokousid} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} saveOsallistujat={saveOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} saveKokousDraft={saveKokousDraft} />
-    else if (showComponent === 'yhteenveto') component = <Yhteenveto perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y} />
+    else if (showComponent === 'yhteenveto') component = <Yhteenveto esityslista_otsakkeet={esityslista_otsakkeet} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y} 
+        />
     else component = <></>
 
 
