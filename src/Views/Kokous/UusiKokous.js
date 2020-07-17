@@ -181,7 +181,7 @@ const UusiKokous = () => {
             <div className="col-md-10 mx-auto mt-5">
                 <h2>{yhdistys}</h2>
                 <h4>Luo uusi kokous</h4>
-                <Link to={`/assoc/${yhdistys}`} >Yhdistyksen pääsivu</Link>
+                <Link to={`/assoc/${yhdistys}`} onClick={()=> saveKokousDraft()}>Yhdistyksen pääsivu</Link>
                 <hr />
                 <div>
                     <div className="d-flex justify-content-center">
