@@ -123,12 +123,12 @@ const UusiKokous = () => {
             request.data(params2).then(res => {
                 console.log("esityskohta_otsakkeet",res.data)
                 setEsityslista(res.data)
-            })
-         
+                setShowComponent(ev.target.name)
+            }) 
+        } else {
+            setShowComponent(ev.target.name)
         }
-        
-        setShowComponent(ev.target.name)
-        
+
         saveKokousDraft()
     }
     const saveKokousDraft = () => {

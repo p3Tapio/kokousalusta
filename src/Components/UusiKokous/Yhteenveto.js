@@ -13,7 +13,11 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
     const end = (new Date(perustiedot.endDate)).toLocaleDateString('fi-FI', pvmForm)
     const nimi = perustiedot.otsikko === '' ? '' : `<h3>${perustiedot.otsikko}</h3>`
     const osallistuu = osallistujat.map(x => '<li>' + x.firstname + ' ' + x.lastname + '</li>').join(' ')
-    console.log('paatosvaltaisuus', paatosvaltaisuus)
+    console.log('esityslista_otsakkeet', esityslista_otsakkeet)
+    const otsikot = esityslista_otsakkeet.map(x => '<li>'+x.otsikko+'</li>').join(' ')
+    
+    
+    
     let paatosvalta = ''
     if (paatosvaltaisuus.esityslista === '' && paatosvaltaisuus.aktiivisuus === '' && paatosvaltaisuus.kesto === '' && paatosvaltaisuus.muu === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
     else {
@@ -23,7 +27,8 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         if (paatosvaltaisuus.muu !== '') paatosvalta += `<p>${paatosvaltaisuus.muu}</p>`
     }
     // substringit sekoo jos jaat useammalle riville pelkällä enter+spacella
-    const [kokouskutsu, setKokouskutsu] = useState(`<h3>Esityslista ${perustiedot.kokousNro} kokous alkaa ${start} ja päättyy ${end}</h3>${nimi}<h4>Kokouksen avaus ${start}</h4><h4>Osallistujat</h4><ul>${osallistuu.substring(0, osallistuu.length - 5)}</ul><h4>Kokouksen päätösvaltaisuus</h4>${paatosvalta}<h4>Kokous päättyy ${end}</h4><p>Terveisin <br/>${user.firstname} ${user.lastname}<br/><small>${yhdistys}</small></p>`)
+    const [kokouskutsu, setKokouskutsu] = useState(`<h3>Esityslista ${perustiedot.kokousNro} kokous alkaa ${start} ja päättyy ${end}</h3>${nimi}<h4>Kokouksen avaus ${start}</h4><h4>Esityslista</h4><ol>${otsikot}</ol><h4>Osallistujat</h4><ul>${osallistuu.substring(0, osallistuu.length - 5)}</ul><h4>Kokouksen päätösvaltaisuus</h4>${paatosvalta}<h4>Kokous päättyy ${end}</h4><p>Terveisin <br/>${user.firstname} ${user.lastname}<br/><small>${yhdistys}</small></p>`)
+
 
     const editorContentChange = (kokouskutsu) => {
         setKokouskutsu(kokouskutsu)
