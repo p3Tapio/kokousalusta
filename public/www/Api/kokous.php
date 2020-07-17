@@ -164,20 +164,26 @@ function getKokousNro() {
         $name = htmlspecialchars(strip_tags($_POST['yhdistys'])); 
         $yhteys = connect(); 
         
-        if($yhteys->multi_query("CALL kokous_getNoId('$name', @no, @id_y); SELECT @no as no; SELECT @id_y as id_y;")) {
+        if($yhteys->multi_query("CALL kokous_getNoId('$name', @no, @id_y, @id_k); SELECT @no as no; SELECT @id_y as id_y; SELECT @id_k as id_k")) {
 
             $yhteys->next_result(); 
             $tulos = $yhteys->store_result(); 
             $lkm = $tulos->fetch_object()->no +1; 
+
             $yhteys->next_result(); 
             $tulos = $yhteys->store_result(); 
             $id_y = $tulos->fetch_object()->id_y; 
             
+            $yhteys->next_result(); 
+            $tulos = $yhteys->store_result(); 
+            $id_k = $tulos->fetch_object()->id_k+1; 
+
             $tulos->free();      
 
             $response['message'] = "Haku onnistui";
             $response['kokousnro'] = $lkm;
             $response['id_y'] = $id_y;
+            $response['id_k'] = $id_k;
 
         } else {
             $response['message'] = "Haku epäonnistui";
@@ -196,7 +202,7 @@ function luoKokous() {  // perustiedot ensiki tauluun, sitten muut updatella id:
     if(isset($_POST['id_y']) && isset($_POST['kokousnro']) && isset($_POST['startDate']) && isset($_POST['endDate']) && isset($_POST['avoinna']) && isset($_POST['paatosvaltaisuus']) && isset($_POST['valmis'])) {
        
         $id_y = (int)($_POST['id_y']); 
-        $id_k = (int)($_POST['kokousid']); 
+        $_SESSION['kokous_id'] = $id_k = (int)($_POST['kokousid']); 
         $otsikko = strip_tags($_POST['otsikko']);
         $kokousnro =  (int)$_POST['kokousnro'];
         $startDate = htmlspecialchars(strip_tags($_POST['startDate'])); 
