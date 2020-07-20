@@ -114,9 +114,7 @@ const UusiKokous = (props) => {
             console.log('res.data --- getkokousnro', res.data)
             
             setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmYear) })
-            setId_y(res.data.id_y)
-            
-           
+            setId_y(res.data.id_y)             
         })
         
     }

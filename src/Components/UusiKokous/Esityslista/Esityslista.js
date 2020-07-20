@@ -10,6 +10,7 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
     const [items,setItems] = useState([])
     const [auki,setAuki] = useState(0)
     let lisaa;
+    console.log('Esityslista.js --- kokousid', kokousid)
 
 
     useEffect(() => {
