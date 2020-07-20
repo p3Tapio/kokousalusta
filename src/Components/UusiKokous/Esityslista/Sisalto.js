@@ -20,19 +20,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
     setKuvaus(data)
   }
 
-  const vaihda_tyyppi = (param) => {
-      var params = new URLSearchParams()  
-      params.append ("paatos_valitse", param)
-      params.append ("kohta", id)
-      params.append ("kokous_id", kokous_id)
-      axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-        
-        setTypeBool(true)
-        
-      })    
-      
-    
-  }
+
 
   const check = (vid) => {
       var params = new URLSearchParams()
@@ -104,24 +92,15 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
         
   }, [])  
 
-  const valitse = (nro) => {
+ 
     switch(type){
       case "2":
-          return <Mielipide edit={true} id={id} save={mielipide_save}/>
+          valinta = <Mielipide edit={true} id={id} save={mielipide_save}/>
       case "1":
         
-         return  <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/> 
-/*         const CheckboxArea = ({edit=false, arvot=[], checkValue=[], check, remove, save, uusi}) => {*/
+         valinta = <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/> 
+  }
 
-    default:
-      return <div className="vastaustyypit">
-      <div tabIndex="0" onClick={() => vaihda_tyyppi(3)} className="ei">Hyväksy</div>
-      <div tabIndex="0" onClick={() => vaihda_tyyppi(1)} className="ei">Vaihtoehdot</div>
-      <div tabIndex="0" onClick={() => vaihda_tyyppi(2)} className="ei">Mielipide</div>
-      <div tabIndex="0" className="ei">Ehdotukset</div></div>
-       }
-    }  
-  if(typeBool) valinta = valitse(type);
 
 
 

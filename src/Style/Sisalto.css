@@ -1,26 +1,3 @@
-.vastaustyypit {
-    
-    display:inline-block;
-    margin-bottom:-15px;    
-    
-    width:calc(100% + 20px);
-}
-.ei, .valittu {
-    
-    background-color: #4042a311;
-    padding:5px 0px 5px 0px;
-    text-align: center;
-    float:left;
-    margin-right:5px;
-    margin-bottom:5px;
-    width:calc(25% - 5px);
-    display:block;
-}
 
-@media screen and (max-width: 600px) {
-    .ei, .valittu {
-        width:calc(50% - 5px);
-    }
-  }
 
   #sisalto, .sisalto {margin-top:0px;padding:5px;padding-bottom:10px;overflow-wrap: break-word;word-break: break-word;margin-bottom:0px;padding-left: 30px;padding-right:15px;background-color: #f9f9f9;border-top:2px solid #eee;color:#555;border-bottom: 1px solid #aaa;}

@@ -59,3 +59,61 @@ body { background-color: #ddd;*/
 #home:hover {fill:#5f788a;}
 #useri:hover {background-color:#5f788a;}
 #innernav {position:relative;max-width:880px;margin:0px auto;height:46px;}
+
+
+
+
+
+
+
+
+.valinta_iconit {
+    display:block;
+    position:absolute;
+    top:10px;
+    right:0px;
+    width:140px;
+    opacity:1;
+    
+}
+
+
+
+@media screen and (max-width: 500px) {
+    .valinta_iconit {
+        
+        position: relative;
+        margin-left: 50px;
+        top:-10px;
+    }
+  }
+
+
+
+
+.valinta_iconit * {
+    margin-left: 5px;
+    fill:#fff;
+    
+    padding:0px;
+    stroke-width: 10px;
+    stroke:#000;
+    width:30px;
+    height:30px;
+    border-radius: 5px;
+    
+    border: 1px solid #f9f9f9;
+    
+}
+.valinta_iconit *:hover {
+    stroke-width: 0px;
+    stroke:#000;
+    fill:#000;
+    background-color: #ddd;
+
+}
+.kohta_valittu * {
+    fill:#2c3e50;
+    opacity: 0.9;
+    border: 1px solid #2c3e50;
+}
