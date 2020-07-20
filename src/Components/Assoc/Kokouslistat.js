@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import KokousTable from './KokousTable'
 
-const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
+const Kokouslistat = ({ kokoukset, showComponent, yhdistys, yhdistys_id }) => {
 
     const [tulevat, setTulevat] = useState([]);
     const [kaynnissa, setKaynnissa] = useState([]);
@@ -25,8 +25,8 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
             (<>
                 {kaynnissa.length === 0
                     ? <><h5>Yhdistyksellä ei ole käynnissä olevia kokouksia</h5></>
-                    : <><h5>Käynnissä olevat kokoukset</h5>
-                        <KokousTable kokous={kaynnissa} yhdistys={yhdistys} status="kaynnissa"  />
+                    : <>{/*<h5>Käynnissä olevat kokoukset</h5>*/}
+                        <KokousTable kokous={kaynnissa} yhdistys={yhdistys} status="kaynnissa" yhdistys_id={yhdistys_id} />
                     </>}
             </>)
     } else if (showComponent === 'menneet') {
@@ -35,7 +35,7 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
                 {menneet.length === 0
                     ? <><h5>Yhdistyksellä ei ole menneitä kokouksia</h5></>
                     : <><h5 className="mt-4">Päättyneet kokoukset</h5>
-                        <KokousTable kokous={menneet} yhdistys={yhdistys} status="paattynyt" />
+                        <KokousTable kokous={menneet} yhdistys={yhdistys} status="paattynyt" yhdistys_id={yhdistys_id}/>
                     </>}
             </>)
     } else if (showComponent === 'tulevat') {
@@ -44,12 +44,12 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys }) => {
                 {tulevat.length === 0
                     ? <><h5>Yhdistyksellä ei ole tulevia kokouksia</h5></>
                     : <><h5 className="mt-4">Tulevat kokoukset</h5>
-                        <KokousTable kokous={tulevat}  yhdistys={yhdistys} status="tuleva" />
+                        <KokousTable kokous={tulevat}  yhdistys={yhdistys} status="tuleva" yhdistys_id={yhdistys_id}/>
                     </>}
             </>)
     } else component = <></>
 
-    return <div className="mt-5">{component}</div>
+    return <div className="mt-2">{component}</div>
 
 }
 

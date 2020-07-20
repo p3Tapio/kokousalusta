@@ -71,6 +71,6 @@ const navbar = {
     padding: '10px',
     position: 'relative',
     width: '100vw !important',
-    marginRight: '-50vw',
+ /*   marginRight: '-50vw',*/
     marginLeft: 'calc(-50vw + 50%)' 
 }

@@ -10,21 +10,13 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
     const [items,setItems] = useState([])
     const [auki,setAuki] = useState(0)
     let lisaa;
-    console.log('kokousid', kokousid)
+
 
     useEffect(() => {
-/*
-      let params2 = new URLSearchParams();
-      params2.append ("otsakkeet", kokousid)
-      axios.post(url+'data.php', params2, {withCredentials: true}).then((response) => {
-        console.log("FOO",response.data)
-      })
-*/
-
        let params = new URLSearchParams();
        if(kokousid!=="0") params.append ("kokous_id", kokousid)
        axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-         alert(response.data[0]);
+         
           setItems(response.data[0])
     })}, [])  
 
@@ -61,6 +53,7 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
     params.append('Uusi', 'value');
     axios.post(url+'data.php', params, {withCredentials: true})
       .then((response) => {
+        
         setItems(response.data[0])
         
         document.getElementById(response.data[0][response.data[0].length - 1].id).focus();

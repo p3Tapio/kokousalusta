@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import request from '../Shared/HttpRequests'
 import { Link } from 'react-router-dom'
 import { FaInfoCircle, FaKey } from 'react-icons/fa';
+import Kalenteri from '../UusiKokous/Esityslista/Kalenteri'
 
-const KokousTable = ({ kokous, yhdistys }) => {
+const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
 
     const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
     const pvmYear = { year: 'numeric' };
@@ -22,43 +23,60 @@ const KokousTable = ({ kokous, yhdistys }) => {
             })
         }
     }
+    
     if (!loading) {
         return (
-            <div>
-                <table className="table table-hover">
-                    <thead>
-                        <tr className="table-primary"><th>Kokous</th><th>kokousnro</th><th>alku</th><th>loppu</th><th>tila</th><th></th></tr>
-                    </thead>
-                    <tbody>
+            <div className="bg">
+                
+                    {/*<div className="taulu">
+                        <div>alkaa</div><div>loppuu</div><div>kokous</div><div>kokousnro</div><div>tila</div><div></div>
+        </div >*/}
+                <div >
+                    
                         {kokous.map((item) =>
-                            <tr key={item.kokousnro}>
-                                <td>{item.otsikko}</td>
-                                <td>{item.kokousnro}/{(new Date(item.endDate)).toLocaleDateString('fi-FI', pvmYear)}</td>
-                                <td>{(new Date(item.startDate)).toLocaleDateString('fi-FI', pvmForm)}</td>
-                                <td>{(new Date(item.endDate)).toLocaleDateString('fi-FI', pvmForm)}</td>
+                            <Link className="text-primary" style={{pointerEvents: (item.avoinna==='1' || item.role === 'puheenjohtaja')?"auto":"none",textDecoration:"none"}}
+                             to={{pathname:`/kokous/${yhdistys}/${item.id}`, state:{id_y:yhdistys_id}}}
+                              title="Tarkastele kokouksen tietoja"> 
+                            <div className={(item.avoinna==='1' || item.role === 'puheenjohtaja')?"taulu":"taulu disable" } key={item.kokousnro}>
+                                <Kalenteri pvm={item.startDate} alku={false} />
+                                <Kalenteri pvm={item.endDate } alku={false} />
+                               <div className="tauluAlku tauluotsikko">{item.otsikko}</div>
+                                <div className="taulukokousnro">{item.kokousnro}/{(new Date(item.endDate)).toLocaleDateString('fi-FI', pvmYear)}</div>
+                                
+                                
+                                
+                                
+                              
                                 {/* adminille (vai pj:lle? if pj.email = user.email) oikeus tarkastella tietoja ennen avaamista  */}
                                 {item.avoinna === '1'
                                     ? <>
-                                        <td>Kokoustila on avoinna</td>
-                                        <td><Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" style={{ marginTop: '-5px' }}><FaInfoCircle /></Link></td>
+                                      {/*  <div className="taulutila">Kokoustila on avoinna</div>
+                                      }  <div className="taulunapit">
+                                        <Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" ><FaInfoCircle /></Link></div>
+                            */}
                                     </>
                                     : <>
-                                        <td>kokoustila on suljettu</td>
+                                        <div className="taulutila">kokoustila on suljettu</div>
                                         {item.role === 'puheenjohtaja' ? <>
-                                            <td>
-                                                <div style={{ whiteSpace: "nowrap" }}>
-                                                    <Link to={`/kokous/${yhdistys}/${item.id}`} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" style={{ marginTop: '-5px' }}><FaInfoCircle /></Link>
-                                                    <button onClick={() => openKokous(item.id)} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary" style={{ marginTop: '-5px', marginLeft: '2px'}}><FaKey /></button>
+                                            <div className="taulunapit">
+                                                <div style={{ whiteSpace: "nowrap"}}>
+                                                    {/*<Link to={{pathname:`/kokous/${yhdistys}/${item.id}`, state:{id_y:yhdistys_id}}} title="Tarkastele kokouksen tietoja" className="btn btn-outline-primary" style= {{backgroundColor:"white"}}><FaInfoCircle /></Link>*/}
+                                                    {<button  onClick={(event) => {event.preventDefault();openKokous(item.id)}} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary" style={{ marginLeft: '5px'}}><FaKey /></button>}
                                                 </div>
-                                            </td></>
-                                            : <><td></td></>}
+                                            </div></>
+                                            : <><div></div></>}
                                     </>
                                 }
-                            </tr>
+                            
+                            </div>
+                            
+                            </Link>
+                            
                         )}
-                    </tbody>
-                </table>
-            </div>
+                        
+                    </div>
+                </div>
+                
         )
     } else {
         return <></>

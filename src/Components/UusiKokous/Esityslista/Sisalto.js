@@ -13,6 +13,8 @@ const Sisalto = ({id,save,type,edit=false}) => {
   const [valintaArvot,setValintaArvot] = useState([])
   const [kuvaus,setKuvaus] = useState("");
   const [descBool,setDescBool] = useState(false);
+  const [typeBool,setTypeBool] = useState(false);
+  
   const kuvaus_save = (id,data) => {
     save(id,data,500,"kuvaus")
     setKuvaus(data)
@@ -23,9 +25,11 @@ const Sisalto = ({id,save,type,edit=false}) => {
       params.append ("paatos_valitse", param);     
       params.append ("kohta", id);  
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-        alert(response.data);
+        alert("vaihto")
+        setTypeBool(true);
+        
       })    
-   
+      
     
   }
 
@@ -76,12 +80,15 @@ const Sisalto = ({id,save,type,edit=false}) => {
       if(response.data[0]!=-1)setKuvaus(JSON.parse(response.data[0]))
         else setKuvaus("");
       setDescBool(true)
+      setTypeBool(true)
     })}
-  let desc;
-  let valittu;
+    
+  let desc,valinta;
+  
+  
   if (descBool)
     desc = <div className="mielipide" id={"mielipide"+id}><ResizeTextArea edit={true} id={id} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>
-  useEffect(() => {
+    useEffect(() => {
       reload()
       window.setTimeout(function(){
         const yOffset = 0; 
@@ -93,28 +100,24 @@ const Sisalto = ({id,save,type,edit=false}) => {
         
   }, [])  
 
-  
-  
+  const valitse = (nro) => {
+    switch(type){
+      case "2":
+          return <Mielipide edit={true} id={id} save={mielipide_save}/>
+      case "1":
+         return  <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/> 
+          
+    default:
+      return <div className="vastaustyypit">
+      <div tabIndex="0" onClick={() => vaihda_tyyppi(3)} className="ei">Hyväksy</div>
+      <div tabIndex="0" onClick={() => vaihda_tyyppi(1)} className="ei">Vaihtoehdot</div>
+      <div tabIndex="0" onClick={() => vaihda_tyyppi(2)} className="ei">Mielipide</div>
+      <div tabIndex="0" className="ei">Ehdotukset</div></div>
+       }
+    }  
+  if(typeBool) valinta = valitse(type);
 
 
-  switch(type){
-    case "0":
-        valittu=<div className="vastaustyypit">
-          <div tabIndex="0" onClick={() => vaihda_tyyppi(3)} className="ei">Hyväksy</div>
-          <div tabIndex="0" onClick={() => vaihda_tyyppi(1)} className="ei">Vaihtoehdot</div>
-          <div tabIndex="0" onClick={() => vaihda_tyyppi(2)} className="ei">Mielipide</div>
-          <div tabIndex="0" className="ei">Ehdotukset</div></div>
-        break;
-    case "2":
-        valittu=<Mielipide edit={true} id={id} save={mielipide_save}/>
-        break;
-    case "1":
-        
-       valittu= <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/> 
-        break;
-
-  }
-      
 
   
 
@@ -124,8 +127,7 @@ const Sisalto = ({id,save,type,edit=false}) => {
       <div id="sisalto">  
         
          {desc}
-         
-         {valittu}      
+         {valinta}      
          
       </div>
       {/*}

@@ -131,6 +131,7 @@ else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) &
 
 else if(isset($_POST['Uusi'])){ 
 	$sql = "CALL esityskohta_lisaa('$kokous','$user'); ";
+	
 } else if (isset($_POST['NODE']) && isset($_POST['KOHDE'])){
 		$node = trim($_POST['NODE'],'r');
 		$kohde = trim($_POST['KOHDE'],'r');

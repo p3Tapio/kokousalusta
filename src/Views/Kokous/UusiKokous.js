@@ -10,7 +10,7 @@ import Yhteenveto from '../../Components/UusiKokous/Yhteenveto'
 import { getSessionRole, getUser } from '../../Components/Auth/Sessions'
 import Esityslista from '../../Components/UusiKokous/Esityslista/Esityslista';
 
-const UusiKokous = () => {
+const UusiKokous = (props) => {
 
     let user = getUser()
     const { yhdistys } = useParams()
@@ -19,24 +19,22 @@ const UusiKokous = () => {
     const [showComponent, setShowComponent] = useState('perustiedot')
     let history = useHistory()
 
-    const [perustiedot, setPerustiedot] = useState({ otsikko: '', kokousNro: null, kokousid: '', startDate: '', endDate: '', avoinna: false })
+    const [perustiedot, setPerustiedot] = useState({ otsikko: '', kokousNro: '', kokousid: '', startDate: '', endDate: '', avoinna: false })
     const [esityslista_otsakkeet, setEsityslista] = useState()
     const [osallistujat, setOsallistujat] = useState()
     const [puheenjohtaja, setPuheenjohtaja] = useState()
     const [varalla, setVaralla] = useState([])
     const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '', muu: '' })
-    const [id_y, setId_y] = useState();
-    const [id_k, setId_k] = useState(); 
+    const [id_y, setId_y] = useState(props.location.state.id_y);
+    const [id_k, setId_k] = useState(-1); 
 
-    useEffect(() => {
+    useEffect(() => {   // TODO -- laukeaa kaksi kertaa??
         const pvmYear = { year: 'numeric' };
         const now = Date();
         const getDraft = JSON.stringify({ call: 'getkokousdraft', name: yhdistys })
-
+        
         if (!perustiedot.kokousNro) {
-
             request.kokous(getDraft).then(res => {
-
                 if (res.data.message !== 'Ei kesken olevia kokouskutsuja') {
                     if (window.confirm('Yhdistyksellä on tallentamaton kokous. Haluatko jatkaa kokoustietojen täyttämistä vai aloittaa uudelleen?')) {
                  
@@ -77,8 +75,11 @@ const UusiKokous = () => {
                         const delReq = JSON.stringify({ call: "deletedraft", kokousid: res.data.id })
                         request.kokous(delReq)
                             .then(res => {
-                                console.log('res.data', res.data)
-                                getKokousNro()
+                                console.log('res.data ---- delReq ', res.data)
+                                
+                                setId_k(res.data['id'])
+                                
+                                getKokousNro() 
                                 return;
                             }).catch(err => console.log('err.response.data', err.response.data))
                     }
@@ -100,8 +101,8 @@ const UusiKokous = () => {
                 setPuheenjohtaja(res.data.filter(x => x.email === getUser().email))
             }).catch(err => console.log('err.response', err.response))
         }                                    
-    }, [members, perustiedot, yhdistys])  // missing dependencies, mutta seurauksena looppi ... refaktoroi 
-
+    }, [])  // missing dependencies, mutta seurauksena looppi ... refaktoroi 
+    // members, perustiedot, yhdistys
     const helpText = "Aloita kokous antamalla sille otsikko sekä alku- ja loppupäivämäärät. Kun olet valmis, paina seuraava-näppäintä, niin voit luoda esityslistan ja päättää voiko yhdistyksen jäsenet liittää omia esityksiään esityslistalle. Seuraavaksi voit määritellä kokouksen osallistujat ja päätösvaltaisuuden. Lopuksi näet kutsu kokous -välilehdeltä luomasi kokouksen tiedot, missä voit tallentaa ja lähettää kutsun kokoukseen osallistujille."
 
     const getKokousNro = () => {
@@ -111,20 +112,22 @@ const UusiKokous = () => {
         console.log('body', body)
         request.kokous(body).then(res => {
             console.log('res.data --- getkokousnro', res.data)
+            
             setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmYear) })
             setId_y(res.data.id_y)
-            setId_k(res.data.id_k)
+            
            
         })
         
     }
     const handleMenuClick = (ev) => {
-        
-        if(ev.target.name==="yhteenveto"){
+
+        saveKokousDraft(showComponent);
+
+        if(ev.target.name==="yhteenveto"){ // esityslistan otsakkeet tarvitaan yhteenvetoa varten /loput saadaan stateista.
             let x = ev.target.name
             let params2 = new URLSearchParams();
             params2.append ("otsakkeet", perustiedot.kokousid)
-
             request.data(params2).then(res => {
                 console.log("esityskohta_otsakkeet",res.data)
                 setEsityslista(res.data)
@@ -133,18 +136,26 @@ const UusiKokous = () => {
         } else {
             setShowComponent(ev.target.name)
         }
-
-        saveKokousDraft()
+     
     }
-    const saveKokousDraft = () => {
+
+    const parse_kokousnro = () => {
+        let i = perustiedot.kokousNro.indexOf('/')
+        if(i===-1)return perustiedot.kokousNro
+        else return perustiedot.kokousNro.substring(0,i);
+    }
+
+    const saveKokousDraft = (param) => { // -- TODO estä tallennus jos ei muuta dataa kuin kokousnro 
         
         console.log('saveKokousDraft()')
+        
+        
         const uusiKokous = JSON.stringify({
             call: 'luokokous',
             id_y: id_y,
             kokousid: perustiedot.kokousid,
             otsikko: perustiedot.otsikko,
-            kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5),
+            kokousnro: parse_kokousnro(),
             startDate: perustiedot.startDate,
             endDate: perustiedot.endDate,
             avoinna: perustiedot.avoinna,
@@ -160,12 +171,15 @@ const UusiKokous = () => {
         })
 
     }
+
+
+
     const saveOsallistujat = () => {
 
         let kokousosallistujat
         kokousosallistujat = osallistujat.map(x => ({ rooli: 'osallistuja', ...x }))
         user = Object.assign({ rooli: 'puheenjohtaja' }, user)
-        const call = { call: 'postosallistujat', id_y: id_y, kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5) }
+        const call = { call: 'postosallistujat', id_y: id_y, kokousnro: parse_kokousnro() }
         kokousosallistujat = [user].concat(kokousosallistujat)
         kokousosallistujat = [call].concat(kokousosallistujat)
         const body = JSON.stringify(kokousosallistujat)
@@ -203,7 +217,7 @@ const UusiKokous = () => {
                 <h2>{yhdistys}</h2>
                 <h4>Luo uusi kokous</h4>
                 {/* //  onClick={()=> saveKokousDraft()} --- TODO muokkaa siten ettei tallenusta tapahdu, jos muuta kuin kokousid ei ole asetettu  */}
-                <Link to={`/assoc/${yhdistys}`}>Yhdistyksen pääsivu</Link>
+                <Link to={{pathname:`/assoc/${yhdistys}`,state:{id:id_y}}}>Yhdistyksen pääsivu</Link>
                 <hr />
                 <div>
                     <div className="d-flex justify-content-center">

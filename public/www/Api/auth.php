@@ -149,7 +149,7 @@ function appLogin() {
             $yhteys->next_result(); 
             $tulos = $yhteys->store_result(); 
             $dbpassword = $tulos->fetch_object()->password;
-            if($password!=-1 /*&& password_verify($password, $dbpassword)*/) {
+            if($password!=-1 && password_verify($password, $dbpassword)) {
          
                 $yhteys->next_result(); 
                 $tulos = $yhteys->store_result(); 

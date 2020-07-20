@@ -12,18 +12,22 @@ import AssocMain from './Views/Assoc/AssocMain';
 import UusiKokous from './Views/Kokous/UusiKokous';
 import KokousDetails from './Views/Kokous/KokousDetails';
 
+import { getSessionRole, getUser } from './Components/Auth/Sessions'
+
 function App() {
+  
   return (
     <div>
       <Router>
         <Navbar />
-        <div className="container">
-          <Switch>
+        <div className="container" style={{width:"1100px",maxWidth:"100%",margin:"0 auto",padding:"0"}}>
+          <Switch >
             <Route exact path='/' component={Login}/>
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register} />
             <PrivateRoute path='/userpage' component={UserPage}/>
             <PrivateRoute path='/assoc/:yhdistys' component={AssocMain}/>
+              
             <PrivateRoute path='/uusikokous/:yhdistys' component={UusiKokous} />
             <PrivateRoute path='/kokous/:yhdistys/:kokousId' component={KokousDetails} />
           </Switch>

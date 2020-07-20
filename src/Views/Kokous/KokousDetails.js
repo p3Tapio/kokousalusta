@@ -8,7 +8,7 @@ import Kokousaika from '../../Components/Kokous/Kokousaika'
 import KokousPaatosvalta from '../../Components/Kokous/KokousPaatosvalta';
 import Esityslista from '../../Components/UusiKokous/Esityslista/Esityslista';
 
-const KokousDetails = () => {
+const KokousDetails = (props) => {
 
     let history = useHistory()
     const user = getUser()
@@ -24,6 +24,7 @@ const KokousDetails = () => {
 
     const [showComponent, setShowComponent] = useState("asiat")
     const [showTable, setShowTable] = useState(true)
+    let yhdistys_id = props.location.state.id_y;
 
     useEffect(() => {
         
@@ -53,6 +54,13 @@ const KokousDetails = () => {
     }, [kokousId, yhdistys, user.email, history])
 
     const handleMenuClick = (ev) => {
+        let napit = ev.target.parentNode.querySelectorAll("button");
+        for (let i = 0; i < napit.length; i++) {
+            napit[i].classList.remove("valittu_menu");
+          }
+        
+        ev.target.classList.add("valittu_menu");
+
         setShowComponent(ev.target.name)
         if (ev.target.name === 'asiakirjat') setShowTable(true)
     }
@@ -117,7 +125,7 @@ const KokousDetails = () => {
 
                 let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
-                else if (showComponent === 'asiat') component = <Esityslista/> /*TODO*/
+                else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId}/>
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
@@ -129,9 +137,10 @@ const KokousDetails = () => {
                 else text = "Kokous ei ole vielä alkanut"
 
                 return (
-                    <div className="col-md-10 mx-auto mt-5">
-                        <h2>{yhdistys}</h2>
-                        <Link to={`/assoc/${yhdistys}`}>Yhdistyksen pääsivu</Link>
+                    <div className="mx-auto mt-5">
+                        <div className="mx-3">
+                        <h2 >{yhdistys}</h2>
+                        <Link  to={{pathname:`/assoc/${yhdistys}`, state:{id_y:yhdistys_id}}}>Yhdistyksen pääsivu</Link>
                         <hr />
                         <div className="mb-3">
                             <h4>{kokous.otsikko} </h4>
@@ -145,19 +154,20 @@ const KokousDetails = () => {
                             <p>{(new Date(kokous.endDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
                             <small>({text})</small>
                         </div>
-                        <hr />
-                        <div className="d-sm-flex justify-content-center">
-                            <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiat" >Asiakohdat</button>
-                            <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
-                            <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="osallistujat">Osallistujat</button>
-                            {kokousRooli === 'puheenjohtaja'
-                                ? <>     <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="kokousaika">Kokousaika</button></>
-                                : <></>
-                            }
-                            <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
-                            <button className="btn btn-outline-primary btn-sm mx-1" onClick={handleMenuClick} name="?" >Muuta juttua</button>
                         </div>
                         <hr />
+                        <div className="d-sm-flex second_nav">
+                            <button className="text-primary valittu_menu" onClick={handleMenuClick} name="asiat" >Asiakohdat</button>
+                            <button className="text-primary" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
+                            <button className="text-primary" onClick={handleMenuClick} name="osallistujat">Osallistujat</button>
+                            {kokousRooli === 'puheenjohtaja'
+                                ? <>     <button className="text-primary" onClick={handleMenuClick} name="kokousaika">Kokousaika</button></>
+                                : <></>
+                            }
+                            <button className="text-primary" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
+                            <button className="text-primary" onClick={handleMenuClick} name="?" >Muuta juttua</button>
+                        </div>
+                        
                         {component}
                     </div>
                 )

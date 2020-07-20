@@ -56,6 +56,7 @@ function getKokoukset() {
         $kokousrows = []; 
 
         while($row = mysqli_fetch_assoc($res)) {
+            $_SESSION['yhdistys'] = "KUKKA"; //$row['y_id']; //PURKKA (settaa joka whilessa)*/
             $kokousrows[] = $row; 
         }
 
@@ -140,21 +141,32 @@ function  getKokousDraft() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 
+/**
+ *  tuhoaa kokous draftin id:n perusteella
+ */
 function deleteKokousDraft() {
     $response = array("message"=> "error");
     http_response_code(400); 
     if(isset($_POST['kokousid'])) {
+        
         $kokousid = (int)$_POST['kokousid'];
-        $sql = "CALL kokous_deletekokousdraft($kokousid)";
+        $sql = "CALL kokous_deletekokousdraft($kokousid,4)"; /* <-- kovakoodattu yhdistysid TODO tarvitaan $_SESSION['yhdistys'] */
+        $response = array("message"=> $sql);
         $yhteys = connect(); 
-        if($yhteys->query($sql)) {
+        if($result = $yhteys->query($sql)) {
+
             mysqli_close($yhteys);
-            $response = array("message"=> "Luonnos poistettu.");
+            $response = array("message"=>"delete ok");
             http_response_code(200);
         } 
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
+
+/**
+ *  Ei tee uutta kokousta, haistelee montako kokousta on aikaisemmin kyseisellä yhdistyksellä 
+ *  jostain syystä hakee nimen perusteella
+ */
 function getKokousNro() {
 
     $response = array("message"=> "error");
@@ -183,7 +195,7 @@ function getKokousNro() {
             $response['message'] = "Haku onnistui";
             $response['kokousnro'] = $lkm;
             $response['id_y'] = $id_y;
-            $response['id_k'] = $id_k;
+            /*$response['id_k'] = $id_k;*/
 
         } else {
             $response['message'] = "Haku epäonnistui";
@@ -200,7 +212,7 @@ function luoKokous() {  // perustiedot ensiki tauluun, sitten muut updatella id:
     http_response_code(400);
   
     if(isset($_POST['id_y']) && isset($_POST['kokousnro']) && isset($_POST['startDate']) && isset($_POST['endDate']) && isset($_POST['avoinna']) && isset($_POST['paatosvaltaisuus']) && isset($_POST['valmis'])) {
-       
+        
         $id_y = (int)($_POST['id_y']); 
         $_SESSION['kokous_id'] = $id_k = (int)($_POST['kokousid']); 
         $otsikko = strip_tags($_POST['otsikko']);

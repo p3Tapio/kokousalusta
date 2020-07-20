@@ -18,8 +18,8 @@ const EsitysKohta = ({type,title,id,alkaa,loppuu,auki=false,avaa,save}) => {
 
   let alku =""
   let loppu =""
-  if(startDate!=null && startDate !=="") alku = <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
-  if(endDate!=null && endDate !=="") loppu = <Kalenteri pv={endDate.getDate()} kk = {endDate.getMonth()+1} alku={false}/>    
+  /*if(startDate!=null && startDate !=="") alku = <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
+  if(endDate!=null && endDate !=="") loppu = <Kalenteri pv={endDate.getDate()} kk = {endDate.getMonth()+1} alku={false}/>    */
   var sisalto = (auki)?<Sisalto id={id} type={type} save={this_save}/>:"";
   
   

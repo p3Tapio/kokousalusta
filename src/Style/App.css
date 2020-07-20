@@ -6,3 +6,39 @@
   color: rgb(200, 190, 214);
   cursor: pointer;
 }
+* {margin: 0;padding:0;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;}
+
+.second_nav {padding-left:20px;width:100%;background-color: rgba(44,62,80, 0.9);min-height:50px;}
+.second_nav button {height:50px;outline:none !important;border:none;border-bottom:5px solid transparent;color:white !important;background-color:transparent !important;font-size:14px;;padding:0px 10px 5px 10px;}
+.valittu_menu {outline:none !important;border-bottom: 5px solid #55bFFF !important;height:100%; }
+.valittu_menu:focus {outline:none !important;border:none !important;border-bottom: 5px solid #55bFFF !important;}
+.second_nav button:active {box-shadow: 0 1px #666;transform: translateY(2px);}
+
+
+.taulu {width:calc(100%);min-height:70px;position:relative;background-color: #fff;margin-bottom:3px;clear:both;border-bottom:1px solid #ddd;}
+
+.taulu:hover {background-color: rgba(44,62,80, 0.7);color:white; text-decoration: none;}
+.tauluAlku {margin-left:120px;position:relative;min-width:calc(100%-130px);max-width:calc(100% - 130px);padding-top: 20px;}
+
+.tauluSisus {padding-left:5px;}
+
+
+.taulutila {position:absolute;left:5px;top:53px;font-size:10px;line-height:12px;width:100px;text-align: center;}
+.taulunapit button, .taulunapit link {margin-left:5px;background-color: #FFF;}
+
+.taulunapit {position:absolute;right:5px;top:5px}
+
+.taulukokousnro {position:absolute;font-size: 10px;top:5px;left:120px}
+.paivays {color:black;float:left;margin-top:5px;position:relative;left:5px;text-align:center;width:50px;height:37px;font-family: Helvetica, Arial, sans-serif;border-radius:0px;font-size:10px;margin-right:2px;-webkit-box-shadow: 0px 2px 3px #000000;box-shadow: 0px 2px 3px #000000;z-index:100;border: 1px solid #000;border-radius:2px;}
+
+.yhdistysLink {position:relative;width:"100%";height:"auto";text-decoration:"none";padding:10px 10px 10px 10px;margin:0px;}
+.yhdistysLink:hover {background-color: #ddd;}
+
+.disable {background-color: #eee;}
+.disable .tauluAlku, .disable .taulukokousnro {color:#ccc}
+.paivays_loppu {background: linear-gradient(180deg, #55bFFF 0px, #55bFFF 13px,  #fff 13px, #F9f9f9 15px, #fff 100%);}
+.paivays_alku {background: linear-gradient(180deg, #55BF55 0px,  #55BF55 13px, #fff 13px, #F9f9f9 15px, #eee 100%);}
+.kk {height:18px;}
+.paivays_nro {transform: scale(1.4,1.7);font-weight:bold;}

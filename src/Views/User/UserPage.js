@@ -28,15 +28,19 @@ const UserPage = () => {
     else text = "Et ole vielä rekisteröitynyt yhdistysten kokoustilan käyttäjäksi. Alla olevan kentän avulla voit liittää itsesi yhdistyksen kokoustilaan antamalla yhdistyksen nimen ja sovelluskohtaisen salasanan. Saat tarvittavan tunnuksen sovelluksen pääkäyttäjältä."
 
     return (
-        <div className="col-md-8 mx-auto mt-5">
-            <h4>Moi {user.firstname}!</h4>
+        <div style={{width:"100%",maxWidth:"1100px",padding:"0",marginTop:"50px"}}>
+            <h4 className="px-3">Moi {user.firstname}!</h4>
             <hr />
+            <p className="px-3">
             {text}
+            </p>
             <hr />
+            
             {yhdistykset.length > 0 && showForm
                 ? <AssocTable yhdistykset={yhdistykset} setShowForm={setShowForm} />
                 : <JoinAssoc yhdistykset={yhdistykset} setShowForm={setShowForm} />
             }
+            
         </div>
     )
 }
