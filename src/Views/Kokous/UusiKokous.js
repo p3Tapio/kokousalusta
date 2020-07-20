@@ -101,7 +101,7 @@ const UusiKokous = (props) => {
                 setPuheenjohtaja(res.data.filter(x => x.email === getUser().email))
             }).catch(err => console.log('err.response', err.response))
         }                                    
-    }, [])  // missing dependencies, mutta seurauksena looppi ... refaktoroi 
+    }, [members, perustiedot])  // missing dependencies, mutta seurauksena looppi ... refaktoroi 
     // members, perustiedot, yhdistys
     const helpText = "Aloita kokous antamalla sille otsikko sekä alku- ja loppupäivämäärät. Kun olet valmis, paina seuraava-näppäintä, niin voit luoda esityslistan ja päättää voiko yhdistyksen jäsenet liittää omia esityksiään esityslistalle. Seuraavaksi voit määritellä kokouksen osallistujat ja päätösvaltaisuuden. Lopuksi näet kutsu kokous -välilehdeltä luomasi kokouksen tiedot, missä voit tallentaa ja lähettää kutsun kokoukseen osallistujille."
 
@@ -173,8 +173,6 @@ const UusiKokous = (props) => {
 
     }
 
-
-
     const saveOsallistujat = () => {
 
         let kokousosallistujat
@@ -184,7 +182,10 @@ const UusiKokous = (props) => {
         kokousosallistujat = [user].concat(kokousosallistujat)
         kokousosallistujat = [call].concat(kokousosallistujat)
         const body = JSON.stringify(kokousosallistujat)
-
+        // TODO:  Osallistujien tallennus on askeleen myöhässä myöhässä 
+        // vaihda kokousnro --> kokousid:ksi 
+        // palauta arvona kokousosallistujalista ja aseta se osallistujat stateen  
+        console.log('saveOsalistujat() body', body)
         request.osallistujat(body).then(res => {
             console.log('res.data', res.data)
         }).catch(err => console.log('Error res.data ', err.response.data))
