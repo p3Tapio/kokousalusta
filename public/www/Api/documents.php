@@ -45,15 +45,18 @@ function postDocument() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 function getDocuments() {
+    /* 
+    Vaihda proseduuri "documents_getdocuments" tähän: 
+	SELECT * FROM documents WHERE documents.id_k = kokousid;
+    */
 
     $response = array("message"=> "Haku epäonnistui.");
-    if(isset($_POST["kokousnro"]) && isset($_POST["yhdistys"])) {
+    if(isset($_POST["kokousid"])) {
 
-        $kokousnro = (int)$_POST["kokousnro"];
-        $yhdistys = htmlspecialchars(strip_tags($_POST["yhdistys"]));
+        $kokousid = (int)$_POST["kokousid"];
 
         $yhteys = connect();
-        $q = "CALL documents_getdocuments($kokousnro,'$yhdistys')";
+        $q = "CALL documents_getdocuments($kokousid)";
 
         $res = $yhteys->query($q);
         $rows = []; 

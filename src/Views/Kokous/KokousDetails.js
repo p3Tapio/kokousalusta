@@ -166,8 +166,7 @@ const KokousDetails = (props) => {
                             }
                             <button className="text-primary" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
                             <button className="text-primary" onClick={handleMenuClick} name="?" >Muuta juttua</button>
-                        </div>
-                        
+                        </div>  
                         {component}
                     </div>
                 )

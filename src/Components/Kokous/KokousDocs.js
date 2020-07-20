@@ -8,8 +8,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
     const [document, setDocument] = useState([])
 
     useEffect(() => {
-
-        const body = JSON.stringify({ call: 'getdocuments', kokousnro: kokous.kokousnro, yhdistys: yhdistys })
+        const body = JSON.stringify({ call: 'getdocuments', kokousid: kokous.id })
         request.documents(body).then(res => {
             setKokousDocuments(res.data)
         }).catch(err => console.log('err.response.data.message', err.response.data.message))
@@ -22,19 +21,14 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
     }
 
     return (
-        <div>
+        <div className="m-auto">
             {showTable
                 ?
-                < table className="table table-hover mt-4">
-                    <thead>
-                        <tr className="table-primary">
-                            <th>Kokousasiakirjat</th><th></th>
-                        </tr>
-                    </thead>
+                < table className="table table-hover table-borderless mt-2">
                     <tbody>
-                        {kokousDocuments.map(item =>                 // name? otsikko? joku muu mikä? (tallennuksessa siis jsonissa eri kentässä ja tK:ssa sama --> Automaattisesti luotu ensimmäinen rivi)
-                            <tr key={item.id}>
-                                <td>{item.type}</td><td><button className="btn btn-outline-primary btn-sm" onClick={() => handleOpenDocumentClick(item)}>avaa</button></td>
+                        {kokousDocuments.map(item => 
+                            <tr key={item.id} onClick={() => handleOpenDocumentClick(item)} style={{cursor:"pointer"}}>
+                                <td>{item.type}</td>
                             </tr>)}
                     </tbody>
                 </table>
