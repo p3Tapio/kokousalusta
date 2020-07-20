@@ -8,8 +8,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
     const [document, setDocument] = useState([])
 
     useEffect(() => {
-
-        const body = JSON.stringify({ call: 'getdocuments', kokousnro: kokous.kokousnro, yhdistys: yhdistys })
+        const body = JSON.stringify({ call: 'getdocuments', kokousid: kokous.id })
         request.documents(body).then(res => {
             setKokousDocuments(res.data)
         }).catch(err => console.log('err.response.data.message', err.response.data.message))
@@ -32,7 +31,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {kokousDocuments.map(item =>                 // name? otsikko? joku muu mikä? (tallennuksessa siis jsonissa eri kentässä ja tK:ssa sama --> Automaattisesti luotu ensimmäinen rivi)
+                        {kokousDocuments.map(item => 
                             <tr key={item.id}>
                                 <td>{item.type}</td><td><button className="btn btn-outline-primary btn-sm" onClick={() => handleOpenDocumentClick(item)}>avaa</button></td>
                             </tr>)}

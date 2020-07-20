@@ -50,22 +50,9 @@ export default KokousPaatosvalta
 
 
 /*
-    if (kokous.pv_esityslista === '0' && kokous.pv_aktiivisuus === '0' && kokous.pv_kesto === '0' && kokous.pv_muu === '') paatosvaltaMaaritys = <p>Ei päätösvaltaisuuskriteerejä.</p>
-    else if (kokous.pv_muu !== '') {
-        if (kokous.pv_esityslista !== '0' || kokous.pv_aktiivisuus !== '0' || kokous.pv_kesto !== '0') {
-            paatosvaltaMaaritys = <p>Kokous on päätösvaltainen,</p>
-            muuKriteeriTeksti = <p className="mt-4">Muut kokouksen päätösvaltaisuudelle asetetut kriteerit:</p>
-        }
-        else  muuKriteeriTeksti = <p className="mt-4">Päätösvaltaisuuskriteeri:</p>
-    } else if (kokous.pv_esityslista !== '0' && kokous.pv_aktiivisuus !== '0' && kokous.pv_kesto !== '0') {
-        paatosvaltaMaaritys = <p>Kokous on päätösvaltainen,</p>
-    }
-
-
 Kokous on päätösvaltainen,
 jos vähintään n kpl kokousosallistujista on avannut esityslistan. Tila: Päätösvaltainen / Ei päätösvaltainen
 jos vähintään n kpl kokousosallistujista on ottanut asioihin kantaa. Tila: Päätösvaltainen / Ei päätösvaltainen
 jos kokous kestää vähintään n vuorokautta. Tila: Päätösvaltainen / Ei päätösvaltainen
 Kohdan tai kohtien tila vaihtuu Ei päätösvaltaisesta Päätösvaltaiseksi automaattisesti, kun asetettu kriteeri täyttyy.
-
 */
