@@ -4,7 +4,7 @@ import PrivateRoute from './Components/Auth/PrivateRoute'
 import './Style/App.css'
 import 'bootswatch/dist/flatly/bootstrap.min.css'; 
 import Navbar from './Components/Shared/Navbar'
-import Home from './Views/Home'
+// import Home from './Views/Home'
 import Login from './Views/Auth/Login';
 import Register from './Views/Auth/Register'
 import UserPage from './Views/User/UserPage';
@@ -26,8 +26,7 @@ function App() {
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register} />
             <PrivateRoute path='/userpage' component={UserPage}/>
-            <PrivateRoute path='/assoc/:yhdistys' component={AssocMain}/>
-              
+            <PrivateRoute path='/assoc/:yhdistys' component={AssocMain}/>      
             <PrivateRoute path='/uusikokous/:yhdistys' component={UusiKokous} />
             <PrivateRoute path='/kokous/:yhdistys/:kokousId' component={KokousDetails} />
           </Switch>

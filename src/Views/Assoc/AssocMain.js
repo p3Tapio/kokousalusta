@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { getUser } from '../../Components/Auth/Sessions'
 import request from '../../Components/Shared/HttpRequests'
-import AssocAdmin from '../../Components/Assoc/AssocAdmin'
-import AssocMember from '../../Components/Assoc/AssocMember'
+import AssocContent from '../../Components/Assoc/AssocContent'
 import { setSessionRole, getSessionRole } from '../../Components/Auth/Sessions'
-let yhdistys_id
+
 const AssocMain = (props) => {
 
     const [kokoukset, setKokoukset] = useState()
@@ -34,29 +33,26 @@ const AssocMain = (props) => {
                 setKokoukset(res.data .filter(x=> x.valmis==="1"))
             }).catch(err => console.log('err.response', err.response))
         
-            if (role === 'admin') {
-                const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
-                request.assoc(req).then(res => {
-                    setMembers(res.data)
-                }).catch(err => console.log('err.response', err.response))
-            }
+            const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
+            request.assoc(req).then(res => {
+                setMembers(res.data)
+            }).catch(err => console.log('err.response', err.response))
+
         }
         
     }, [history, user.email, yhdistys, role]); /* tekee monta kertaa*/
 
     if (getSessionRole() && kokoukset) {
         let component
-        if (getSessionRole().role === 'admin' && getSessionRole().yhdistys === yhdistys) component = <AssocAdmin kokoukset={kokoukset} members={members} yhdistys={yhdistys} yhdistys_id={yhdistys_id} />
-        else if (getSessionRole().role === 'member' && getSessionRole().yhdistys === yhdistys) component = <AssocMember kokoukset={kokoukset} yhdistys={yhdistys} yhdistys_id={yhdistys_id} />
         return (
             <div style={{width:"100%",maxWidth:"1100px",padding:"0",marginTop:"50px"}}>
-            {/*<div className="mx-auto mt-5">*/}
+                {/*<div className="mx-auto mt-5">*/}
                 <h2 className="px-3">{yhdistys}</h2>
                 <h4 className="px-3">Yhdistyksen sivu</h4>
                 {getSessionRole().role ==='admin' ? <Link className="px-3" 
                 to={{pathname:`/uusikokous/${yhdistys}`, state:{id_y:yhdistys_id}}}>Luo uusi kokous</Link> : <></>}
                 <hr />
-                {component}
+                <AssocContent kokoukset={kokoukset} members={members} yhdistys={yhdistys} yhdistys_id={yhdistys_id} />
             </div>
         )
     } else {

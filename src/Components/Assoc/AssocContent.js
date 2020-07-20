@@ -25,20 +25,17 @@ const AssocAdmin = ({ kokoukset, members, yhdistys, yhdistys_id }) => {
     else if (showComponent === 'jasenet') component = <Jasenlista members={members} />
     else component = <></>
 
-    if (getSessionRole() && getSessionRole().role === 'admin' && getSessionRole().yhdistys === yhdistys) {
-        
+    if (getSessionRole() && getSessionRole().yhdistys === yhdistys && kokoukset)  {
+    console.log('object', object)
         return (
             <div >
-
                     <div className="d-sm-flex justify-content-center second_nav">
                         <button className="text-primary valittu_menu" name="kaynnissa" onClick={handleMenuClick}>Kokoukset</button>
                         <button className="text-primary " name="tulevat" onClick={handleMenuClick}>Tulevat kokoukset</button>
                         <button className="text-primary " name="menneet" onClick={handleMenuClick}>Päättyneet kokoukset</button>
-                        <button className="text-primary " name="jasenet" onClick={handleMenuClick}>Jäsenlista</button>
+                        <button className="text-primary " name="jasenet" onClick={handleMenuClick}>Jäsenlista</button> 
                         <HelpPop heading="Yhdistyksen etusivu" text={helpText} btnText="Selitystä" placement="left" variant="btn btn-outline-danger btn-sm mx-1" />
-                    </div>
-                    
-
+                    </div>    
                 {component}
             </div>
         )
