@@ -1,18 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, saveOsallistujat, varalla, setVaralla, setShowComponent }) => {
+
+    useEffect(() => {
+        saveOsallistujat()
+    }, [osallistujat])
 
     const handleVaralleClick = (ev) => {
         const vara = osallistujat.filter(x => x.email === ev.target.name)
         setVaralla(varalla.concat(vara))
         setOsallistujat(osallistujat.filter(x => x.email !== ev.target.name))
-        saveOsallistujat()
     }
     const handleOsallistuuClick = (ev) => {
         const osallistuja = varalla.filter(x => x.email === ev.target.name)
         setOsallistujat(osallistujat.concat(osallistuja))
         setVaralla(varalla.filter(x => x.email !== ev.target.name))
-        saveOsallistujat()
     }
 
     return (
@@ -64,7 +66,7 @@ const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, saveOsalli
                 }
             </div>
             <div className="form-group text-right">
-                <button onClick={() => {setShowComponent('paatosvaltaisuus'); saveOsallistujat()}} type="submit" className="btn btn-outline-primary mt-3">Seuraava</button>
+                <button onClick={() => { setShowComponent('paatosvaltaisuus'); saveOsallistujat() }} type="submit" className="btn btn-outline-primary mt-3">Seuraava</button>
             </div>
             <hr />
         </div >
