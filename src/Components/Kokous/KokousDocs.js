@@ -21,19 +21,14 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
     }
 
     return (
-        <div>
+        <div className="m-auto">
             {showTable
                 ?
-                < table className="table table-hover mt-4">
-                    <thead>
-                        <tr className="table-primary">
-                            <th>Kokousasiakirjat</th><th></th>
-                        </tr>
-                    </thead>
+                < table className="table table-hover table-borderless mt-2">
                     <tbody>
                         {kokousDocuments.map(item => 
-                            <tr key={item.id}>
-                                <td>{item.type}</td><td><button className="btn btn-outline-primary btn-sm" onClick={() => handleOpenDocumentClick(item)}>avaa</button></td>
+                            <tr key={item.id} onClick={() => handleOpenDocumentClick(item)} style={{cursor:"pointer"}}>
+                                <td>{item.type}</td>
                             </tr>)}
                     </tbody>
                 </table>
