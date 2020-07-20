@@ -4,7 +4,7 @@ import Sisalto from './Sisalto'
 import ResizeTextArea from './ResizeTextArea'
 
 
-const EsitysKohta = ({type,title,id,alkaa,loppuu,auki=false,avaa,save}) => {
+const EsitysKohta = ({kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save}) => {
   
   const [startDate, setStartDate] = useState((alkaa!=="0000-00-00")?new Date(alkaa):"")
   const [endDate, setEndDate] = useState((loppuu!=="0000-00-00")?new Date(alkaa):"")
@@ -20,7 +20,7 @@ const EsitysKohta = ({type,title,id,alkaa,loppuu,auki=false,avaa,save}) => {
   let loppu =""
   /*if(startDate!=null && startDate !=="") alku = <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
   if(endDate!=null && endDate !=="") loppu = <Kalenteri pv={endDate.getDate()} kk = {endDate.getMonth()+1} alku={false}/>    */
-  var sisalto = (auki)?<Sisalto id={id} type={type} save={this_save}/>:"";
+  var sisalto = (auki)?<Sisalto kokous_id={kokous_id} id={id} type={type} save={this_save}/>:"";
   
   
 

@@ -4,7 +4,7 @@ import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 var saveParams = new URLSearchParams();
-const CheckboxArea = ({edit=false,arvot=[],checkValue=[],check,remove,save,uusi}) => {
+const CheckboxArea = ({edit=false, arvot=[], checkValue=[], check, remove, save, uusi}) => {
 
     const this_remove = (id) => {remove(id)}
     const this_save = (id,nnimi) => {save(id,nnimi)}
@@ -35,7 +35,7 @@ const EditableCheckbox = ({id,nimi,arvo,check,remove,save}) => {
     }
    let ruutu;
    ruutu = <div tabIndex="0" onKeyDown={thiskey} className={(arvo)?"green ruutu":"ruutu"} onClick={thischeck}></div>
-
+    
     return (
         <div className="valinta" >
             {ruutu}

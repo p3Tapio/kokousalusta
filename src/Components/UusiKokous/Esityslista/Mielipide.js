@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef  } from 'react';
 import ResizeTextArea from './ResizeTextArea'
-import axios from 'axios';
 import '../../../Style/Mielipide.css';
 
 var alku=0;

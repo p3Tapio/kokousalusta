@@ -114,7 +114,8 @@ const UusiKokous = (props) => {
             console.log('res.data --- getkokousnro', res.data)
             
             setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmYear) })
-            setId_y(res.data.id_y)             
+            setId_y(res.data.id_y)    
+                   
         })
         
     }
@@ -134,7 +135,7 @@ const UusiKokous = (props) => {
         } else {
             setShowComponent(ev.target.name)
         }
-     
+        
     }
 
     const parse_kokousnro = () => {
@@ -163,7 +164,9 @@ const UusiKokous = (props) => {
 
         request.kokous(uusiKokous).then(res => {
             setPerustiedot({ ...perustiedot, kokousid: res.data.kokousid })
+            
             saveOsallistujat()
+            setId_k(res.data.kokousid);
         }).catch(err => {
             alert(err.response.data.message)
         })

@@ -7,13 +7,13 @@ import '../../../Style/Sisalto.css'
 
 const url = process.env.REACT_APP_HOST_URL
 
-const Sisalto = ({id,save,type,edit=false}) => {
+const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
   
   const [valinnat,setValinnat] =useState([])
   const [valintaArvot,setValintaArvot] = useState([])
-  const [kuvaus,setKuvaus] = useState("");
-  const [descBool,setDescBool] = useState(false);
-  const [typeBool,setTypeBool] = useState(false);
+  const [kuvaus,setKuvaus] = useState("")
+  const [descBool,setDescBool] = useState(false)
+  const [typeBool,setTypeBool] = useState(false)
   
   const kuvaus_save = (id,data) => {
     save(id,data,500,"kuvaus")
@@ -21,12 +21,13 @@ const Sisalto = ({id,save,type,edit=false}) => {
   }
 
   const vaihda_tyyppi = (param) => {
-      var params = new URLSearchParams();      
-      params.append ("paatos_valitse", param);     
-      params.append ("kohta", id);  
+      var params = new URLSearchParams()  
+      params.append ("paatos_valitse", param)
+      params.append ("kohta", id)
+      params.append ("kokous_id", kokous_id)
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-        alert("vaihto")
-        setTypeBool(true);
+        
+        setTypeBool(true)
         
       })    
       
@@ -34,20 +35,22 @@ const Sisalto = ({id,save,type,edit=false}) => {
   }
 
   const check = (vid) => {
-      var params = new URLSearchParams();      
-      params.append ("check_valitse", vid);     
-      params.append ("kohta", id);  
+      var params = new URLSearchParams()
+      params.append ("check_valitse", vid)
+      params.append ("kokous_id", kokous_id)   
+      params.append ("kohta", id)
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-        reload();
+        reload()
       })    
   }
 
   const check_uusi = (vid) => {
-    var params = new URLSearchParams();      
-    params.append ("check_uusi", vid);       
-    params.append ("kohta", id);
+    var params = new URLSearchParams()
+    params.append ("check_uusi", vid)       
+    params.append ("kohta", id)
+    params.append ("kokous_id", kokous_id)
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-      reload();
+      reload()
       
     })    
   }
@@ -56,6 +59,7 @@ const Sisalto = ({id,save,type,edit=false}) => {
     var params = new URLSearchParams();      
     params.append ("check_remove", vid)
     params.append ("kohta", id);
+    params.append ("kokous_id", kokous_id)
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
       reload();
     })    
@@ -71,8 +75,8 @@ const Sisalto = ({id,save,type,edit=false}) => {
   const reload = () => {
     var params = new URLSearchParams()
     params.append ("avaakohta", id)
+    params.append ("kokous_id", kokous_id)
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-      
       if(response.data[2]!=-1)setValintaArvot(JSON.parse(response.data[2]))
         else setValintaArvot([])
       if(response.data[1]!=-1)setValinnat(JSON.parse(response.data[1]))   
@@ -105,8 +109,10 @@ const Sisalto = ({id,save,type,edit=false}) => {
       case "2":
           return <Mielipide edit={true} id={id} save={mielipide_save}/>
       case "1":
+        
          return  <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/> 
-          
+/*         const CheckboxArea = ({edit=false, arvot=[], checkValue=[], check, remove, save, uusi}) => {*/
+
     default:
       return <div className="vastaustyypit">
       <div tabIndex="0" onClick={() => vaihda_tyyppi(3)} className="ei">Hyväksy</div>

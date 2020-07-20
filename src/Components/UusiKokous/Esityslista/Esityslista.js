@@ -6,20 +6,22 @@ var timer;
 var updateParams = new URLSearchParams();
 
 const url = process.env.REACT_APP_HOST_URL
-const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="0", edit="true"} ) => {
+const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="-1", edit="true"} ) => {
     const [items,setItems] = useState([])
     const [auki,setAuki] = useState(0)
     let lisaa;
     console.log('Esityslista.js --- kokousid', kokousid)
 
-
+    
     useEffect(() => {
+      if(kokousid==-1)return;
        let params = new URLSearchParams();
-       if(kokousid!=="0") params.append ("kokous_id", kokousid)
+       
+       params.append ("kokous_id", kokousid)
        axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
          
           setItems(response.data[0])
-    })}, [])  
+    })}, [kokousid])  
 
     const axiosSave = () => {axios.post(url+'data.php', updateParams, {withCredentials: true}).then((response) => {})}
 
@@ -42,7 +44,7 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
           
           updateParams.append ("id", id);       
           updateParams.append ("kohta", kohta);
-          
+          updateParams.append ("kokous_id", kokousid)
           updateParams.append ("save", type)
           window.clearTimeout(timer);
           timer = setTimeout(function(){axiosSave()}, delay)
@@ -52,9 +54,10 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
     const lisaaItem = () => {
     var params = new URLSearchParams();
     params.append('Uusi', 'value');
+    params.append ("kokous_id", kokousid)
     axios.post(url+'data.php', params, {withCredentials: true})
       .then((response) => {
-        
+        alert(response.data);
         setItems(response.data[0])
         
         document.getElementById(response.data[0][response.data[0].length - 1].id).focus();
@@ -76,11 +79,11 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
     
 
     if(edit) lisaa = <button className="lisaa_esitysitem" onClick = {lisaaItem}>Asiakohta</button>
-console.log('items', items)
+    console.log('items', items)
     return (
       <div id="esitys_container"> 
           
-          {items.map(items => <EsitysKohta type={items.type} auki={auki===items.id} avaa={avaaItem} owner={items.o} type={items.type} title={items.n} id={items.id} save={save} key={items.id} alkaa={items.s} loppuu={items.e}/>)}
+          {items.map(items => <EsitysKohta kokous_id={kokousid} type={items.type} auki={auki===items.id} avaa={avaaItem} owner={items.o} type={items.type} title={items.n} id={items.id} save={save} key={items.id} alkaa={items.s} loppuu={items.e}/>)}
           
           {lisaa}
       </div>

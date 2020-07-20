@@ -7,7 +7,6 @@ header("Access-Control-Allow-Headers: X-Accept-Charset,X-Accept,Content-Type,Aut
 $flags = $_SESSION['kokous_flags']=1;
 $kohtaflags = $_SESSION['kohta_flags']=1;
 $user = $_SESSION['user_id'];
-$kokous = $_SESSION['kokous_id'];
 
 
 include("../connect.php");
@@ -27,7 +26,8 @@ if(isset($_POST['otsakkeet'])){
 }
 
 
-else if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
+else if(isset($_POST['check_valitse'])&& isset($_POST['kohta']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id'];
 	$kohta = (int)$_POST['kohta'];
 	$vid = (int)$_POST['check_valitse'];
 	$sql = "CALL esityskohta_valitse('$kokous','$user','$kohta','$vid');";
@@ -39,7 +39,8 @@ else if(isset($_POST['check_valitse'])&& isset($_POST['kohta'])){
 
 
 
-else if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta'])){
+else if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id'];
 	$kohta = (int)$_POST['kohta'];
 	$param = (int)$_POST['paatos_valitse'];
 	$sql = "CALL esityskohta_muuta_tyyppi('$kohta','$param','$kokous','$user')";
@@ -51,8 +52,8 @@ else if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta'])){
 
 
 
-else if(isset($_POST['check_remove']) && isset($_POST['kohta'])){
-	
+else if(isset($_POST['check_remove']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id'];
 	$kohta = (int)$_POST['kohta'];
 	$vid = (int)$_POST['check_remove'];
 	$sql = "CALL esityskohta_valinnat_poista('$kokous','$user','$kohta','$vid');";
@@ -63,7 +64,8 @@ else if(isset($_POST['check_remove']) && isset($_POST['kohta'])){
 
 
 
-else if(isset($_POST['check_uusi']) && isset($_POST['kohta'])){
+else if(isset($_POST['check_uusi']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id'];
 	
 	$kohta = (int)$_POST['kohta'];
 	$sql = "CALL esityskohta_valinnat_lisaa('$kohta','$kokous','$user')";
@@ -74,7 +76,8 @@ else if(isset($_POST['check_uusi']) && isset($_POST['kohta'])){
 
 
 
-else if(isset($_POST['avaakohta'])){
+else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id'];
 	$kohta = (int)$_POST['avaakohta'];
 	$sql = "CALL esityskohta_data('$kohta','$kokous');";
 	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous');";
@@ -102,7 +105,8 @@ else if(isset($_POST['avaakohta'])){
 
 
 
-else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && isset($_POST['kohta'])){
+else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id'];
 	$param = $_POST['param'];
 	$type = $_POST['save'];
 	$id = $_POST['id'];
@@ -129,19 +133,27 @@ else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) &
 
 
 
-else if(isset($_POST['Uusi'])){ 
+else if(isset($_POST['Uusi']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id']; 
 	$sql = "CALL esityskohta_lisaa('$kokous','$user'); ";
 	
-} else if (isset($_POST['NODE']) && isset($_POST['KOHDE'])){
+} else if (isset($_POST['NODE']) && isset($_POST['KOHDE']) && isset($_POST['kokous_id'])){
+	$kokous = (int)$_POST['kokous_id'];
 		$node = trim($_POST['NODE'],'r');
 		$kohde = trim($_POST['KOHDE'],'r');
 		$sql = "CALL esityskohta_siirra('$node','$kohde','$kokous');";
 		$result = $con -> query($sql);
 		exit(0);
 } else {
-		if(isset($_POST['kokous_id']))
-		$kokous = $_SESSION['kokous_id']=$_POST['kokous_id'];		
-		$sql = "CALL esityskohdat('$kokous'); ";
+		if(isset($_POST['kokous_id'])){
+			$kokous = (int)$_POST['kokous_id']; 
+			$sql = "CALL esityskohdat('$kokous'); ";
+		} else 
+		{
+			exit();
+		}
+		
+		
  }
   
 
