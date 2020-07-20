@@ -4,19 +4,7 @@ const KokousPaatosvalta = ({ kokous }) => {
     let tila = "Ei päätösvaltainen."
     let tila_kesto = "Ei päätösvaltainen."
     if (kokous.pv_kesto !== '0') {
-
-        const start = new Date(kokous.startDate)
-        const end = new Date(kokous.endDate)
-        const now = new Date()
-        now.setHours(3, 0, 0, 0) // kloaika tk:sta on startissa ja endissä 3:00:00 ... ?
-
-        const erotus_aika = end.getTime() - start.getTime() // alkupvm ja lopun erotus --- onko edes tarpeen? 
-        const erotus_pv = erotus_aika / (1000 * 3600 * 24)
-
-        const erotus_aika2 = now.getTime() - start.getTime()
-        const erotus_pv2 = erotus_aika2 / (1000 * 3600 * 24)
-
-        if (erotus_pv >= kokous.pv_kesto && erotus_pv2 >= kokous.pv_kesto) tila_kesto = "Päätösvaltainen."  // testaus 
+        if (kokous.pv_kesto_toteutunut ==='true') tila_kesto = "Päätösvaltainen." 
     }
 
 

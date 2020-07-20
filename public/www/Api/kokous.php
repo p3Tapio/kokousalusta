@@ -101,6 +101,15 @@ function getKokous() {
         $sql= "CALL kokous_getkokous('$id')";
         $res = $yhteys->query($sql);
         $row = mysqli_fetch_assoc($res);
+        $today = date('Y-m-d');
+        $startDate = $row['startDate'];
+        $pv_kesto = $row['pv_kesto'];
+        $erotus = (new DateTime($startDate))->diff(new DateTime($today))->days;
+
+        if($pv_kesto <= $erotus) $pv_kesto_toteutunut = "true"; 
+        else $pv_kesto_toteutunut = "false"; 
+
+        $row['pv_kesto_toteutunut'] = $pv_kesto_toteutunut;
         echo json_encode($row, JSON_UNESCAPED_UNICODE); 
         mysqli_close($yhteys);
         exit(); 
