@@ -26,7 +26,7 @@ const AssocAdmin = ({ kokoukset, members, yhdistys, yhdistys_id }) => {
     else component = <></>
 
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys && kokoukset)  {
-    console.log('object', object)
+  
         return (
             <div >
                     <div className="d-sm-flex justify-content-center second_nav">
