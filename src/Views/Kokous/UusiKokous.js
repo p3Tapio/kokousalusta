@@ -33,7 +33,7 @@ const UusiKokous = (props) => {
         const now = Date();
         const getDraft = JSON.stringify({ call: 'getkokousdraft', name: yhdistys })
         
-        if (!perustiedot.kokousNro) {
+        if (!perustiedot.kokousNro && !members) {
             request.kokous(getDraft).then(res => {
                 if (res.data.message !== 'Ei kesken olevia kokouskutsuja') {
                     if (window.confirm('Yhdistyksellä on tallentamaton kokous. Haluatko jatkaa kokoustietojen täyttämistä vai aloittaa uudelleen?')) {
@@ -182,9 +182,10 @@ const UusiKokous = (props) => {
         kokousosallistujat = [user].concat(kokousosallistujat)
         kokousosallistujat = [call].concat(kokousosallistujat)
         const body = JSON.stringify(kokousosallistujat)
-        // TODO:  Osallistujien tallennus on askeleen myöhässä myöhässä 
+        // TODO:  
         // vaihda kokousnro --> kokousid:ksi 
         // palauta arvona kokousosallistujalista ja aseta se osallistujat stateen  
+        console.log('perustiedot -- saveOsallistujat()', perustiedot )
         console.log('saveOsalistujat() body', body)
         request.osallistujat(body).then(res => {
             console.log('res.data', res.data)
