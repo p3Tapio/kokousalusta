@@ -26,21 +26,21 @@ const UusiKokous = (props) => {
     const [varalla, setVaralla] = useState([])
     const [paatosvaltaisuus, setPaatosvaltaisuus] = useState({ esityslista: '', aktiivisuus: '', kesto: '', muu: '' })
     const [id_y, setId_y] = useState(props.location.state.id_y);
-    const [id_k, setId_k] = useState(-1); 
+    const [id_k, setId_k] = useState(-1);
 
     useEffect(() => {   // TODO -- laukeaa kaksi kertaa??
         const pvmYear = { year: 'numeric' };
         const now = Date();
         const getDraft = JSON.stringify({ call: 'getkokousdraft', name: yhdistys })
-        
+
         if (!perustiedot.kokousNro && !members) {
             request.kokous(getDraft).then(res => {
                 if (res.data.message !== 'Ei kesken olevia kokouskutsuja') {
                     if (window.confirm('Yhdistyksellä on tallentamaton kokous. Haluatko jatkaa kokoustietojen täyttämistä vai aloittaa uudelleen?')) {
-                 
+
                         const avoin = res.data.avoinna === "0" ? false : true
-                        const alkaa = res.data.startDate === "1970-01-01" ? '': new Date(res.data.startDate)
-                        const loppuu = res.data.endDate === "1970-01-01" ? '': new Date(res.data.endDate)
+                        const alkaa = res.data.startDate === "1970-01-01" ? '' : new Date(res.data.startDate)
+                        const loppuu = res.data.endDate === "1970-01-01" ? '' : new Date(res.data.endDate)
 
                         console.log('res.data.startDate', res.data.startDate)
                         setPerustiedot({
@@ -55,7 +55,7 @@ const UusiKokous = (props) => {
                         const esitys = res.data.pv_esityslista === "0" ? '' : res.data.pv_esityslista
                         const aktiv = res.data.pv_aktiivisuus === "0" ? '' : res.data.pv_aktiivisuus
                         const kesto = res.data.pv_kesto === "0" ? '' : res.data.pv_kesto
-                      
+
                         setPaatosvaltaisuus({ esityslista: esitys, aktiivisuus: aktiv, kesto: kesto, muu: res.data.pv_muu })
                         setId_y(res.data.id_y)
 
@@ -76,16 +76,16 @@ const UusiKokous = (props) => {
                         request.kokous(delReq)
                             .then(res => {
                                 console.log('res.data ---- delReq ', res.data)
-                                
+
                                 setId_k(res.data['id'])
-                                
-                                getKokousNro() 
+
+                                getKokousNro()
                                 return;
                             }).catch(err => console.log('err.response.data', err.response.data))
                     }
                 } else {
                     getKokousNro()
-                 
+
                 }
             }).catch(err => console.log('err.response.data', err.response.data))
         }
@@ -100,9 +100,10 @@ const UusiKokous = (props) => {
                 setOsallistujat(res.data.filter(x => x.email !== getUser().email))
                 setPuheenjohtaja(res.data.filter(x => x.email === getUser().email))
             }).catch(err => console.log('err.response', err.response))
-        }                                    
-    }, [members, perustiedot])  // missing dependencies, mutta seurauksena looppi ... refaktoroi 
-    // members, perustiedot, yhdistys
+        }
+    }, [members, perustiedot])  // missing dependencies, mutta seurauksena looppi ... refaktoroi? 
+    // 'getKokousNro', 'osallistujat', 'puheenjohtaja', 'varalla.length', and 'yhdistys'
+    
     const helpText = "Aloita kokous antamalla sille otsikko sekä alku- ja loppupäivämäärät. Kun olet valmis, paina seuraava-näppäintä, niin voit luoda esityslistan ja päättää voiko yhdistyksen jäsenet liittää omia esityksiään esityslistalle. Seuraavaksi voit määritellä kokouksen osallistujat ja päätösvaltaisuuden. Lopuksi näet kutsu kokous -välilehdeltä luomasi kokouksen tiedot, missä voit tallentaa ja lähettää kutsun kokoukseen osallistujille."
 
     const getKokousNro = () => {
@@ -112,43 +113,41 @@ const UusiKokous = (props) => {
         console.log('body', body)
         request.kokous(body).then(res => {
             console.log('res.data --- getkokousnro', res.data)
-            
+
             setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmYear) })
-            setId_y(res.data.id_y)    
-                   
+            setId_y(res.data.id_y)
+
         })
-        
+
     }
     const handleMenuClick = (ev) => {
 
         saveKokousDraft(showComponent);
 
-        if(ev.target.name==="yhteenveto"){ // esityslistan otsakkeet tarvitaan yhteenvetoa varten /loput saadaan stateista.
+        if (ev.target.name === "yhteenveto") { // esityslistan otsakkeet tarvitaan yhteenvetoa varten /loput saadaan stateista.
             let x = ev.target.name
             let params2 = new URLSearchParams();
-            params2.append ("otsakkeet", perustiedot.kokousid)
+            params2.append("otsakkeet", perustiedot.kokousid)
             request.data(params2).then(res => {
-                console.log("esityskohta_otsakkeet",res.data)
+                console.log("esityskohta_otsakkeet", res.data)
                 setEsityslista(res.data)
                 setShowComponent(x)
-            }) 
+            })
         } else {
             setShowComponent(ev.target.name)
         }
-        
     }
 
     const parse_kokousnro = () => {
         let i = perustiedot.kokousNro.indexOf('/')
-        if(i===-1)return perustiedot.kokousNro
-        else return perustiedot.kokousNro.substring(0,i);
+        if (i === -1) return perustiedot.kokousNro
+        else return perustiedot.kokousNro.substring(0, i);
     }
 
     const saveKokousDraft = (param) => { // -- TODO estä tallennus jos ei muuta dataa kuin kokousnro 
-        
+
         console.log('saveKokousDraft()')
-        
-        
+
         const uusiKokous = JSON.stringify({
             call: 'luokokous',
             id_y: id_y,
@@ -164,7 +163,6 @@ const UusiKokous = (props) => {
 
         request.kokous(uusiKokous).then(res => {
             setPerustiedot({ ...perustiedot, kokousid: res.data.kokousid })
-            
             saveOsallistujat()
             setId_k(res.data.kokousid);
         }).catch(err => {
@@ -175,22 +173,21 @@ const UusiKokous = (props) => {
 
     const saveOsallistujat = () => {
 
-        let kokousosallistujat
-        kokousosallistujat = osallistujat.map(x => ({ rooli: 'osallistuja', ...x }))
-        user = Object.assign({ rooli: 'puheenjohtaja' }, user)
-        const call = { call: 'postosallistujat', id_y: id_y, kokousnro: parse_kokousnro() }
-        kokousosallistujat = [user].concat(kokousosallistujat)
-        kokousosallistujat = [call].concat(kokousosallistujat)
-        const body = JSON.stringify(kokousosallistujat)
-        // TODO:  
-        // vaihda kokousnro --> kokousid:ksi 
-        // palauta arvona kokousosallistujalista ja aseta se osallistujat stateen  
-        console.log('perustiedot -- saveOsallistujat()', perustiedot )
-        console.log('saveOsalistujat() body', body)
-        request.osallistujat(body).then(res => {
-            console.log('res.data', res.data)
-        }).catch(err => console.log('Error res.data ', err.response.data))
+        if (perustiedot.kokousid !== '') {
+            let kokousosallistujat
+            kokousosallistujat = osallistujat.map(x => ({ rooli: 'osallistuja', ...x }))
+            user = Object.assign({ rooli: 'puheenjohtaja' }, user)
+            const call = { call: 'postosallistujat', id_y: id_y, kokousid: perustiedot.kokousid }
+            kokousosallistujat = [user].concat(kokousosallistujat)
+            kokousosallistujat = [call].concat(kokousosallistujat)
+            const body = JSON.stringify(kokousosallistujat)
 
+            request.osallistujat(body).then(res => {
+                console.log('res.data', res.data)
+            }).catch(err => console.log('Error res.data ', err.response.data))
+
+            console.log('saveOsallistujat() ---- osallistujat ', osallistujat )
+        }
     }
     const handlePerustiedotChange = (ev) => {
         if (ev.target.name === 'otsikko') setPerustiedot({ ...perustiedot, otsikko: ev.target.value })
@@ -209,8 +206,8 @@ const UusiKokous = (props) => {
     else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista_otsakkeet} kokousid={id_k} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} saveOsallistujat={saveOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} saveKokousDraft={saveKokousDraft} />
-    else if (showComponent === 'yhteenveto') component = <Yhteenveto esityslista_otsakkeet={esityslista_otsakkeet} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y} 
-        />
+    else if (showComponent === 'yhteenveto') component = <Yhteenveto esityslista_otsakkeet={esityslista_otsakkeet} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y}
+    />
     else component = <></>
 
 
@@ -220,7 +217,7 @@ const UusiKokous = (props) => {
                 <h2>{yhdistys}</h2>
                 <h4>Luo uusi kokous</h4>
                 {/* //  onClick={()=> saveKokousDraft()} --- TODO muokkaa siten ettei tallenusta tapahdu, jos muuta kuin kokousid ei ole asetettu  */}
-                <Link to={{pathname:`/assoc/${yhdistys}`,state:{id:id_y}}}>Yhdistyksen pääsivu</Link>
+                <Link to={{ pathname: `/assoc/${yhdistys}`, state: { id: id_y } }}>Yhdistyksen pääsivu</Link>
                 <hr />
                 <div>
                     <div className="d-flex justify-content-center">

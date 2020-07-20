@@ -13,8 +13,8 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
             setKokousDocuments(res.data)
         }).catch(err => console.log('err.response.data.message', err.response.data.message))
 
-    }, [kokous.kokousnro, yhdistys])
-
+    }, [kokous.id, yhdistys])
+// }, [kokous.kokousnro, yhdistys])
     const handleOpenDocumentClick = (item) => {
         setDocument(item)
         setShowTable(!showTable)

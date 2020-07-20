@@ -12,7 +12,7 @@ import AssocMain from './Views/Assoc/AssocMain';
 import UusiKokous from './Views/Kokous/UusiKokous';
 import KokousDetails from './Views/Kokous/KokousDetails';
 
-import { getSessionRole, getUser } from './Components/Auth/Sessions'
+// import { getSessionRole, getUser } from './Components/Auth/Sessions'
 
 function App() {
   

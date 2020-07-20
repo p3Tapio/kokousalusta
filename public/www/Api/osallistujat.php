@@ -51,22 +51,21 @@ function postOsallistujat() {
     $response = array( "message"=> "Osallistujien tallennus epäonnistui.");
     http_response_code(400);
 
-    if(isset($_POST[0]['id_y']) && isset($_POST[0]['kokousnro'])) {
+    if(isset($_POST[0]['id_y']) && isset($_POST[0]['kokousid'])) {
    
         $id_y = (int)$_POST[0]['id_y'];
-        $kokousnro =  (int)$_POST[0]['kokousnro'];
+        $kokousid =  (int)$_POST[0]['kokousid'];
         $x = array_shift($_POST);
         
         $yhteys = connect(); 
-        $sql = "CALL osallistujat_poistakaikkiosallistujat($id_y, $kokousnro)";
-        // echo $sql; 
+        $sql = "CALL osallistujat_poistakaikkiosallistujat($kokousid)";
         if($yhteys->query($sql)) {
            
             foreach($_POST as $item) {
                 $role = htmlspecialchars(strip_tags($item['rooli']));
                 $email =  htmlspecialchars(strip_tags($item['email']));
                 
-                $q = "CALL osallistujat_insertosallistujat($id_y, $kokousnro, '$role', '$email')";
+                $q = "CALL osallistujat_insertosallistujat($id_y, $kokousid, '$role', '$email')";
                 $yhteys = connect(); 
         
                 if($yhteys->query($q)) {
@@ -128,4 +127,35 @@ function connect() {
     $yhteys->set_charset("utf8");
     return $yhteys;
 }
+/*
+-- POISTAKAIKKIOSALLISTUJAT 
+
+BEGIN
+
+	DECLARE no INT DEFAULT 0; 
+     
+	SELECT COUNT(kokousid) INTO no FROM osallistujat WHERE osallistujat.id_k = kokousid;
+    
+	IF no > 0 THEN 
+    	DELETE FROM osallistujat WHERE osallistujat.id_k = kokousid;
+    ELSE 
+    	SELECT 0; 
+    END IF; 
+END
+
+-- ISERTOSALLISTUJAT 
+
+BEGIN
+      DECLARE id_u INT DEFAULT 0;
+      
+      SELECT id INTO id_u FROM users WHERE users.email = email;  
+
+      INSERT INTO osallistujat(id_u, id_y, id_k, role)
+      VALUES (id_u, yhdistys_id, kokousid, role);     
+END
+
+
+
+*/
+
 ?> 
