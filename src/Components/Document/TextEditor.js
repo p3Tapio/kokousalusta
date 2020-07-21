@@ -1,7 +1,7 @@
 import React from 'react'
 import { Editor } from "@tinymce/tinymce-react"
 
-export const TextEditor = ({ editorContentChange, kokouskutsu }) => {
+export const TextEditor = ({ editorContentChange, teksti }) => {
 
 
     return (
@@ -9,7 +9,7 @@ export const TextEditor = ({ editorContentChange, kokouskutsu }) => {
 
             <Editor apiKey={process.env.REACT_APP_TINYAPI_KEY}
                 onEditorChange={editorContentChange}
-                value={kokouskutsu}
+                value={teksti}
                 init={{
                     height: 750,
                     plugins: [

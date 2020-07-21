@@ -7,6 +7,7 @@ import KokousOsallistujat from '../../Components/Kokous/KokousOsallistujat'
 import Kokousaika from '../../Components/Kokous/Kokousaika'
 import KokousPaatosvalta from '../../Components/Kokous/KokousPaatosvalta';
 import Esityslista from '../../Components/UusiKokous/Esityslista/Esityslista';
+import KokousPoytakirja from '../../Components/Kokous/KokousPoytakirja'
 
 const KokousDetails = (props) => {
 
@@ -123,13 +124,14 @@ const KokousDetails = (props) => {
 
             if (kokous.avoinna === "1" || kokousRooli === "puheenjohtaja") {
 
-                let component
+                let component 
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
                 else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} />
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
-                else component = <p>TO DO !!! </p>
+                else if (showComponent === 'poytakirja') component = <KokousPoytakirja kokous={kokous} yhdistys={yhdistys} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} />
+                else component = <p>error... </p>
 
                 let text
                 if (Date.parse(kokous.endDate) < new Date()) text = "Kokous on päättynyt"
@@ -159,7 +161,7 @@ const KokousDetails = (props) => {
                                 <small>({text})</small>
                             </div>
                             <div className="mt-4 float-right">
-                                <button className="btn btn-outline-danger mb-2 ml-2" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
+                                <button className="btn btn-danger mb-2 ml-2" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
                             </div>
                             <div className="clearfix"></div>
                         </div>
@@ -173,7 +175,7 @@ const KokousDetails = (props) => {
                                 : <></>
                             }
                             <button className="text-primary" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
-                            <button className="text-primary" onClick={handleMenuClick} name="?" >Muuta juttua</button>
+                            <button className="text-primary" onClick={handleMenuClick} name="poytakirja" >Pöytäkirja</button>
                         </div>
                         {component}
                     </div>

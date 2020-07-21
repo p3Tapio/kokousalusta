@@ -124,7 +124,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
             <div className="mt-5 mx-auto col-md-10">
                 <h5 className="mb-4">Yhteenveto</h5>
                 <p className="mb-4">Tarkasta kokouksen tiedot. Painamalla ruudun pohjalla olevaa näppäintä kokous tallentuu ja järjestelmä lähettää kutsun osallistujille kokoukseen s-postitse.</p>
-                <TextEditor editorContentChange={editorContentChange} kokouskutsu={kokouskutsu} />
+                <TextEditor editorContentChange={editorContentChange} teksti={kokouskutsu} />
                 <div className="form-group text-right">
                     <button className="btn btn-outline-primary mt-3" onClick={handleClickSaveAndSend}>Tallenna ja lähetä kokouskutsu</button>
                 </div>
