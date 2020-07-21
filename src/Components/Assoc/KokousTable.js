@@ -9,17 +9,6 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
     const pvmYear = { year: 'numeric' };
     const [loading, setLoading] = useState(false)
 
-    // const start = new Date(kokous.startDate)
-    // const now = new Date()
-    // now.setHours(3, 0, 0, 0) 
-    // const erotus_aika = now.getTime() - start.getTime()
-    // const erotus_pv = erotus_aika / (1000 * 3600 * 24)
-
-    // let auki = kokous.avoinna 
-    // console.log('start', start)
-    // console.log('kokous', kokous)
-    // console.log('erotus_pv', Number(erotus_pv))
-
     const openKokous = (id) => {
 
         if (window.confirm('Haluatko avata kokoustilan osallistujille?')) {
