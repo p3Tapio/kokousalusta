@@ -28,7 +28,7 @@ const UusiKokous = (props) => {
     const [id_y, setId_y] = useState(props.location.state.id_y);
     const [id_k, setId_k] = useState(-1);
 
-    useEffect(() => {   // TODO -- laukeaa kaksi kertaa??
+    useEffect(() => { 
         const pvmYear = { year: 'numeric' };
         const now = Date();
         const getDraft = JSON.stringify({ call: 'getkokousdraft', name: yhdistys })

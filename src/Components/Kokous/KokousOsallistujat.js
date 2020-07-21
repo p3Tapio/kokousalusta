@@ -8,15 +8,7 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
     return (
         <div>
             <div className="mb-4 mt-4">
-                <div class="float-md-right">
-                    <button className="btn btn-outline-danger mb-2 ml-2" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
-                </div>
-                <div class="float-left">
-                   {puheenjohtaja.length!==0
-                   ? <h6 className="ml-2 mt-1">Puheenjohtaja: {puheenjohtaja[0].firstname} {puheenjohtaja[0].lastname} ({puheenjohtaja[0].email})</h6>
-                   : <h6 className="ml-2 mt-1">Kokoukselle ei ole asetettu puheenjohtajaa. </h6>}
-                </div>
-                <div class="clearfix"></div>
+                <button className="btn btn-outline-danger mb-2 ml-2" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
             </div>
             <h5>Osallistujat</h5>
             < table className="table table-hover">
