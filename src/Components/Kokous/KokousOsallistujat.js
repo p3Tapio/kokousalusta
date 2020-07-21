@@ -9,7 +9,7 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
         <div>
 
             <h5 className="mt-3">Osallistujat</h5>
-            < table className="table table-hover">
+            < table className="table table-hover table-responsive-sm">
                 <thead>
                     <tr className="table-primary"><th>Etunimi</th><th>Sukunimi</th><th>Sähköpostiosoite</th><th></th></tr>
                 </thead>
@@ -26,7 +26,7 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
             {jasenet.length !== 0
                 ? <>
                     <h5>Muut yhdistyksen jäsenet</h5>
-                    < table className="table table-hover">
+                    < table className="table table-hover  table-responsive-sm">
                         <thead>
                             <tr className="table-primary"><th>Etunimi</th><th>Sukunimi</th><th>Sähköpostiosoite</th><th></th></tr>
                         </thead>
