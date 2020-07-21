@@ -14,7 +14,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
         }).catch(err => console.log('err.response.data.message', err.response.data.message))
 
     }, [kokous.id, yhdistys])
-// }, [kokous.kokousnro, yhdistys])
+
     const handleOpenDocumentClick = (item) => {
         setDocument(item)
         setShowTable(!showTable)
