@@ -34,7 +34,7 @@ const KokousDetails = (props) => {
 
         if (getSessionRole()) {
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
-            console.log('body', body)
+      
             request.kokous(body).then(res => {
                 setKokous(res.data)
             }).catch(err => console.log('err.response.data', err.response.data))
@@ -44,13 +44,12 @@ const KokousDetails = (props) => {
             request.osallistujat(body2).then(res => {
                 setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
                 setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
-                console.log('res.data', res.data)
                 const osal = res.data.filter(x => x.email === user.email)
                 if (osal[0]) {
                     setKokousRooli(osal[0].role)
                 } else history.push({ pathname: `/assoc/${yhdistys}`, state: { yhdistys_id } })
             }).catch(err => console.log('err.response.data', err.response.data))
-
+         
             const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
             request.assoc(req).then(res => {
                 setJasenet(res.data)
