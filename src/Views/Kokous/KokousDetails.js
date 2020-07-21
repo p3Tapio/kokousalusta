@@ -42,7 +42,7 @@ const KokousDetails = (props) => {
                 const osal = res.data.filter(x => x.email === user.email)
                 if (osal[0]) {
                     setKokousRooli(osal[0].role)
-                } else history.push({pathname:`/assoc/${yhdistys}`, state:{ yhdistys_id }})
+                } else history.push({ pathname: `/assoc/${yhdistys}`, state: { yhdistys_id } })
             }).catch(err => console.log('err.response.data', err.response.data))
 
             const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
@@ -145,12 +145,12 @@ const KokousDetails = (props) => {
                             <div className="mb-3">
                                 <h4>{kokous.otsikko} </h4>
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
+                            <div className="float-left" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
                                 <p>Puheenjohtaja:</p>
                                 {puheenjohtaja.length !== 0
                                     ? <p>{puheenjohtaja[0].firstname} {puheenjohtaja[0].lastname} </p>
                                     : <p>Kokoukselle ei ole asetettu puheenjohtajaa. </p>}
-                                <p style={{marginRight:'10px'}}>Kokouksen numero: </p>
+                                <p style={{ marginRight: '10px' }}>Kokouksen numero: </p>
                                 <p> {kokous.kokousnro}/{(new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmYear)}</p>
                                 <p>Kokouksen alku:</p>
                                 <p>{(new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
@@ -158,6 +158,10 @@ const KokousDetails = (props) => {
                                 <p>{(new Date(kokous.endDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
                                 <small>({text})</small>
                             </div>
+                            <div className="mt-4 float-right">
+                                <button className="btn btn-outline-danger mb-2 ml-2" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
+                            </div>
+                            <div className="clearfix"></div>
                         </div>
                         <hr />
                         <div className="d-sm-flex second_nav">
