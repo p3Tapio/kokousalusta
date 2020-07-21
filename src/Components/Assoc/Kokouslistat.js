@@ -11,7 +11,9 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys, yhdistys_id }) => {
         if (kokoukset) {
             kokoukset.map((item) => {
                 if (Date.parse(item.endDate) < new Date()) setMenneet(menneet => [...menneet, item])
-                else if (Date.parse(item.endDate) > new Date() && Date.parse(item.startDate) < new Date()) setKaynnissa(kaynnissa => [...kaynnissa, item])
+                else if (Date.parse(item.endDate) > new Date() && Date.parse(item.startDate) < new Date()) {
+                    setKaynnissa(kaynnissa => [...kaynnissa, item])
+                }
                 else setTulevat(tulevat => [...tulevat, item])
                 return null;
             })

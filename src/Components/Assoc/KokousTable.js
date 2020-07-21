@@ -9,7 +9,19 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
     const pvmYear = { year: 'numeric' };
     const [loading, setLoading] = useState(false)
 
+    // const start = new Date(kokous.startDate)
+    // const now = new Date()
+    // now.setHours(3, 0, 0, 0) 
+    // const erotus_aika = now.getTime() - start.getTime()
+    // const erotus_pv = erotus_aika / (1000 * 3600 * 24)
+
+    // let auki = kokous.avoinna 
+    // console.log('start', start)
+    // console.log('kokous', kokous)
+    // console.log('erotus_pv', Number(erotus_pv))
+
     const openKokous = (id) => {
+
         if (window.confirm('Haluatko avata kokoustilan osallistujille?')) {
             setLoading(true)
             const body = JSON.stringify({ call: 'openkokous', id: id })
@@ -20,9 +32,12 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
             }).catch(err => {
                 alert(err.response.data.message)
             })
+            // TODO luo asiakohta nimeltään ”Avaus” - ”Puheenjohtaja etunimi sukunimi avasi kokouksen pp.kk.vvvvv, klo hh:mm.”
+            // axios.post --> id_k, user.firstname, user.lastname, timestamp
+            // huom: kokous aukeaa myös automaattisesti jolloin speksien teksti on hieman harhaanjohtava? Vaihtoehtoisesti: "Kokoustila avattiin käyttäjille pp.kk.vvvv, klo hh:mm" ???  
         }
     }
-
+    
     if (!loading) {
         return (
             <div className="bg">

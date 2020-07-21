@@ -25,17 +25,22 @@ const KokousDetails = (props) => {
 
     const [showComponent, setShowComponent] = useState("asiat")
     const [showTable, setShowTable] = useState(true)
-    let yhdistys_id = props.location.state.id_y;
+   
+    let yhdistys_id 
+    if(props.location.state === undefined) history.push(`/assoc/${yhdistys}`)
+    else  yhdistys_id = props.location.state.id_y
 
     useEffect(() => {
 
         if (getSessionRole()) {
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
+            console.log('body', body)
             request.kokous(body).then(res => {
                 setKokous(res.data)
             }).catch(err => console.log('err.response.data', err.response.data))
 
             const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId })
+            console.log('body2', body2)
             request.osallistujat(body2).then(res => {
                 setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
                 setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
