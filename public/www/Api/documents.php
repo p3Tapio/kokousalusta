@@ -45,10 +45,6 @@ function postDocument() {
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 function getDocuments() {
-    /* 
-    Vaihda proseduuri "documents_getdocuments" tähän: 
-	SELECT * FROM documents WHERE documents.id_k = kokousid;
-    */
 
     $response = array("message"=> "Haku epäonnistui.");
     if(isset($_POST["kokousid"])) {

@@ -28,7 +28,7 @@ const UusiKokous = (props) => {
     const [id_y, setId_y] = useState(props.location.state.id_y);
     const [id_k, setId_k] = useState(-1);
 
-    useEffect(() => {   // TODO -- laukeaa kaksi kertaa??
+    useEffect(() => { 
         const pvmYear = { year: 'numeric' };
         const now = Date();
         const getDraft = JSON.stringify({ call: 'getkokousdraft', name: yhdistys })
@@ -203,7 +203,7 @@ const UusiKokous = (props) => {
 
     let component
     if (showComponent === 'perustiedot') component = <Perustiedot setShowComponent={setShowComponent} handlePerustiedotChange={handlePerustiedotChange} saveKokousDraft={saveKokousDraft} perustiedot={perustiedot} setPerustiedot={setPerustiedot} />
-    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista_otsakkeet} kokousid={id_k} />
+    else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista_otsakkeet} kokousid={id_k} setShowComponent={setShowComponent} saveKokousDraft={saveKokousDraft} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} saveOsallistujat={saveOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} saveKokousDraft={saveKokousDraft} />
     else if (showComponent === 'yhteenveto') component = <Yhteenveto esityslista_otsakkeet={esityslista_otsakkeet} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y}/>

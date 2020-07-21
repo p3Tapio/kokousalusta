@@ -27,7 +27,7 @@ const KokousDetails = (props) => {
     let yhdistys_id = props.location.state.id_y;
 
     useEffect(() => {
-        
+
         if (getSessionRole()) {
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
             request.kokous(body).then(res => {
@@ -42,7 +42,7 @@ const KokousDetails = (props) => {
                 const osal = res.data.filter(x => x.email === user.email)
                 if (osal[0]) {
                     setKokousRooli(osal[0].role)
-                } else history.push(`/assoc/${yhdistys}`)
+                } else history.push({pathname:`/assoc/${yhdistys}`, state:{ yhdistys_id }})
             }).catch(err => console.log('err.response.data', err.response.data))
 
             const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
@@ -57,8 +57,8 @@ const KokousDetails = (props) => {
         let napit = ev.target.parentNode.querySelectorAll("button");
         for (let i = 0; i < napit.length; i++) {
             napit[i].classList.remove("valittu_menu");
-          }
-        
+        }
+
         ev.target.classList.add("valittu_menu");
 
         setShowComponent(ev.target.name)
@@ -116,16 +116,16 @@ const KokousDetails = (props) => {
             alert("Määritä uusi päättymispäivä ennen tallentamista")
         }
     }
-    
+    console.log('puheenjohtaja', puheenjohtaja)
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
 
         if (kokous && kokousRooli) {
 
-            if (kokous.avoinna === "1" || kokousRooli==="puheenjohtaja") { 
+            if (kokous.avoinna === "1" || kokousRooli === "puheenjohtaja") {
 
                 let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
-                else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId}/>
+                else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} />
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
@@ -139,21 +139,25 @@ const KokousDetails = (props) => {
                 return (
                     <div className="mx-auto mt-5">
                         <div className="mx-3">
-                        <h2 >{yhdistys}</h2>
-                        <Link  to={{pathname:`/assoc/${yhdistys}`, state:{id_y:yhdistys_id}}}>Yhdistyksen pääsivu</Link>
-                        <hr />
-                        <div className="mb-3">
-                            <h4>{kokous.otsikko} </h4>
-                        </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
-                            <p>Kokouksen numero:</p>
-                            <p> {kokous.kokousnro}/{(new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmYear)}</p>
-                            <p>Kokouksen alku:</p>
-                            <p>{(new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
-                            <p>Kokouksen päätös:</p>
-                            <p>{(new Date(kokous.endDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
-                            <small>({text})</small>
-                        </div>
+                            <h2 >{yhdistys}</h2>
+                            <Link to={{ pathname: `/assoc/${yhdistys}`, state: { id_y: yhdistys_id } }}>Yhdistyksen pääsivu</Link>
+                            <hr />
+                            <div className="mb-3">
+                                <h4>{kokous.otsikko} </h4>
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
+                                <p>Puheenjohtaja:</p>
+                                {puheenjohtaja.length !== 0
+                                    ? <p>{puheenjohtaja[0].firstname} {puheenjohtaja[0].lastname} </p>
+                                    : <p>Kokoukselle ei ole asetettu puheenjohtajaa. </p>}
+                                <p style={{marginRight:'10px'}}>Kokouksen numero: </p>
+                                <p> {kokous.kokousnro}/{(new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmYear)}</p>
+                                <p>Kokouksen alku:</p>
+                                <p>{(new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
+                                <p>Kokouksen päätös:</p>
+                                <p>{(new Date(kokous.endDate)).toLocaleDateString('fi-FI', pvmForm)}</p>
+                                <small>({text})</small>
+                            </div>
                         </div>
                         <hr />
                         <div className="d-sm-flex second_nav">
@@ -166,7 +170,7 @@ const KokousDetails = (props) => {
                             }
                             <button className="text-primary" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
                             <button className="text-primary" onClick={handleMenuClick} name="?" >Muuta juttua</button>
-                        </div>  
+                        </div>
                         {component}
                     </div>
                 )
