@@ -127,35 +127,4 @@ function connect() {
     $yhteys->set_charset("utf8");
     return $yhteys;
 }
-/*
--- POISTAKAIKKIOSALLISTUJAT 
-
-BEGIN
-
-	DECLARE no INT DEFAULT 0; 
-     
-	SELECT COUNT(kokousid) INTO no FROM osallistujat WHERE osallistujat.id_k = kokousid;
-    
-	IF no > 0 THEN 
-    	DELETE FROM osallistujat WHERE osallistujat.id_k = kokousid;
-    ELSE 
-    	SELECT 0; 
-    END IF; 
-END
-
--- ISERTOSALLISTUJAT 
-
-BEGIN
-      DECLARE id_u INT DEFAULT 0;
-      
-      SELECT id INTO id_u FROM users WHERE users.email = email;  
-
-      INSERT INTO osallistujat(id_u, id_y, id_k, role)
-      VALUES (id_u, yhdistys_id, kokousid, role);     
-END
-
-
-
-*/
-
-?> 
+?>
