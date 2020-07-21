@@ -6,7 +6,7 @@ var timer;
 var updateParams = new URLSearchParams();
 
 const url = process.env.REACT_APP_HOST_URL
-const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "true", saveKokousDraft, setShowComponent}) => {
+const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "true", saveKokousDraft, setShowComponent = null}) => {
   const [items, setItems] = useState([])
   const [auki, setAuki] = useState(0)
   console.log('Esityslista.js --- kokousid', kokousid)
@@ -112,9 +112,11 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
             loppuu={items.e} />)}
         {lisaa}
       </div>
-      <div className="text-right">
+      { setShowComponent ? 
+        <div className="text-right">
         <button onClick={() => { setShowComponent('osallistujat'); saveKokousDraft() }} className="btn btn-outline-primary mt-3">Seuraava</button>
       </div>
+      :<></>}
     </div>
   )
 }
