@@ -1,4 +1,4 @@
-import React, { useState  } from 'react'
+import React, { useState, useEffect  } from 'react'
 import Kalenteri from './Kalenteri'
 
 import Sisalto from './Sisalto'
@@ -9,20 +9,26 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
   
   const [startDate, setStartDate] = useState((alkaa!=="0000-00-00")?new Date(alkaa):"")
   const [endDate, setEndDate] = useState((loppuu!=="0000-00-00")?new Date(alkaa):"")
+  var sisalto;
+  const this_save = (_id,data,delay,type) => {
+    save(_id,data,delay,type,id)
+  }
+  let tyyppi=type;
+ 
+
   
   const this_avaa = (event) => {
     if(event.target.className==="raahaa" || event.target.className==="areaText")avaa(id)}
 
-  const this_save = (_id,data,delay,type) => {
-    save(_id,data,delay,type,id)
-  }
 
-  var sisalto = (auki)?<Sisalto kokous_id={kokous_id} id={id} type={type} save={this_save}/>:"";
+ // var sisalto = (auki)?<Sisalto kokous_id={kokous_id} id={id} type={type} save={this_save}/>:"";
 
   const thisvaihda_tyyppi = (param) => {
+    
     if (type==param) param=0;
       vaihda_tyyppi(id,param)
       
+     
   }
     
 
@@ -38,9 +44,11 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
                   <FaRegCheckSquare onClick={()=>thisvaihda_tyyppi(4)} className ={(type==4)?"kohta_valittu":""}/>]
   
   let nappit = (type==0)?
-  <div className="valinta_iconit">{nappeja[1]}{nappeja[2]}{nappeja[3]}{nappeja[4]}</div>
-    :
-    <div className="valinta_iconit">{nappeja[type]}</div>;
+  <div className="valinta_iconit">{nappeja[1]}{nappeja[2]}{nappeja[3]}{nappeja[4]}</div>:<div className="valinta_iconit">{nappeja[type]}</div>;
+  
+  sisalto = (auki)?<Sisalto key={id} kokous_id={kokous_id} id={id} type={tyyppi} save={this_save}/>:""; 
+
+
 
   return (
     <div className="esitys_item"  onClick= {this_avaa}>

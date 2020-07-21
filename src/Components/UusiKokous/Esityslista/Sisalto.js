@@ -13,7 +13,8 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
   const [valintaArvot,setValintaArvot] = useState([])
   const [kuvaus,setKuvaus] = useState("")
   const [descBool,setDescBool] = useState(false)
-  const [tyyppi,setType] = useState(type)
+  
+  
   
   const kuvaus_save = (id,data) => {
     save(id,data,500,"kuvaus")
@@ -75,12 +76,14 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
       
     })}
     
-  let desc,valinta;
+  let desc;
   
   
   if (descBool)
     desc = <div className="mielipide" id={"mielipide"+id}><ResizeTextArea edit={true} id={id} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>
 
+  let valinta
+  
   useEffect(() => {
       reload()
       window.setTimeout(function(){
@@ -91,17 +94,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
             window.scrollTo({top: y, behavior: 'smooth'})}
         },100)
         
-  }, [tyyppi])  
-
- 
-    switch(tyyppi){
-      case "2":
-          valinta = <Mielipide edit={true} id={id} save={mielipide_save}/>
-      case "1":  
-         valinta = <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/> 
-  }
-
-
+  }, [])  
 
 
   
@@ -112,7 +105,20 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
       <div id="sisalto">  
         
          {desc}
-         {valinta}      
+        {
+
+          ["",
+          <Mielipide edit={true} id={id} save={mielipide_save}/>,
+          <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/>,
+          "ei koodattu viela(1)",
+          "ei koodattu viela(2)"]
+          [type]
+        }
+
+        
+
+
+           
          
       </div>
       {/*}

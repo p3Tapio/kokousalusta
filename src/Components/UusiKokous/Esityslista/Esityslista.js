@@ -68,7 +68,7 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
     params.append("kokous_id", kokousid)
     axios.post(url + 'data.php', params, { withCredentials: true })
       .then((response) => {
-        alert(response.data);
+        
         setItems(response.data[0])
 
         document.getElementById(response.data[0][response.data[0].length - 1].id).focus();
