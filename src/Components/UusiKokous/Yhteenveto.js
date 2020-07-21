@@ -82,7 +82,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         let kokousosallistujat
         kokousosallistujat = osallistujat.map(x => ({ rooli: 'osallistuja', ...x }))
         user = Object.assign({ rooli: 'puheenjohtaja' }, user)
-        const call = { call: 'postosallistujat', id_y: id_y, kokousnro: perustiedot.kokousNro.substring(0, perustiedot.kokousNro.length - 5) }
+        const call = { call: 'postosallistujat', id_y: id_y, kokousid: perustiedot.kokousid }
         kokousosallistujat = [user].concat(kokousosallistujat)
         kokousosallistujat = [call].concat(kokousosallistujat)
         const body = JSON.stringify(kokousosallistujat)
@@ -103,7 +103,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         request.kokous(invite).then(res => {
             alert(res.data.message)
             setLoading(false)
-            history.push('/assoc/Kissaklubi')
+            history.push({pathname:`/assoc/${yhdistys}`, state:{id_y}})
         }).catch(err => alert(err.response.data.message))
     }
 
