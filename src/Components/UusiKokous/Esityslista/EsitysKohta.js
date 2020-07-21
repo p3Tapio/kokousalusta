@@ -17,17 +17,13 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
     save(_id,data,delay,type,id)
   }
 
+  var sisalto = (auki)?<Sisalto kokous_id={kokous_id} id={id} type={type} save={this_save}/>:"";
+
   const thisvaihda_tyyppi = (param) => {
     if (type==param) param=0;
-    vaihda_tyyppi(id,param)
-    /*var params = new URLSearchParams()  
-    params.append ("paatos_valitse", param)
-    params.append ("kohta", id)
-    params.append ("kokous_id", kokous_id)
-    axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-      */
+      vaihda_tyyppi(id,param)
       
-    }
+  }
     
 
 
@@ -35,14 +31,16 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
   let loppu =""
   /*if(startDate!=null && startDate !=="") alku = <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
   if(endDate!=null && endDate !=="") loppu = <Kalenteri pv={endDate.getDate()} kk = {endDate.getMonth()+1} alku={false}/>    */
-  var sisalto = (auki)?<Sisalto kokous_id={kokous_id} id={id} type={type} save={this_save}/>:"";
+  let nappeja = [ "",
+                  <FaHandshake      onClick={()=>thisvaihda_tyyppi(1)} className ={(type==1)?"kohta_valittu":""}/>,
+                  <FaHandsHelping   onClick={()=>thisvaihda_tyyppi(2)} className ={(type==2)?"kohta_valittu":""}/>,
+                  <FaPenSquare      onClick={()=>thisvaihda_tyyppi(3)} className ={(type==3)?"kohta_valittu":""}/>,
+                  <FaRegCheckSquare onClick={()=>thisvaihda_tyyppi(4)} className ={(type==4)?"kohta_valittu":""}/>]
   
-  let nappit=  <div className ="valinta_iconit">
-    <FaHandshake onClick={()=>thisvaihda_tyyppi(1)} className ={(type==1)?"kohta_valittu":""}/>
-    <FaHandsHelping onClick={()=>thisvaihda_tyyppi(2)} className ={(type==2)?"kohta_valittu":""}/>
-    <FaPenSquare onClick={()=>thisvaihda_tyyppi(3)} className ={(type==3)?"kohta_valittu":""}/>
-    <FaRegCheckSquare onClick={()=>thisvaihda_tyyppi(4)} className ={(type==4)?"kohta_valittu":""}/>
-  </div>
+  let nappit = (type==0)?
+  <div className="valinta_iconit">{nappeja[1]}{nappeja[2]}{nappeja[3]}{nappeja[4]}</div>
+    :
+    <div className="valinta_iconit">{nappeja[type]}</div>;
 
   return (
     <div className="esitys_item"  onClick= {this_avaa}>

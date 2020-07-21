@@ -92,9 +92,9 @@ body { background-color: #ddd;*/
 
 
 .valinta_iconit * {
-    margin-left: 5px;
+    margin-right: 5px;
     fill:#fff;
-    
+    float:right;
     padding:0px;
     stroke-width: 10px;
     stroke:#000;

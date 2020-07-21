@@ -56,8 +56,10 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
         params.append ("kohta", id_kohta)
         params.append ("kokous_id", kokousid)
         axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-          if(response.data =="ok")
-          setItems(items.map(items => (items.id === id_kohta)?{ ...items, type:param}:items))
+          if(response.data =="ok"){
+            setItems(items.map(items => (items.id === id_kohta)?{ ...items, type:param}:items))
+            return(param);
+          }
         })
     }
 
