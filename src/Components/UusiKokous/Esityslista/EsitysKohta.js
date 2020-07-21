@@ -1,11 +1,11 @@
 import React, { useState  } from 'react'
 import Kalenteri from './Kalenteri'
-import axios from 'axios';
+
 import Sisalto from './Sisalto'
 import ResizeTextArea from './ResizeTextArea'
 import { FaHands, FaHandsHelping,FaHandshake,FaPenSquare,FaRegCheckSquare } from 'react-icons/fa';
 const url = process.env.REACT_APP_HOST_URL
-const EsitysKohta = ({kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save}) => {
+const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save}) => {
   
   const [startDate, setStartDate] = useState((alkaa!=="0000-00-00")?new Date(alkaa):"")
   const [endDate, setEndDate] = useState((loppuu!=="0000-00-00")?new Date(alkaa):"")
@@ -17,20 +17,18 @@ const EsitysKohta = ({kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save}
     save(_id,data,delay,type,id)
   }
 
-  const vaihda_tyyppi = (param) => {
+  const thisvaihda_tyyppi = (param) => {
     if (type==param) param=0;
-    var params = new URLSearchParams()  
+    vaihda_tyyppi(id,param)
+    /*var params = new URLSearchParams()  
     params.append ("paatos_valitse", param)
     params.append ("kohta", id)
     params.append ("kokous_id", kokous_id)
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
+      */
       
-      
-
-    })    
+    }
     
-  
-}
 
 
   let alku =""
@@ -40,10 +38,10 @@ const EsitysKohta = ({kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save}
   var sisalto = (auki)?<Sisalto kokous_id={kokous_id} id={id} type={type} save={this_save}/>:"";
   
   let nappit=  <div className ="valinta_iconit">
-    <FaHandshake onClick={()=>vaihda_tyyppi(1)} className ={(type==1)?"kohta_valittu":""}/>
-    <FaHandsHelping onClick={()=>vaihda_tyyppi(2)} className ={(type==2)?"kohta_valittu":""}/>
-    <FaPenSquare onClick={()=>vaihda_tyyppi(3)} className ={(type==3)?"kohta_valittu":""}/>
-    <FaRegCheckSquare onClick={()=>vaihda_tyyppi(4)} className ={(type==4)?"kohta_valittu":""}/>
+    <FaHandshake onClick={()=>thisvaihda_tyyppi(1)} className ={(type==1)?"kohta_valittu":""}/>
+    <FaHandsHelping onClick={()=>thisvaihda_tyyppi(2)} className ={(type==2)?"kohta_valittu":""}/>
+    <FaPenSquare onClick={()=>thisvaihda_tyyppi(3)} className ={(type==3)?"kohta_valittu":""}/>
+    <FaRegCheckSquare onClick={()=>thisvaihda_tyyppi(4)} className ={(type==4)?"kohta_valittu":""}/>
   </div>
 
   return (

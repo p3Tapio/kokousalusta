@@ -45,6 +45,7 @@ else if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta']) && isset($_POST
 	$param = (int)$_POST['paatos_valitse'];
 	$sql = "CALL esityskohta_muuta_tyyppi('$kohta','$param','$kokous','$user')";
 	$result = $con -> query($sql);
+	echo "ok"; //*todo jos ei onnistukkaan *//
 	exit(0);
 	
 }

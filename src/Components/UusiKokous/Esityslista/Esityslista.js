@@ -8,8 +8,7 @@ var updateParams = new URLSearchParams();
 const url = process.env.REACT_APP_HOST_URL
 const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="-1", edit="true"} ) => {
     const [items,setItems] = useState([])
-    const [auki,setAuki] = useState(0)
-    let lisaa;
+    const [auki,setAuki] = useState(0)    
     console.log('Esityslista.js --- kokousid', kokousid)
 
     
@@ -50,6 +49,17 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
           timer = setTimeout(function(){axiosSave()}, delay)
           
       }
+    const vaihda_tyyppi = (id_kohta,param) => {
+        
+        var params = new URLSearchParams()  
+        params.append ("paatos_valitse", param)
+        params.append ("kohta", id_kohta)
+        params.append ("kokous_id", kokousid)
+        axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
+          if(response.data =="ok")
+          setItems(items.map(items => (items.id === id_kohta)?{ ...items, type:param}:items))
+        })
+    }
 
     const lisaaItem = () => {
     var params = new URLSearchParams();
@@ -77,14 +87,26 @@ const Esityslista = ({ setShowComponent, setEsityslista, esityslista, kokousid="
         
     }
     
-
+    let lisaa;
     if(edit) lisaa = <button className="lisaa_esitysitem" onClick = {lisaaItem}>Asiakohta</button>
     console.log('items', items)
     return (
       <div id="esitys_container"> 
-          
-          {items.map(items => <EsitysKohta kokous_id={kokousid} type={items.type} auki={auki===items.id} avaa={avaaItem} owner={items.o} type={items.type} title={items.n} id={items.id} save={save} key={items.id} alkaa={items.s} loppuu={items.e}/>)}
-          
+          {items.map(items => 
+            <EsitysKohta 
+              kokous_id={kokousid}
+              vaihda_tyyppi={vaihda_tyyppi} 
+              avaa={avaaItem}
+              save={save}
+              type={items.type}
+              auki={auki===items.id}
+              owner={items.o}
+              type={items.type}
+              title={items.n}
+              id={items.id}
+              key={items.id}
+              alkaa={items.s}
+              loppuu={items.e}/>)}
           {lisaa}
       </div>
      )
