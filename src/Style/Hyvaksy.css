@@ -1,0 +1,18 @@
+.asiakohta_hyvaksy {
+    margin-top: -5px;
+    background-color: #F9f9f9;
+}
+.asiakohta_hyvaksy .areaText{
+    margin-top:30px;
+    background-color: #FFF;
+    outline:1px solid #ddd ;
+    padding:10px 5px 10px 5px;
+    font-size: 14px;
+}
+.asiakohta_perustelu {
+    
+    padding-left:30px;
+    padding-right:30px;
+    padding-bottom:30px;
+    background-color: #F9f9f9;
+}

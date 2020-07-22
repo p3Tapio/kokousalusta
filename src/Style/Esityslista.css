@@ -4,9 +4,9 @@
 /*body { background-color: #a6c3df66;counter-reset: nro;}
 
 body { background-color: #ddd;*/
-    body {counter-reset: nro;}*/
+    body {counter-reset: nro;background-color: #f9f9f9;}
 
-#esitys_container{position:relative;max-width:1020px;margin:46px auto 0px auto;scroll-behavior: smooth;}
+#esitys_container{position:relative;max-width:1100px;margin:-3px auto 0px auto;scroll-behavior: smooth;}
 
 .esitys_item {position:relative;margin:4px auto 0px auto;max-width:100%;padding-bottom:0px;}
 /*#esitys_container .nro:nth-of-type(1) {border-left:6px solid transparent;}*/
@@ -24,7 +24,7 @@ body { background-color: #ddd;*/
 .disable-select {-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none; }
 .esitys_item:hover .raahaa::before {display:inline-block}
 
-.otsake .areaText:focus {background-color: #00000011;}
+/*.otsake .areaText:focus {background-color: #00000011;}*/
 
 
 
@@ -38,7 +38,7 @@ body { background-color: #ddd;*/
 
 
 
- .areaText {height:auto;white-space:pre-wrap;border:none;outline:0px solid transparent;position:relative;padding:15px 0px 0px 60px;border:none;width:calc(100% - 60px);resize:none;overflow:hidden;font-size:16px;}
+ .areaText {height:auto;white-space:pre-wrap;border:none;outline:0px solid transparent;position:relative;padding:15px 0px 0px 60px;border:none;width:calc(100%);resize:none;overflow:hidden;font-size:16px;}
 .kuvaus .areaText {background-color:#f9f9f9;height:auto;white-space:pre-wrap;border:none;outline:0px solid transparent;position:relative;padding:15px 0px 0px 25px;border:none;width:calc(100%);resize:none;overflow:hidden;font-size:14px;}
 .harmaa .otsake .areaText {background-color: #2c3e50;color:#FFF}
 
@@ -75,7 +75,7 @@ body { background-color: #ddd;*/
     right:0px;
     width:140px;
     opacity:1;
-    
+    background-color:transparent;
 }
 
 
@@ -102,7 +102,7 @@ body { background-color: #ddd;*/
     width:30px;
     height:30px;
     border-radius: 5px;
-    
+    background-color: #FFF;
     border: 1px solid #f9f9f9;
     
 }

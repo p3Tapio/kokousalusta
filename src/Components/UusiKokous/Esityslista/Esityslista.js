@@ -15,7 +15,6 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
   useEffect(() => {
     if (kokousid == -1) return;
     let params = new URLSearchParams();
-
     params.append("kokous_id", kokousid)
     axios.post(url + 'data.php', params, { withCredentials: true }).then((response) => {
 

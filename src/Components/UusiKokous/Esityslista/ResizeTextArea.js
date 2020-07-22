@@ -23,9 +23,7 @@ const ResizeTextArea = ({sisus,id=0,save,placeholder="",edit=false,avaa,alku=0,l
                        spellCheck="false" >{sisus}</div>
 
     return (
-      <div>
-      {sisusta}
-      </div>
+      <div>{sisusta}</div>
       
     )
   }

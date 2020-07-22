@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState} from 'react';
 import ResizeTextArea from './ResizeTextArea'
 import '../../../Style/Mielipide.css';
-import { findAllInRenderedTree } from 'react-dom/test-utils';
+
 
 var alku=0;
 var loppu=0;
@@ -75,7 +75,7 @@ const Mielipide = ({id,save,edit=false, arvot=[],kuvaus,positio}) => {
     let mielipide = ""
     if(mbool) 
         mielipide = <div>
-    <div className="mteksti">Mielipide asiasta:<b> {kohta} </b></div>
+    <div className="mteksti">Mielipide asiasta:<br></br><b> {kohta} </b></div>
     <div className="perustelu" onMouseDown={()=>{positio(alku,loppu)}}><ResizeTextArea  edit={true} sisus={perustelu} save={this_save}/></div>
     <div className="msend" id={"send_mielipide"+id} onClick={() => julkaise()}>Lähetä</div></div>
     

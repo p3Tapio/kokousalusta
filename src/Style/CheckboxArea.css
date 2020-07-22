@@ -54,10 +54,10 @@
 
 .ruutu {
     padding:1px;
-    height:12px;
-    width:12px;
-    margin:5px;
-    margin-top:10px;
+    height:15px;
+    width:15px;
+    
+    margin:12px 25px 5px 20px;
     position:absolute;
     float:left;
     clear:both;

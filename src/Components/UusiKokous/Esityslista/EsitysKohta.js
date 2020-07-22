@@ -54,7 +54,7 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
 
   return (
     <div className="esitys_item"  onClick= {this_avaa}>
-      <div className="otsake"><ResizeTextArea edit={false} id={id} sisus={title} save={this_save}/></div>
+      <div className="otsake"><ResizeTextArea edit={true} id={id} sisus={title} save={this_save}/></div>
       <div>
       {nappit}
       {loppu}
