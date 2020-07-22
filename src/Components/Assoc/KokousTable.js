@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import request from '../Shared/HttpRequests'
+import Loading from '../Shared/Loading'
 import { Link } from 'react-router-dom'
 import { FaKey } from 'react-icons/fa';
 import Kalenteri from '../UusiKokous/Esityslista/Kalenteri'
@@ -60,7 +61,7 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
             </div>
         )
     } else {
-        return <></>
+       return <Loading/>
     }
 }
 export default KokousTable

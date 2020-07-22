@@ -8,6 +8,7 @@ import Kokousaika from '../../Components/Kokous/Kokousaika'
 import KokousPaatosvalta from '../../Components/Kokous/KokousPaatosvalta';
 import Esityslista from '../../Components/UusiKokous/Esityslista/Esityslista';
 import KokousPoytakirja from '../../Components/Kokous/KokousPoytakirja'
+import Loading from '../../Components/Shared/Loading'
 
 const KokousDetails = (props) => {
 
@@ -189,7 +190,7 @@ const KokousDetails = (props) => {
                 return <></>
             }
         } else {
-            return <p>Loading...</p>
+            return <Loading />
         }
     } else {
         history.push(`/assoc/${yhdistys}`)

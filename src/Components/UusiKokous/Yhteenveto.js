@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { TextEditor } from '../Document/TextEditor';
 import { getUser } from '../Auth/Sessions'
 import request from '../Shared/HttpRequests'
+import Loading from '../Shared/Loading';
 
 const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
     const [loading, setLoading] = useState(false)
@@ -134,6 +135,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         return (
             <div className="mt-5 mx-auto col-md-10">
                 <h5 className="mb-4">Pyyntöä käsitellään, odota hetki....</h5>
+                <Loading/>
             </div>
         )
     }

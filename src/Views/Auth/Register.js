@@ -4,6 +4,7 @@ import AppRegister from '../../Components/Auth/AppRegister'
 import { FaFacebook } from 'react-icons/fa';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { Link } from 'react-router-dom'
+import Loading from '../../Components/Shared/Loading';
 
 
 const Register = () => {
@@ -47,7 +48,7 @@ const Register = () => {
                 ? <FbRegister fbRes={fbRes} />
                 : <AppRegister />}</>)
     } else {
-        return <p>Loading...</p>
+        return <Loading />
     }
 }
 export default Register
