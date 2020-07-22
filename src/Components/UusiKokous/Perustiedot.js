@@ -1,5 +1,4 @@
 import React from 'react'
-import Loading from '../Shared/Loading'
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import fi from 'date-fns/locale/fi';
@@ -61,7 +60,7 @@ const Perustiedot = ({ setShowComponent, handlePerustiedotChange, saveKokousDraf
             </div>
         )
     }else {
-        return <Loading/>
+        return <p className="mt-4 mx-4">Ladataan tietoja .... </p>
     }
 }
 export default Perustiedot

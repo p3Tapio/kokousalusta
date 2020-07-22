@@ -4,7 +4,6 @@ import Kokouslistat from './Kokouslistat'
 import Jasenlista from './Jasenlista'
 import HelpPop from '../Shared/HelpPop'
 import { getSessionRole } from '../Auth/Sessions'
-import Loading from '../Shared/Loading'
 
 const AssocAdmin = ({ kokoukset, members, yhdistys, yhdistys_id }) => {
     
@@ -41,7 +40,7 @@ const AssocAdmin = ({ kokoukset, members, yhdistys, yhdistys_id }) => {
             </div>
         )
     } else if (!getSessionRole()) {
-        return <Loading/>
+        return <p className="mt-4 mx-4">Ladataan tietoja .... </p>
     }
     else {
         history.push('/userpage')

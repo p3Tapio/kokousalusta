@@ -4,7 +4,6 @@ import { getUser } from '../../Components/Auth/Sessions'
 import request from '../../Components/Shared/HttpRequests'
 import AssocContent from '../../Components/Assoc/AssocContent'
 import { setSessionRole, getSessionRole } from '../../Components/Auth/Sessions'
-import Loading from '../../Components/Shared/Loading'
 
 const AssocMain = (props) => {
 
@@ -59,7 +58,7 @@ const AssocMain = (props) => {
             </div>
         )
     } else {
-        return <Loading />
+        return <p className="mt-4 mx-4">Ladataan tietoja .... </p>
     }
 }
 
