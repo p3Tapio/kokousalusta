@@ -28,7 +28,7 @@ const UusiKokous = (props) => {
     const [id_y, setId_y] = useState(props.location.state.id_y);
     const [id_k, setId_k] = useState(-1);
 
-    useEffect(() => { 
+    useEffect(() => {
         const pvmYear = { year: 'numeric' };
         const now = Date();
         const getDraft = JSON.stringify({ call: 'getkokousdraft', name: yhdistys })
@@ -103,7 +103,7 @@ const UusiKokous = (props) => {
         }
     }, [members, perustiedot])  // missing dependencies, mutta seurauksena looppi ... refaktoroi? 
     // 'getKokousNro', 'osallistujat', 'puheenjohtaja', 'varalla.length', and 'yhdistys'
-    
+
     const helpText = "Aloita kokous antamalla sille otsikko sekä alku- ja loppupäivämäärät. Kun olet valmis, paina seuraava-näppäintä, niin voit luoda esityslistan ja päättää voiko yhdistyksen jäsenet liittää omia esityksiään esityslistalle. Seuraavaksi voit määritellä kokouksen osallistujat ja päätösvaltaisuuden. Lopuksi näet kutsu kokous -välilehdeltä luomasi kokouksen tiedot, missä voit tallentaa ja lähettää kutsun kokoukseen osallistujille."
 
     const getKokousNro = () => {
@@ -134,7 +134,12 @@ const UusiKokous = (props) => {
                 setShowComponent(x)
             })
         } else {
+            let napit = ev.target.parentNode.querySelectorAll("button");
+            for (let i = 0; i < napit.length; i++) {
+                napit[i].classList.remove("valittu_menu");
+            }
             setShowComponent(ev.target.name)
+            ev.target.classList.add("valittu_menu");
         }
     }
 
@@ -186,7 +191,7 @@ const UusiKokous = (props) => {
                 console.log('res.data', res.data)
             }).catch(err => console.log('Error res.data ', err.response.data))
 
-            console.log('saveOsallistujat() ---- osallistujat ', osallistujat )
+            console.log('saveOsallistujat() ---- osallistujat ', osallistujat)
         }
     }
     const handlePerustiedotChange = (ev) => {
@@ -206,28 +211,29 @@ const UusiKokous = (props) => {
     else if (showComponent === 'esityslista') component = <Esityslista setShowComponent={setShowComponent} setEsityslista={setEsityslista} esityslista={esityslista_otsakkeet} kokousid={id_k} setShowComponent={setShowComponent} saveKokousDraft={saveKokousDraft} />
     else if (showComponent === 'osallistujat') component = <Osallistujat puheenjohtaja={puheenjohtaja} osallistujat={osallistujat} setOsallistujat={setOsallistujat} saveOsallistujat={saveOsallistujat} varalla={varalla} setVaralla={setVaralla} setShowComponent={setShowComponent} />
     else if (showComponent === 'paatosvaltaisuus') component = <Paatosvaltaisuus setShowComponent={setShowComponent} handlePaatosvaltaChange={handlePaatosvaltaChange} paatosvaltaisuus={paatosvaltaisuus} saveKokousDraft={saveKokousDraft} />
-    else if (showComponent === 'yhteenveto') component = <Yhteenveto esityslista_otsakkeet={esityslista_otsakkeet} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y}/>
+    else if (showComponent === 'yhteenveto') component = <Yhteenveto esityslista_otsakkeet={esityslista_otsakkeet} perustiedot={perustiedot} osallistujat={osallistujat} paatosvaltaisuus={paatosvaltaisuus} yhdistys={yhdistys} id_y={id_y} />
     else component = <></>
 
 
     if (getSessionRole() && getSessionRole().role === 'admin' && getSessionRole().yhdistys === yhdistys) {
         return (
-            <div className="col-md-10 mx-auto mt-5">
-                <h2>{yhdistys}</h2>
-                <h4>Luo uusi kokous</h4>
-                {/* //  onClick={()=> saveKokousDraft()} --- TODO muokkaa siten ettei tallenusta tapahdu, jos muuta kuin kokousid ei ole asetettu  */}
-                <Link to={{ pathname: `/assoc/${yhdistys}`, state: { id: id_y } }}>Yhdistyksen pääsivu</Link>
+            <div style={{ width: "100%", maxWidth: "1100px", padding: "0", marginTop: "50px" }}>
+                <div className="px-3">
+                    <h2>{yhdistys}</h2>
+                    <h4>Luo uusi kokous</h4>
+                    {/* //  onClick={()=> saveKokousDraft()} --- TODO muokkaa siten ettei tallenusta tapahdu, jos muuta kuin kokousid ei ole asetettu  */}
+                    <Link to={{ pathname: `/assoc/${yhdistys}`, state: { id: id_y } }}>Yhdistyksen pääsivu</Link>
+                </div>
                 <hr />
                 <div>
-                    <div className="d-flex justify-content-center">
-                        <button className="btn btn-outline-primary btn-sm mx-1" name="perustiedot" onClick={handleMenuClick}>Perustiedot</button>
-                        <button className="btn btn-outline-primary btn-sm mx-1" name="esityslista" onClick={handleMenuClick}>Esityslista</button>
-                        <button className="btn btn-outline-primary btn-sm mx-1" name="osallistujat" onClick={handleMenuClick}>Osallistujat</button>
-                        <button className="btn btn-outline-primary btn-sm mx-1" name="paatosvaltaisuus" onClick={handleMenuClick}>Päätösvaltaisuus</button>
-                        <button className="btn btn-outline-primary btn-sm mx-1" name="yhteenveto" onClick={handleMenuClick}>Kutsu kokous</button>
+                    <div className="d-sm-flex justify-content-center second_nav">
+                        <button className="text-primary valittu_menu" name="perustiedot" onClick={handleMenuClick}>Perustiedot</button>
+                        <button className="text-primary " name="esityslista" onClick={handleMenuClick}>Esityslista</button>
+                        <button className="text-primary " name="osallistujat" onClick={handleMenuClick}>Osallistujat</button>
+                        <button className="text-primary " name="paatosvaltaisuus" onClick={handleMenuClick}>Päätösvaltaisuus</button>
+                        <button className="text-primary " name="yhteenveto" onClick={handleMenuClick}>Kutsu kokous</button>
                         <HelpPop heading="Kokouksen luominen" text={helpText} btnText="Selitystä" placement="left" variant="btn btn-outline-danger btn-sm mx-1" />
                     </div>
-                    <hr />
                 </div>
                 <div className="mt-5">
                     {component}
