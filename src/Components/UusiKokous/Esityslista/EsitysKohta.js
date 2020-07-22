@@ -10,7 +10,9 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
   const [startDate, setStartDate] = useState((alkaa!=="0000-00-00")?new Date(alkaa):"")
   const [endDate, setEndDate] = useState((loppuu!=="0000-00-00")?new Date(alkaa):"")
   var sisalto;
+
   const this_save = (_id,data,delay,type) => {
+    
     save(_id,data,delay,type,id)
   }
   let tyyppi=type;
@@ -52,7 +54,7 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
 
   return (
     <div className="esitys_item"  onClick= {this_avaa}>
-      <div className="otsake"><ResizeTextArea edit={auki} id={id} sisus={title} save={this_save}/></div>
+      <div className="otsake"><ResizeTextArea edit={false} id={id} sisus={title} save={this_save}/></div>
       <div>
       {nappit}
       {loppu}

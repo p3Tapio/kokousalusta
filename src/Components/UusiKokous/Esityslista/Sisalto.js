@@ -4,6 +4,7 @@ import CheckboxArea from './CheckboxArea'
 import ResizeTextArea from './ResizeTextArea'
 import Mielipide from './Mielipide'
 import '../../../Style/Sisalto.css'
+import { parse } from 'acorn';
 
 const url = process.env.REACT_APP_HOST_URL
 
@@ -11,14 +12,17 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
   
   const [valinnat,setValinnat] =useState([])
   const [valintaArvot,setValintaArvot] = useState([])
-  const [kuvaus,setKuvaus] = useState("")
-  const [descBool,setDescBool] = useState(false)
-  
-  
+  const [kuvaus,setKuvaus] = useState([])
+  const [k_alku,set_k_Alku] = useState([])
+  const [k_valittu,set_k_Valittu] = useState([])
+  const [k_loppu,set_k_Loppu] = useState([])
+  const [mielipiteet,setMielipiteet] = useState([]);
+  const [tyyppi,setTyyppi] = useState((type==1 && edit==false)?1:0);
   
   const kuvaus_save = (id,data) => {
     save(id,data,500,"kuvaus")
     setKuvaus(data)
+
   }
 
 
@@ -57,7 +61,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
     save(id,nnimi,500,"check");
     setValinnat(valinnat.map(arvot => (arvot.id === id)?{ ...arvot, nimi:nnimi}:arvot))
   }
-  const mielipide_save = (data) => {
+  const mielipide_save = (id,data) => {
     save(id,data,500,"mielipide")
   }
   
@@ -70,20 +74,40 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
         else setValintaArvot([])
       if(response.data[1]!=-1)setValinnat(JSON.parse(response.data[1]))   
         else setValinnat([])
-      if(response.data[0]!=-1)setKuvaus(JSON.parse(response.data[0]))
-        else setKuvaus("");
-      setDescBool(true)
+      if(response.data[0]!=-1){
+        setKuvaus(JSON.parse(response.data[0]))
+        
+      }
+        else {
+          setKuvaus("");
+         
+        }
+      set_k_Loppu("");
+      set_k_Valittu("");
+      if(response.data[3]!=-1)setMielipiteet(JSON.parse(response.data[3]))
+        else setMielipiteet([]);
+     
       
     })}
     
-  let desc;
   
-  
-  if (descBool)
-    desc = <div className="mielipide" id={"mielipide"+id}><ResizeTextArea edit={true} id={id} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>
+  const osa = (s,e) => {
+    
+    return kuvaus.toString().substring(s,e);  
+  }
 
-  let valinta
+
   
+
+  const setPositio = (a,l) => {
+    
+      
+    set_k_Alku(osa(0,a))
+    set_k_Valittu(osa(a,l))
+    set_k_Loppu(osa(l,parseInt(kuvaus.toString().length)))
+    setTyyppi(2);
+  }  
+
   useEffect(() => {
       reload()
       window.setTimeout(function(){
@@ -98,21 +122,28 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
 
 
   
-
+  let setti = ["",
+  <Mielipide edit={true} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/>,
+  <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/>,
+  "ei koodattu viela(1)",
+  "ei koodattu viela(2)"]
+  [type]
 
     return (
       <div id="s">
       <div id="sisalto">  
         
-         {desc}
+         {
+            [<div className="kuvaus"><ResizeTextArea edit={true} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
+            <div className="kuvaus"><div  id={"kuvaus"+id} className="areaText">{kuvaus}</div></div>,
+              <div className="kuvaus"><div  id={"kuvaus"+id} onMouseDown={()=>setTyyppi(1)}className="areaText">
+                {k_alku}<span className='korostus'>{k_valittu}</span>{k_loppu}</div></div>][tyyppi]
+
+         }
+
         {
 
-          ["",
-          <Mielipide edit={true} id={id} save={mielipide_save}/>,
-          <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/>,
-          "ei koodattu viela(1)",
-          "ei koodattu viela(2)"]
-          [type]
+       setti
         }
 
         
@@ -121,7 +152,10 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
            
          
       </div>
-      {/*}
+      {
+      
+      
+      /*}
       <div className="sisalto"><div className="add uusi">Deadline</div></div>  
       <div className="sisalto"><div className="add uusi">Lisää liite</div></div>
       <div className="sisalto" ><div className="add uusi">Päätös</div></div>

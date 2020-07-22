@@ -23,9 +23,13 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
     })
   }, [kokousid])
 
-  const axiosSave = () => { axios.post(url + 'data.php', updateParams, { withCredentials: true }).then((response) => { }) }
+  const axiosSave = () => {
+      let updateParams2 = updateParams;
+      updateParams = new URLSearchParams();  
+      axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {}) }
 
   const save = (id, data, delay, type, kohta) => {
+    
     if (updateParams.get("id") !== id || updateParams.get("type") !== type) axiosSave();
 
     if (type === "otsake")
@@ -37,7 +41,7 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
       updateParams.append("param", data[0])
       updateParams.append("alku", data[1])
       updateParams.append("loppu", data[2])
-      updateParams.append("julki", data[3])
+      updateParams.append("draft", data[3])
     } else {
       updateParams.append("param", data)
     }

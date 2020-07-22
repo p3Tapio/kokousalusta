@@ -1,86 +1,104 @@
-import React, { useEffect, useState, useRef  } from 'react';
+import React, { useRef, useEffect, useState} from 'react';
 import ResizeTextArea from './ResizeTextArea'
 import '../../../Style/Mielipide.css';
+import { findAllInRenderedTree } from 'react-dom/test-utils';
 
 var alku=0;
 var loppu=0;
-const Mielipide = ({id,save,edit=false}) => {
+var thisdata =""
+const Mielipide = ({id,save,edit=false, arvot=[],kuvaus,positio}) => {
     const [kohta,setKohta] = useState("")
     const [perustelu,setPerustelu] = useState("")
     const [mbool,setMielibool] =useState(false);
     
-    const this_save = (id,data) => {
-        setPerustelu(data);
-        save(id,[data,alku,loppu,0])}
-  
-  
-    useEffect((paivitaKohta) => {
-    document.addEventListener('selectionchange', function(event) {
-        let sel = window.getSelection();
-        if (sel.rangeCount) {
-            let element = sel.getRangeAt(0).commonAncestorContainer;
-            if(element && element.parentNode !==null && element.parentNode.id === ("mielipide"+id)){
-                let pos = getInputSelection(element.querySelector(".areaText"))
-                alku = pos[0];
-                loppu = pos[1];
-                setMielibool(alku!==loppu)
-                setKohta(window.getSelection().toString()+":"+alku+":"+loppu);
-            }
-            
+    
+    const laheta_setup = () => {
+        let sendi = document.getElementById("send_mielipide"+id);
+        if(sendi !=null){
+            if (thisdata.length >0)
+                sendi.classList.add("msend2")
+            else
+                sendi.classList.remove("msend2")
         }
-    })
-    }, [])  
+    }
 
+    const this_save = (_id,data) => {
+        setPerustelu(data);
+        thisdata = data;
+        save(_id,[data,alku,loppu,0])
+        laheta_setup();    
+    }
+
+    const julkaise = () => {
+        save(id,[thisdata,alku,loppu,1])
+        alku=0;loppu=0;
+        thisdata =""
+        setPerustelu("");
+        positio(alku,loppu)
+        setMielibool(alku!=loppu);
+    }
+    
+    useEffect((paivitaKohta) => {
+        document.addEventListener('selectionchange', function(event) {
+            let sel = window.getSelection();
+            if (sel.rangeCount) {
+                let element = sel.getRangeAt(0).commonAncestorContainer;
+                if(element && element.parentNode !==null && element.parentNode.id === ("kuvaus"+id)){
+                   
+                    //let pos = getInputSelection(element.querySelector(".areaText"))
+                    
+                    alku = sel.anchorOffset;
+                    let offset = sel.focusOffset;
+                    if(offset < alku ){
+                        loppu = alku
+                        alku = offset;
+                    } else {
+                        loppu = offset;
+                    }
+                    laheta_setup()
+        
+                
+                    setMielibool(alku!=loppu);
+                    setKohta(window.getSelection().toString());
+                }
+                
+            }
+        })
+        }, [])  
+    const osa = (alku,loppu) => {
+        let otsake = kuvaus.toString().substring(alku,loppu)
+        if (otsake.length > 100) return otsake.slice(0,80)+"..."
+        else return otsake;
+        
+    }
     
     let mielipide = ""
     if(mbool) 
         mielipide = <div>
     <div className="mteksti">Mielipide asiasta:<b> {kohta} </b></div>
-    <div className="perustelu" ><ResizeTextArea  edit={true} sisus={perustelu} save={this_save}/></div>
-    <div className="msend">Lähetä</div></div>
-
+    <div className="perustelu" onMouseDown={()=>{positio(alku,loppu)}}><ResizeTextArea  edit={true} sisus={perustelu} save={this_save}/></div>
+    <div className="msend" id={"send_mielipide"+id} onClick={() => julkaise()}>Lähetä</div></div>
+    
     return (<div>
-       
+          
         {mielipide}
+        {(arvot.length > 0)?<div className="MielipideHeader">Mielipiteet({arvot.length})</div>:""}
+        
+        {arvot.map(arvot =>
+            <div className="mielipide_container" onClick={(ev)=>{setMielibool(false);positio(arvot.alku,arvot.loppu)}}>
+                <div className="kelloaika">{arvot.aika}</div>
+                <div className="nimipallo">{arvot.firstname[0]}{arvot.lastname[0]}</div>
+                <div className="mielipide_otsake" >{osa(arvot.alku,arvot.loppu)}</div>
+                
+                
+                <div className="mielipide_teksti">{arvot.mielipide}</div>
+             </div>                   
+                                ) }    
         </div>)
 }
 
 
 export default Mielipide
 
-function getInputSelection(el) {
-    var start = 0, end = 0, normalizedValue, range,
-        textInputRange, len, endRange;
 
-    if (typeof el.selectionStart == "number" && typeof el.selectionEnd == "number") {
-        start = el.selectionStart;
-        end = el.selectionEnd;
-    } else {
-        range = document.selection.createRange();
 
-        if (range && range.parentElement() == el) {
-            len = el.value.length;
-            normalizedValue = el.value.replace(/\r\n/g, "\n");
-            textInputRange = el.createTextRange();
-            textInputRange.moveToBookmark(range.getBookmark());
-            endRange = el.createTextRange();
-            endRange.collapse(false);
-            if (textInputRange.compareEndPoints("StartToEnd", endRange) > -1) {
-                start = end = len;
-            } else {
-                start = -textInputRange.moveStart("character", -len);
-                start += normalizedValue.slice(0, start).split("\n").length - 1;
-
-                if (textInputRange.compareEndPoints("EndToEnd", endRange) > -1) {
-                    end = len;
-                } else {
-                    end = -textInputRange.moveEnd("character", -len);
-                    end += normalizedValue.slice(0, end).split("\n").length - 1;
-                }
-            }
-        }
-    }
-
-    return [start,end];
-    
-}

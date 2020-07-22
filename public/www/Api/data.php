@@ -83,6 +83,10 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 	$sql = "CALL esityskohta_data('$kohta','$kokous');";
 	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous');";
 	$sql.= "CALL valinnat('$kohta','$kokous','$user');";
+	$sql.= "CALL esityskohta_mielipiteet('$kohta','$kokous','$user');";
+	/*
+	$sql.= "CALL esityskohta_mielipide_draft('$kohta','$kokous','$user');";
+	*/
 	$multi_result = $con -> multi_query($sql);
 	$i=0;
 	if ($multi_result) {
@@ -90,7 +94,8 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 			if ($result = $con->store_result()) {
 				unset($rows);
 				while ($row = mysqli_fetch_assoc($result)) {
-					if ($i==2) $rows[] = $row['id'];
+					if (isset($row['-1']));
+					else if ($i==2) $rows[] = $row['id'];
 					else if ($i==0) $rows[] = $row['data'];
 					else $rows[] = $row;			
 				}
@@ -122,15 +127,36 @@ else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) &
 		case "kuvaus":
 			$sql = "CALL esityskohta_data_muuta('$kohta','$param','$user','$kokous');";
 			break;
-
 		case "mielipide":
-			echo "TADA";
-			exit(0);
+			if (isset($_POST['alku']) && isset($_POST['loppu']) && isset($_POST['draft'])){
+				$draft = $_POST['draft'];
+				$alku = $_POST['alku'];
+				$loppu = $_POST['loppu'];
+				$sql = "CALL esityskohta_mielipide_lisaa('$kohta','$kokous','$user','$draft','$alku','$loppu','$param')";
+				echo $sql;
+			} 
+
+			
 	}
 	$result = $con -> query($sql);
 	exit(0);
 }
 
+/*
+    if (type === "mielipide") {
+      updateParams.append("param", data[0])
+      updateParams.append("alku", data[1])
+      updateParams.append("loppu", data[2])
+      updateParams.append("draft", data[3])
+    
+
+    updateParams.append("id", id);
+    updateParams.append("kohta", kohta);
+    updateParams.append("kokous_id", kokousid)
+    updateParams.append("save", type)
+    window.clearTimeout(timer);
+	timer = setTimeout(function () { axiosSave() }, delay)
+	*/
 
 
 

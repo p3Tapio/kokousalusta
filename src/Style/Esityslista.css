@@ -38,9 +38,8 @@ body { background-color: #ddd;*/
 
 
 
-
-.areaText {height:auto;white-space:pre-wrap;border:none;outline:0px solid transparent;position:relative;padding:15px 0px 0px 60px;border:none;width:calc(100% - 60px);resize:none;overflow:hidden;font-size:16px;}
-
+ .areaText {height:auto;white-space:pre-wrap;border:none;outline:0px solid transparent;position:relative;padding:15px 0px 0px 60px;border:none;width:calc(100% - 60px);resize:none;overflow:hidden;font-size:16px;}
+.kuvaus .areaText {background-color:#f9f9f9;height:auto;white-space:pre-wrap;border:none;outline:0px solid transparent;position:relative;padding:15px 0px 0px 25px;border:none;width:calc(100%);resize:none;overflow:hidden;font-size:14px;}
 .harmaa .otsake .areaText {background-color: #2c3e50;color:#FFF}
 
 .otsake {background-color: #FFF;}
@@ -62,7 +61,9 @@ body { background-color: #ddd;*/
 
 
 
+.esitys_item:nth-of-type(-n+3) .nro{border-left:5px solid teal;}
 
+.esitys_item:nth-of-type(-n+4) .nro::before {border-radius: 50px;  background-color: teal;color:#FFF;font-weight: bold;color:#FFF}
 
 
 
@@ -116,4 +117,10 @@ body { background-color: #ddd;*/
     fill:#2c3e50;
     opacity: 0.9;
     border: 1px solid #2c3e50;
+}
+
+.korostus {
+
+background-color: #2c3e50;
+color:#FFF;
 }

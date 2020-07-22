@@ -8,7 +8,7 @@
 }
 .perustelu .areaText {
     margin-left:25px;
-    width:calc(100% - 80px);
+    width:calc(100% - 45px);
     border:1px solid #ccc;
     padding:5px;
 }
@@ -19,4 +19,70 @@
     background-color: #ccc;
     color: white;
     max-width:150px;
+}
+.msend2 {
+    
+    background-color: #1b831b;
+    
+    
+}
+.mielipide_container{
+    z-index:3000;
+    margin-left: 25px;
+    margin-right:0px;
+    position: relative;
+    outline: 1px solid transparent;
+    margin-bottom:20px;
+}
+.mielipide_valittu {
+    outline:1px solid #ddd;
+}
+.mielipide_otsake{
+    position:absolute;
+    top:0px;
+    padding-left:5px;
+    font-size:12px;
+    
+   /* font-weight: bold;*/
+}
+.mielipide_teksti {
+    white-space:pre-wrap;
+    border-top:20px solid #f9f9f9;
+    padding:5px 5px 5px 5px;
+    font-size:12px;
+    background-color: hsl(209, 100%, 81%,20%);
+    width:calc (100% - 40px);
+    border-bottom:2px solid #DDD;
+}
+.nimipallo {
+    z-index: 10000;
+    background-color: rgb(163, 41, 41);
+    color:#FFF;
+    position:absolute;
+    display:block;
+    width:20px;
+    height:20px;
+    /*padding: 0px 5px 0px 5px;*/
+    position:absolute;
+    line-height: 20px;
+    text-align: center;
+    font-size:10px;
+    top:0px;
+    right:0px;
+    
+}
+.kelloaika {
+    padding:2px;
+    font-size:10px;
+    padding-right: 30px;
+    float:right;
+}
+
+.MielipideHeader {
+ margin-top:30px;
+ 
+    
+    padding-left:40px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
