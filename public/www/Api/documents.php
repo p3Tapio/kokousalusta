@@ -17,6 +17,9 @@ if(isset($_FILES['file'])) {
             case 'getdocuments':
                 getDocuments(); 
                 break; 
+            case 'getuploads': 
+                getUploads(); 
+                break;  
             default: 
                 http_response_code(404);
                 break;        
@@ -100,6 +103,32 @@ function lisaaPdfKantaan() {
             $response = array("message"=> "Väärä tiedostotyyppi.");
             http_response_code(400);
         }
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function getUploads() {
+    
+    $response = array("message"=> "Haku epäonnistui.");
+    http_response_code(400);
+    
+    if(isset($_POST['kokousid']) && isset($_POST['yhdistys'])) {
+        $kokousid = (int)$_POST['kokousid']; 
+        $yhdistys = htmlspecialchars(strip_tags($_POST["yhdistys"]));
+
+        $sql = "CALL documents_getuploads($kokousid)";
+        $yhteys = connect(); 
+
+        $res = $yhteys->query($sql);
+        $rows = []; 
+        while($row = mysqli_fetch_assoc($res)) {
+            $rows[] = $row; 
+        }
+
+        http_response_code(200);
+        echo json_encode($rows, JSON_UNESCAPED_UNICODE); 
+        mysqli_close($yhteys);
+        
+        exit(); 
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
