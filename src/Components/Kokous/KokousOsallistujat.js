@@ -6,8 +6,7 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
     jasenet = jasenet.filter(jasen => !puheenjohtaja.find(({ email }) => jasen.email === email))
    
     return (
-        <div>
-            <h5 className="mt-3 mx-2">Osallistujat</h5>
+        <div style={{marginTop:"4px"}} >
             < table className="table table-hover table-responsive-sm">
                 <thead>
                     <tr className="table-primary"><th>Etunimi</th><th>Sukunimi</th><th>Sähköpostiosoite</th><th></th></tr>
@@ -40,7 +39,7 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
 
                         </tbody>
                     </ table> </>
-                : <p>Kaikki yhdistyksen jäsenet osallistuvat kokoukseen.</p>}
+                : <><hr/><p className="ml-2">Kaikki yhdistyksen jäsenet osallistuvat kokoukseen.</p></>}
         </div>
     )
 }

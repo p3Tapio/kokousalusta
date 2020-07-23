@@ -40,7 +40,6 @@ const KokousDetails = (props) => {
             }).catch(err => console.log('err.response.data', err.response.data))
 
             const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId })
-            console.log('body2', body2)
             request.osallistujat(body2).then(res => {
                 setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
                 setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
@@ -130,7 +129,7 @@ const KokousDetails = (props) => {
 
                 let component 
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
-                else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} />
+                else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} /> 
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
