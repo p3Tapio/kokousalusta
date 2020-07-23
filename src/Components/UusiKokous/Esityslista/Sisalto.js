@@ -4,6 +4,7 @@ import CheckboxArea from './CheckboxArea'
 import ResizeTextArea from './ResizeTextArea'
 import Mielipide from './Mielipide'
 import Hyvaksy from './Hyvaksy'
+import Puheenjohtajanvalita from './Puheenjohtajanvalita'
 import '../../../Style/Sisalto.css'
 
 
@@ -26,11 +27,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
 
   }
 
-  const perustelu_save = (id,data) => {
-    /*save(id,data,500,"perustelu")*/
-    
-    setPerustelu(data);
-  }
+  const perustelu_save = (id,data) => {/*save(id,data,500,"perustelu")*/setPerustelu(data);}
 
   const check = (vid) => {
       var params = new URLSearchParams()
@@ -39,7 +36,6 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
       params.append ("kohta", id)
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) => reload())    
   }
-
   const check_uusi = (vid) => {
     var params = new URLSearchParams()
     params.append ("check_uusi", vid)       
@@ -50,7 +46,6 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
       
     })    
   }
-  
   const check_remove = (vid) => {
     var params = new URLSearchParams();      
     params.append ("check_remove", vid)
@@ -67,7 +62,6 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
   const mielipide_save = (id,data) => {
     save(id,data,500,"mielipide")
   }
-  
   const reload = () => {
     var params = new URLSearchParams()
     params.append ("avaakohta", id)
@@ -92,16 +86,13 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
      
       
     })}
-
+  
   const osa = (s,e) => {
-    return kuvaus.toString().substring(s,e);  
-  }
+     return kuvaus.toString().substring(s,e);
+   }
 
   const setPositio = (a,l) => {
-    set_k_Alku(osa(0,a))
-    set_k_Valittu(osa(a,l))
-    set_k_Loppu(osa(l,parseInt(kuvaus.toString().length)))
-    setTyyppi(2);
+    set_k_Alku(osa(0,a));set_k_Valittu(osa(a,l));set_k_Loppu(osa(l,parseInt(kuvaus.toString().length)));setTyyppi(2);
   }  
 
   useEffect(() => {
@@ -119,11 +110,10 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
 
   
   let setti = ["",
-  <Mielipide edit={true} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/>,
-  <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/>,
-  "ei koodattu viela(1)",
-  <Hyvaksy id={id} save={perustelu_save} sisus={perustelu}/>]
-  [type]
+              <Mielipide edit={true} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/>,
+              <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/>,
+              <Puheenjohtajanvalita/>,
+              <Hyvaksy id={id} save={perustelu_save} sisus={perustelu}/>][type]
 
     return (
       <div id="s">
