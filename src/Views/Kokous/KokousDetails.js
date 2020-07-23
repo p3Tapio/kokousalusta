@@ -23,7 +23,7 @@ const KokousDetails = (props) => {
     const [osallistujat, setOsallistujat] = useState()
     const [jasenet, setJasenet] = useState()
 
-    const [showComponent, setShowComponent] = useState("asiat")
+    const [showComponent, setShowComponent] = useState("asiakirjat")
     const [showTable, setShowTable] = useState(true)
    
     let yhdistys_id 

@@ -20,6 +20,9 @@ if(isset($_FILES['file'])) {
             case 'getuploads': 
                 getUploads(); 
                 break;  
+            case 'getpdf':
+                getPdf(); 
+                break; 
             default: 
                 http_response_code(404);
                 break;        
@@ -128,6 +131,23 @@ function getUploads() {
         echo json_encode($rows, JSON_UNESCAPED_UNICODE); 
         mysqli_close($yhteys);
         
+        exit(); 
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function getPdf() {
+    $response = array("message"=> "Pdf:n haku epäonnistui.");
+    http_response_code(400);
+    if(isset($_POST['polku']) && isset($_POST['nimi'])) {
+        $polku = htmlspecialchars(strip_tags(stripcslashes($_POST["polku"])));
+        $nimi =  htmlspecialchars(strip_tags($_POST["nimi"]));
+        
+        $data = file_get_contents("$polku");
+        header("Content-type: application/octet-stream");
+        header("Content-disposition: attachment;filename=$nimi");
+
+        http_response_code(200); 
+        echo $data;
         exit(); 
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
