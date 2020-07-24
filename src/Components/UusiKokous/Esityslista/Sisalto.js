@@ -4,9 +4,9 @@ import CheckboxArea from './CheckboxArea'
 import ResizeTextArea from './ResizeTextArea'
 import Mielipide from './Mielipide'
 import Hyvaksy from './Hyvaksy'
-import Puheenjohtajanvalita from './Puheenjohtajanvalita'
+import Puheenjohtajanvalinta from './Puheenjohtajanvalinta'
 import '../../../Style/Sisalto.css'
-
+import Paatos from './Paatos'
 
 const url = process.env.REACT_APP_HOST_URL
 
@@ -29,19 +29,21 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
 
   const perustelu_save = (id,data) => {/*save(id,data,500,"perustelu")*/setPerustelu(data);}
 
-  const check = (vid) => {
+  const check = (vid,multi=1) => {
       var params = new URLSearchParams()
       params.append ("check_valitse", vid)
       params.append ("kokous_id", kokous_id)   
       params.append ("kohta", id)
+      params.append ("multi",multi)
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) => reload())    
   }
-  const check_uusi = (vid) => {
+  const check_uusi = (data="") => {
     var params = new URLSearchParams()
-    params.append ("check_uusi", vid)       
+    params.append ("check_uusi", data)       
     params.append ("kohta", id)
     params.append ("kokous_id", kokous_id)
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
+      alert(response.data)
       reload()
       
     })    
@@ -62,6 +64,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
   const mielipide_save = (id,data) => {
     save(id,data,500,"mielipide")
   }
+
   const reload = () => {
     var params = new URLSearchParams()
     params.append ("avaakohta", id)
@@ -69,8 +72,12 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
       if(response.data[2]!=-1)setValintaArvot(JSON.parse(response.data[2]))
         else setValintaArvot([])
-      if(response.data[1]!=-1)setValinnat(JSON.parse(response.data[1]))   
+      if(response.data[1]!=-1){
+        setValinnat(JSON.parse(response.data[1]))   
+        console.log("FOO",JSON.parse(response.data[1]))
+      }
         else setValinnat([])
+      
       if(response.data[0]!=-1){
         setKuvaus(JSON.parse(response.data[0]))
         
@@ -112,13 +119,13 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
   let setti = ["",
               <Mielipide edit={true} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/>,
               <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/>,
-              <Puheenjohtajanvalita/>,
+              <Puheenjohtajanvalinta kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/>,
               <Hyvaksy id={id} save={perustelu_save} sisus={perustelu}/>][type]
 
     return (
       <div id="s">
       <div id="sisalto">  
-        
+      <Paatos/>
          {
             [ <div className="kuvaus"><ResizeTextArea edit={true} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
               <div className="kuvaus"><div  id={"kuvaus"+id} className="areaText">{kuvaus}</div></div>,

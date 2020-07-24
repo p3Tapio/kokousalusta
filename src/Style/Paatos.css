@@ -1,0 +1,14 @@
+.paatos {
+    padding:10px 50px 10px 50px;
+    border-bottom: 2px solid #ddd;
+ 
+ position:relative;
+ width:100%;
+ z-index:400000;
+ margin-left:-30px;
+ background-color: #ffffffee;
+ 
+ 
+ width:calc(100% + 30px);
+ height:auto;
+}

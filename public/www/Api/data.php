@@ -26,11 +26,12 @@ if(isset($_POST['otsakkeet'])){
 }
 
 
-else if(isset($_POST['check_valitse'])&& isset($_POST['kohta']) && isset($_POST['kokous_id'])){
+else if(isset($_POST['check_valitse'])&& isset($_POST['kohta']) && isset($_POST['kokous_id']) && isset($_POST['multi'])){
 	$kokous = (int)$_POST['kokous_id'];
+	$multi = (int)$_POST['multi'];
 	$kohta = (int)$_POST['kohta'];
 	$vid = (int)$_POST['check_valitse'];
-	$sql = "CALL esityskohta_valitse('$kokous','$user','$kohta','$vid');";
+	$sql = "CALL esityskohta_valitse('$kokous','$user','$kohta','$vid','$multi');";
 	$result = $con -> query($sql);
 	if($row = mysqli_fetch_assoc($result)) echo "[".$row['id'].",".$row['b']."]";
 	exit(0);
@@ -67,10 +68,11 @@ else if(isset($_POST['check_remove']) && isset($_POST['kohta']) && isset($_POST[
 
 else if(isset($_POST['check_uusi']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
 	$kokous = (int)$_POST['kokous_id'];
-	
+	$data = $_POST['check_uusi'];
 	$kohta = (int)$_POST['kohta'];
-	$sql = "CALL esityskohta_valinnat_lisaa('$kohta','$kokous','$user')";
+	$sql = "CALL esityskohta_valinnat_lisaa('$kohta','$kokous','$user','$data')";
 	$result = $con -> query($sql);
+	echo $sql;
 	exit(0);
 }
 

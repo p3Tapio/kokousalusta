@@ -12,9 +12,6 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
   console.log('Esityslista.js --- kokousid', kokousid)
 
 
-  /**
-   * lataa kokouksen (mikäli kokous id vaihtuu)
-   */
 
   useEffect(() => {
     if (kokousid == -1) return;
@@ -26,9 +23,6 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
     })
   }, [kokousid])
 
-/**
- * tallenttaa urlparamssit joihin on kerätty lapsikompponenteista tietoa
- */
 
 
   const axiosSave = () => {
@@ -36,16 +30,6 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
       updateParams = new URLSearchParams();  
       axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {}) }
 
-      /**
-       * tallentaa lapsikompponenteilta tulevat tiedot tietyn ajan jälkeen
-       * mikäli kompponentti / tallennettavan tiedon tyyppi on eri suoritetaan tallennus heti
-       * 
-       * @param {komponentin id} id 
-       * @param {tallennettava tieto} data 
-       * @param {tallennusviive} delay 
-       * @param {talennus tyyppi jonka back endi nappaa} type 
-       * @param {esityskohdan id} kohta 
-       */
 
   const save = (id, data, delay, type, kohta) => {
     if (updateParams.get("id") !== id || updateParams.get("type") !== type) axiosSave();
@@ -68,11 +52,7 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
     timer = setTimeout(function () { axiosSave() }, delay)
 
   }
-/**
- * 
- * @param {} id_kohta 
- * @param {*} param 
- */
+
 
   const vaihda_tyyppi = (id_kohta, param) => {
     var params = new URLSearchParams()
