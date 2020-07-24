@@ -92,11 +92,12 @@ body { background-color: #ddd;*/
 
 
 
-.valinta_iconit * {
+.valinta_iconit .p_k {
     margin-right: 5px;
     fill:#fff;
     float:right;
     padding:0px;
+    
     stroke-width: 10px;
     stroke:#000;
     width:30px;
@@ -106,8 +107,8 @@ body { background-color: #ddd;*/
     border: 1px solid #f9f9f9;
     
 }
-.valinta_iconit *:hover {
-    stroke-width: 0px;
+.valinta_iconit .p_k:hover {
+    stroke-width: 5px;
     stroke:#000;
     fill:#000;
     background-color: #ddd;
@@ -123,4 +124,26 @@ body { background-color: #ddd;*/
 
 background-color: #2c3e50;
 color:#FFF;
+}
+
+
+.valinnat_iconi {height:30px;width:30px;background-size: 25px 25px;background-image: url(./svg/valinnat.svg);background-repeat: no-repeat;}
+
+
+.p_k:hover ~ .kohta_info{
+    display:block;
+}
+
+
+.kohta_info {
+    display:none;
+    position:absolute;
+    top:30px;
+    border:1px solid #ccc;
+    right:0px;
+    
+    font-size:10px;
+    float:right;
+    padding: 5px 20px 5px 20px;
+    font-weight: bold;
 }

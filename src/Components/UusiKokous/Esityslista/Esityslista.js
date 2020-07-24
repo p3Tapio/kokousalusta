@@ -12,6 +12,7 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
   console.log('Esityslista.js --- kokousid', kokousid)
 
 
+
   useEffect(() => {
     if (kokousid == -1) return;
     let params = new URLSearchParams();
@@ -22,29 +23,27 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
     })
   }, [kokousid])
 
+
+
   const axiosSave = () => {
       let updateParams2 = updateParams;
       updateParams = new URLSearchParams();  
       axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {}) }
 
-  const save = (id, data, delay, type, kohta) => {
-    
-    if (updateParams.get("id") !== id || updateParams.get("type") !== type) axiosSave();
 
+  const save = (id, data, delay, type, kohta) => {
+    if (updateParams.get("id") !== id || updateParams.get("type") !== type) axiosSave();
     if (type === "otsake")
       setItems(items.map(items => (items.id === id) ? { ...items, n: data } : items))
-
     updateParams = new URLSearchParams();
-
     if (type === "mielipide") {
       updateParams.append("param", data[0])
       updateParams.append("alku", data[1])
       updateParams.append("loppu", data[2])
-      updateParams.append("draft", data[3])
+      updateParams.append("draft", data[3]) /* 0 = draft , 1= julkaise */
     } else {
       updateParams.append("param", data)
     }
-
     updateParams.append("id", id);
     updateParams.append("kohta", kohta);
     updateParams.append("kokous_id", kokousid)
@@ -53,8 +52,9 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
     timer = setTimeout(function () { axiosSave() }, delay)
 
   }
-  const vaihda_tyyppi = (id_kohta, param) => {
 
+
+  const vaihda_tyyppi = (id_kohta, param) => {
     var params = new URLSearchParams()
     params.append("paatos_valitse", param)
     params.append("kohta", id_kohta)
@@ -71,9 +71,7 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
     params.append("kokous_id", kokousid)
     axios.post(url + 'data.php', params, { withCredentials: true })
       .then((response) => {
-        
         setItems(response.data[0])
-
         document.getElementById(response.data[0][response.data[0].length - 1].id).focus();
       }
       )

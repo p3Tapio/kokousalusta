@@ -57,11 +57,11 @@ const Login = () => {
                         lastname: res.data.lastname,
                         email: email,
                     }
-                  /*  setUserSession(user, res.data.token)*/
-                 /*   history.push('/userpage')*/
+                    setUserSession(user, res.data.token)
+                    history.push('/userpage')
 
-                }).catch((error) => {
-                    alert(error)
+                }).catch((err) => {
+                    alert(err)
                 })
         }
     }
