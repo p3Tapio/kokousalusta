@@ -18,8 +18,8 @@ const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja }) => 
         if (kokous.pv_muu !== '') paatosvalta += `<p>${kokous.pv_muu}</p>`
     }
     // TODO asiakohtien otsikot ja sisältökentät, myös "Tulostaja saa valita, haluaako tulostaa myös käytyjä keskusteluja ja annettuja kommentteja: kyllä/ei." 
-
-    const [poytakirja, setPoytakirja] = useState(`<h1>${yhdistys}</h1>${otsikko}<h2>${kokousnumero}</h2><h2>${ajat}</h2><h2>Osallistujat</h2><ul>${osallistuu}</ul><p>Puheenjohtaja: ${puheenjohtaja[0].firstname} ${puheenjohtaja[0].lastname}<h2>Päätösvaltaisuus</h2>${paatosvalta}`)
+    const pj = puheenjohtaja.length !== 0 ? puheenjohtaja[0].firstname + puheenjohtaja[0].lastname : "kokouksessa ei ole puheenjohtajaa"
+    const [poytakirja, setPoytakirja] = useState(`<h1>${yhdistys}</h1>${otsikko}<h2>${kokousnumero}</h2><h2>${ajat}</h2><h2>Osallistujat</h2><ul>${osallistuu}</ul><p>Puheenjohtaja: ${pj}<h2>Päätösvaltaisuus</h2>${paatosvalta}`)
 
     const editorContentChange = (poytakirja) => {
         setPoytakirja(poytakirja)

@@ -17,6 +17,12 @@ if(isset($_POST["call"])) {
         case 'lisaaosallistuja':
             lisaaOsallistuja();
             break; 
+        case 'pjpoistui':
+            pjPoistui(); 
+            break;
+        default: 
+            http_response_code(404);
+            break;   
     }
 } else if (implode(array_column($_POST, 'call')) == 'postosallistujat') {
     postOsallistujat(); 
@@ -119,6 +125,29 @@ function lisaaOsallistuja() {   // {"call":"lisaaosallistuja","kokousid":"33","y
         }
         mysqli_close($yhteys);
     }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function pjPoistui() { // {"call":"pjpoistui","kokousid":"382","syy":"sadasdas","pv":10}
+
+    $response = array( "message"=> "Tapahtui virhe.");
+    http_response_code(400);
+
+    if(isset($_POST['kokousid']) && isset($_POST['pv'])) {
+       
+        $kokousid = (int)$_POST['kokousid']; 
+        $syy = htmlspecialchars(strip_tags($_POST['syy']));
+        $pv = (int)$_POST['pv']; 
+
+        $q = "CALL esityslista_uusi_pj($kokousid, '$syy', $pv)"; 
+        $yhteys = connect(); 
+
+        if($yhteys->query($q)) {
+            $response = array( "message"=> "OK");
+            http_response_code(200);
+        }
+
+        mysqli_close($yhteys);      
+    } 
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 function connect() {

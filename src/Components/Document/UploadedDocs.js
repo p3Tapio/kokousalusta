@@ -18,9 +18,12 @@ const UploadedDocs = ({ upload }) => {
             console.log('typeof res.data', typeof res.data) // decode, mutta mihin ???? 
             console.log('res.data', res.data)
        
+            // ------------------------------------------------------------------------
+            // Voiko getin tehdä suoraan polkuun ilman että kutsu kiertää php:n kautta? 
+            // ------------------------------------------------------------------------
+
 
             // window.open("data:application/pdf," + encodeURI(pdfString)); 
-
             const file = new Blob([res.data], { type: 'application/pdf' });
 
             const fileUrl = URL.createObjectURL(file)

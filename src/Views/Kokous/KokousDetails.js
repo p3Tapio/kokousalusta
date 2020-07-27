@@ -9,6 +9,7 @@ import KokousPaatosvalta from '../../Components/Kokous/KokousPaatosvalta';
 import Esityslista from '../../Components/UusiKokous/Esityslista/Esityslista';
 import KokousPoytakirja from '../../Components/Kokous/KokousPoytakirja'
 
+
 const KokousDetails = (props) => {
 
     let history = useHistory()
@@ -25,17 +26,17 @@ const KokousDetails = (props) => {
 
     const [showComponent, setShowComponent] = useState("asiat")
     const [showTable, setShowTable] = useState(true)
-   
-    let yhdistys_id 
-    if(props.location.state === undefined) history.push(`/assoc/${yhdistys}`)
-    else  yhdistys_id = props.location.state.id_y
 
-    
+    let yhdistys_id
+    if (props.location.state === undefined) history.push(`/assoc/${yhdistys}`)
+    else yhdistys_id = props.location.state.id_y
+
+
     useEffect(() => {
 
         if (getSessionRole()) {
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
-      
+
             request.kokous(body).then(res => {
                 setKokous(res.data)
             }).catch(err => console.log('err.response.data', err.response.data))
@@ -49,7 +50,7 @@ const KokousDetails = (props) => {
                     setKokousRooli(osal[0].role)
                 } else history.push({ pathname: `/assoc/${yhdistys}`, state: { yhdistys_id } })
             }).catch(err => console.log('err.response.data', err.response.data))
-         
+
             const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
             request.assoc(req).then(res => {
                 setJasenet(res.data)
@@ -82,18 +83,16 @@ const KokousDetails = (props) => {
                 runRequest = true
             }
         } else if (ev.target.id === 'osallistujaksi') {
-            if (window.confirm(`Haluatko muuttaa henkilön ${henkilo.firstname} ${henkilo.lastname} kokousosallistujaksi?`)) {
+            if (window.confirm(`Haluatko siirtää henkilön ${henkilo.firstname} ${henkilo.lastname} kokousosallistujaksi?`)) {
                 setOsallistujat(osallistujat.concat(henkilo))
                 body = JSON.stringify({ call: 'lisaaosallistuja', kokousid: kokousId, yhdistys: yhdistys, email: ev.target.name })
                 runRequest = true
             }
         } else if (ev.target.id === 'poistu') {     // Kokousosallistuja: Voi ilmoittaa esteellisyydestä yksittäiseen kokoukseen ja nimetä varakokousedustajan kokousosallistujaksi tilalleen  ????
-            if (window.confirm('Oletko varma, että haluat perua osallistumisesi ja poistua kokouksesta?')) {
-                setOsallistujat(osallistujat.filter(x => x.email !== user.email))
-                body = JSON.stringify({ call: 'poistaosallistuja', kokousid: kokousId, email: user.email })
-                runRequest = true
-                window.location.reload();
-            }
+            setOsallistujat(osallistujat.filter(x => x.email !== user.email))
+            body = JSON.stringify({ call: 'poistaosallistuja', kokousid: kokousId, email: user.email })
+            runRequest = true
+            window.location.reload();
         }
         if (runRequest) {
             console.log('body', body)
@@ -104,6 +103,26 @@ const KokousDetails = (props) => {
                 console.log('err.response', err.response)
             })
         }
+    }
+    const handlePJPoistuuKokouksesta = (syy) => {
+   
+        setOsallistujat(osallistujat.filter(x => x.email !== user.email))
+        const body = JSON.stringify({ call: 'poistaosallistuja', kokousid: kokousId, email: user.email })
+
+        request.osallistujat(body).then(res => {
+            alert("Poistuit kokouksesta")
+        }).catch(err => {
+            alert(err.response.data.message)
+            console.log('err.response', err.response)
+        })
+
+        const body2 = JSON.stringify({ call: 'pjpoistui', kokousid: kokousId, syy: syy, pv: 10 })
+        console.log('body2', body2)
+        request.osallistujat(body2).then(res => {
+            window.location.reload();
+        }).catch(err => console.log('err.response', err.response))
+
+
     }
     const handleVaihdaKokousaika = (date) => {
 
@@ -121,16 +140,16 @@ const KokousDetails = (props) => {
             alert("Määritä uusi päättymispäivä ennen tallentamista")
         }
     }
-    console.log('puheenjohtaja', puheenjohtaja)
+   
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
 
         if (kokous && kokousRooli) {
 
             if (kokous.avoinna === "1" || kokousRooli === "puheenjohtaja") {
 
-                let component 
+                let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
-                else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} /> 
+                else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} />
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
@@ -165,7 +184,8 @@ const KokousDetails = (props) => {
                                 <small>({text})</small>
                             </div>
                             <div className="mt-4 float-right">
-                                <button className="btn btn-danger mb-2 ml-2" title="Peru osallistumisesi kokoukseen" id="poistu" onClick={handleOsallistujatClick}>Peru osallistumisesi</button>
+                                <button className="btn btn-danger mb-2 ml-2" type="button" title="Peru osallistumisesi kokoukseen" id="poistu" data-toggle="modal" data-target='#poistuModal' >Peru osallistumisesi</button>
+                                <PoistuModal handlePJPoistuuKokouksesta={handlePJPoistuuKokouksesta} handleOsallistujatClick={handleOsallistujatClick} kokousRooli={kokousRooli} />
                             </div>
                             <div className="clearfix"></div>
                         </div>
@@ -199,3 +219,39 @@ const KokousDetails = (props) => {
 
 export default KokousDetails
 
+
+const PoistuModal = ({ handlePJPoistuuKokouksesta, handleOsallistujatClick, kokousRooli }) => {
+    const [syy, setSyy] = useState('')
+    const handleSyyChange = (ev) => {
+        setSyy(ev.target.value)
+    }
+    return (
+        <div className="modal fade" id="poistuModal" tabIndex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="ModalLabel">Poistu kokouksesta</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        <p>Haluatko poistua kokouksesta?</p>
+                        {kokousRooli === 'puheenjohtaja'
+                            ? <div className="form-group">
+                                <textarea className="form-control" rows="2" name="syy" onChange={handleSyyChange} value={syy} />
+                                <small className="form-text text-muted">Voit kirjoittaa kenttään syyn kokouksesta poistumiseen.</small>
+                            </div>
+                            : <></>}
+                    </div>
+                    <div className="modal-footer">
+                        {kokousRooli === 'puheenjohtaja'
+                            ? <button type="button" className="btn btn-outline-primary" data-dismiss="modal" id='poistu' onClick={() => handlePJPoistuuKokouksesta(syy)}>Poistu kokouksesta</button>
+                            : <button type="button" className="btn btn-outline-primary" data-dismiss="modal" id='poistu' onClick={handleOsallistujatClick}>Poistu kokouksesta</button>}
+                        <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">Peruuta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
