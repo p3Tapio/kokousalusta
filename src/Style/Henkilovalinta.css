@@ -1,0 +1,14 @@
+.pj_ehdota,
+ .pj_asetu {border:1px solid #bbb;margin-left:80px;border-bottom:2px solid #aaa;padding: 5px;position:relative;display: block; ;width: 200px;outline:none;;font-size:12px;margin-bottom: 10px;color:#777;}
+ .pj_ehdokkaita {padding:5px;margin-left: 80px;padding-left: 50px;border-bottom: 1px solid #ddd;}
+ .pj_ehdokkaita:nth-child(even) {
+     background-color: #00000010;
+     
+ }
+ .pj_ehdota:focus {
+     outline: none;border:1px solid #bbb;border-bottom:2px solid #aaa;
+ }
+ 
+ .pj_ehdokkaita:hover, .pj_ehdota:hover {
+     background-color: wheat;
+ }

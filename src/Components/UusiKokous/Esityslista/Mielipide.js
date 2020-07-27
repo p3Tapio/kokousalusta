@@ -6,7 +6,7 @@ import '../../../Style/Mielipide.css';
 var alku=0;
 var loppu=0;
 var thisdata =""
-const Mielipide = ({id,save,edit=false, arvot=[],kuvaus,positio}) => {
+const Mielipide = ({tila,id,save,edit=false, arvot=[],kuvaus,positio}) => {
     const [kohta,setKohta] = useState("")
     const [perustelu,setPerustelu] = useState("")
     const [mbool,setMielibool] =useState(false);
@@ -73,7 +73,7 @@ const Mielipide = ({id,save,edit=false, arvot=[],kuvaus,positio}) => {
     }
     
     let mielipide = ""
-    if(mbool) 
+    if(mbool && tila!=3) 
         mielipide = <div>
     <div className="mteksti">Mielipide asiasta:<br></br><b> {kohta} </b></div>
     <div className="perustelu" onMouseDown={()=>{positio(alku,loppu)}}><ResizeTextArea  edit={true} sisus={perustelu} save={this_save}/></div>

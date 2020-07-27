@@ -15,7 +15,7 @@ const ResizeTextArea = ({sisus,id=0,save,placeholder="",edit=false,avaa,alku=0,l
 
       let sisusta;
 
-      if (edit) sisusta = <textarea ref={Tarea} className="areaText" id={id} spellCheck="false" onChange = {updatethis} value={sisus} placeholder={placeholder}></textarea>
+      if (edit) sisusta = <textarea ref={Tarea} className="areaText" id={id} spellCheck="false" onChange = {updatethis} onInput= {updatethis} value={sisus} placeholder={placeholder}></textarea>
       else sisusta = <div 
                       ref={Tarea} tabIndex="0"
                        style={{paddingBottom:15}}

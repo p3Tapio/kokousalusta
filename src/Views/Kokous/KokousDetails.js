@@ -30,6 +30,7 @@ const KokousDetails = (props) => {
     if(props.location.state === undefined) history.push(`/assoc/${yhdistys}`)
     else  yhdistys_id = props.location.state.id_y
 
+    
     useEffect(() => {
 
         if (getSessionRole()) {

@@ -4,13 +4,13 @@ import CheckboxArea from './CheckboxArea'
 import ResizeTextArea from './ResizeTextArea'
 import Mielipide from './Mielipide'
 import Hyvaksy from './Hyvaksy'
-import Puheenjohtajanvalinta from './Puheenjohtajanvalinta'
+import Henkilovalinta from './Henkilovalinta'
 import '../../../Style/Sisalto.css'
 import Paatos from './Paatos'
 
 const url = process.env.REACT_APP_HOST_URL
 
-const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
+const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
   
   const [valinnat,setValinnat] =useState([])
   const [valintaArvot,setValintaArvot] = useState([])
@@ -19,7 +19,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
   const [k_valittu,set_k_Valittu] = useState([])
   const [k_loppu,set_k_Loppu] = useState([])
   const [mielipiteet,setMielipiteet] = useState([]);
-  const [tyyppi,setTyyppi] = useState((type==1 && edit==false)?1:0);
+  const [tyyppi,setTyyppi] = useState((type==2 && edit==false)?1:0);
   const [perustelu,setPerustelu] = useState ("")
   const kuvaus_save = (id,data) => {
     save(id,data,500,"kuvaus")
@@ -43,8 +43,8 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
     params.append ("kohta", id)
     params.append ("kokous_id", kokous_id)
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-      alert(response.data)
-      reload()
+      
+      reload(1)
       
     })    
   }
@@ -65,7 +65,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
     save(id,data,500,"mielipide")
   }
 
-  const reload = () => {
+  const reload = (param=0) => {
     var params = new URLSearchParams()
     params.append ("avaakohta", id)
     params.append ("kokous_id", kokous_id)
@@ -73,8 +73,9 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
       if(response.data[2]!=-1)setValintaArvot(JSON.parse(response.data[2]))
         else setValintaArvot([])
       if(response.data[1]!=-1){
+        
         setValinnat(JSON.parse(response.data[1]))   
-        console.log("FOO",JSON.parse(response.data[1]))
+        
       }
         else setValinnat([])
       
@@ -104,10 +105,14 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
 
   useEffect(() => {
       reload()
+      const element = document.getElementById("s"+id).parentNode.querySelector(".nro");
+        if(true || element.getBoundingClientRect().top<0){
+            const y = element.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({top: y, behavior: 'smooth'})}
       window.setTimeout(function(){
-        const yOffset = 0; 
-        const element = document.getElementById("s").parentNode.parentNode.querySelector(".raahaa");
-        if(element.getBoundingClientRect().top<0){
+        const yOffset = -40; 
+        const element = document.getElementById("s"+id).parentNode.parentNode.querySelector(".nro");
+        if(true || element.getBoundingClientRect().top<0){
             const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
             window.scrollTo({top: y, behavior: 'smooth'})}
         },100)
@@ -117,17 +122,23 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
 
   
   let setti = ["",
-              <Mielipide edit={true} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/>,
-              <CheckboxArea edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/>,
-              <Puheenjohtajanvalinta kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/>,
-              <Hyvaksy id={id} save={perustelu_save} sisus={perustelu}/>][type]
+              "", /*tiedoksi*/
+              <div>mielipide<Mielipide tila={tila} edit={edit} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
+              <div>hyvaksy<Hyvaksy tila={tila} id={id} save={perustelu_save} sisus={perustelu}/></div>,
+              <div><CheckboxArea tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
+              <div><Henkilovalinta tila={tila} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>,
+              <div><Henkilovalinta tila={tila} type={6} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
+
+              
+              
+              [type]
 
     return (
-      <div id="s">
+      <div id={"s"+id}>
       <div id="sisalto">  
-      <Paatos/>
+    
          {
-            [ <div className="kuvaus"><ResizeTextArea edit={true} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
+            [<div className="kuvaus"><ResizeTextArea edit={true} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
               <div className="kuvaus"><div  id={"kuvaus"+id} className="areaText">{kuvaus}</div></div>,
               <div className="kuvaus"><div  id={"kuvaus"+id} onMouseDown={()=>setTyyppi(1)}className="areaText">
                 {k_alku}<span className='korostus'>{k_valittu}</span>{k_loppu}</div></div>]
@@ -135,10 +146,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false}) => {
 
          }
 
-        {
-
-       setti
-        }
+        {setti}
 
         
 

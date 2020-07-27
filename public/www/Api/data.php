@@ -25,6 +25,14 @@ if(isset($_POST['otsakkeet'])){
    
 }
 
+else if(isset($_POST['poista_kohta']) && isset($_POST['kokous_id'])) {
+	
+	$kokous = (int)$_POST['kokous_id'];
+	$kohta = (int)$_POST['poista_kohta'];
+	$sql = "CALL esityskohta_poista('$kokous','$user','$kohta')";
+
+}
+
 
 else if(isset($_POST['check_valitse'])&& isset($_POST['kohta']) && isset($_POST['kokous_id']) && isset($_POST['multi'])){
 	$kokous = (int)$_POST['kokous_id'];
@@ -45,9 +53,7 @@ else if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta']) && isset($_POST
 	$kohta = (int)$_POST['kohta'];
 	$param = (int)$_POST['paatos_valitse'];
 	$sql = "CALL esityskohta_muuta_tyyppi('$kohta','$param','$kokous','$user')";
-	$result = $con -> query($sql);
-	echo "ok"; //*todo jos ei onnistukkaan *//
-	exit(0);
+
 	
 }
 
@@ -68,7 +74,7 @@ else if(isset($_POST['check_remove']) && isset($_POST['kohta']) && isset($_POST[
 
 else if(isset($_POST['check_uusi']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
 	$kokous = (int)$_POST['kokous_id'];
-	$data = $_POST['check_uusi'];
+	$data = strip_tags($_POST['check_uusi']);
 	$kohta = (int)$_POST['kohta'];
 	$sql = "CALL esityskohta_valinnat_lisaa('$kohta','$kokous','$user','$data')";
 	$result = $con -> query($sql);
@@ -83,7 +89,7 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 	$kokous = (int)$_POST['kokous_id'];
 	$kohta = (int)$_POST['avaakohta'];
 	$sql = "CALL esityskohta_data('$kohta','$kokous');";
-	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous');";
+	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous',$user);";
 	$sql.= "CALL valinnat('$kohta','$kokous','$user');";
 	$sql.= "CALL esityskohta_mielipiteet('$kohta','$kokous','$user');";
 	/*
@@ -100,7 +106,9 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 					else if ($i==2) $rows[] = $row['id'];
 					else if ($i==0) $rows[] = $row['data'];
 					else $rows[] = $row;			
+					
 				}
+				
 				$rowsall[$i++][] = (isset($rows))? json_encode($rows):-1;
 				$result->free();
 			}
@@ -115,7 +123,7 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 
 else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
 	$kokous = (int)$_POST['kokous_id'];
-	$param = $_POST['param'];
+	$param = addslashes($_POST['param']);
 	$type = $_POST['save'];
 	$id = $_POST['id'];
 	$kohta = $_POST['kohta'];
@@ -144,21 +152,7 @@ else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) &
 	exit(0);
 }
 
-/*
-    if (type === "mielipide") {
-      updateParams.append("param", data[0])
-      updateParams.append("alku", data[1])
-      updateParams.append("loppu", data[2])
-      updateParams.append("draft", data[3])
-    
 
-    updateParams.append("id", id);
-    updateParams.append("kohta", kohta);
-    updateParams.append("kokous_id", kokousid)
-    updateParams.append("save", type)
-    window.clearTimeout(timer);
-	timer = setTimeout(function () { axiosSave() }, delay)
-	*/
 
 
 

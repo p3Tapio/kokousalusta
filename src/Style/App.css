@@ -31,7 +31,17 @@
 .taulunapit {position:absolute;right:5px;top:5px}
 
 .taulukokousnro {position:absolute;font-size: 10px;top:5px;left:120px}
-.paivays {color:black;float:left;margin-top:5px;position:relative;left:5px;text-align:center;width:50px;height:37px;font-family: Helvetica, Arial, sans-serif;border-radius:0px;font-size:10px;margin-right:2px;-webkit-box-shadow: 0px 2px 3px #000000;box-shadow: 0px 2px 3px #000000;z-index:100;border: 1px solid #000;border-radius:2px;}
+.paivays {color:black;float:left;
+  margin-top:5px;position:relative;
+  
+  text-align:center;
+  width:50px;
+  height:37px;font-family: Helvetica, Arial, sans-serif;
+  border-radius:0px;font-size:10px;margin-right:2px;-webkit-box-shadow: 0px 2px 3px #000000;box-shadow: 0px 2px 3px #000000;z-index:100;border: 1px solid #000;border-radius:2px;}
+.taulu .paivays {
+  left:5px;
+  top:0px;
+}
 
 .yhdistysLink {position:relative;width:"100%";height:"auto";text-decoration:"none";padding:10px 10px 10px 10px;margin:0px;}
 .yhdistysLink:hover {background-color: #ddd;}
