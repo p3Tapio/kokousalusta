@@ -4,7 +4,6 @@ import { FaFacebook } from 'react-icons/fa';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { setUserSession } from '../../Components/Auth/Sessions'
 import request from '../../Components/Shared/HttpRequests'
-
 import HelpPop from '../../Components/Shared/HelpPop'
 
 const Login = () => {
@@ -21,14 +20,13 @@ const Login = () => {
             const body = JSON.stringify({ call: 'fblogin', email: fbres.email, fb_id: fbres.id })
 
             request.fbUser(body).then(res => {
-                alert(`Tervetuloa ${fbres.first_name}`)
                 const user = {
                     firstname: fbres.first_name,
                     lastname: fbres.last_name,
                     email: fbres.email,
                 }
                 setUserSession(user, res.data.token)
-                history.push('/userpage')
+                history.push({pathname:'/userpage', state:{login:true}})
 
             }).catch(err => {
                 alert(err.response.data.message)
@@ -51,14 +49,14 @@ const Login = () => {
 
             request.appUser(login)
                 .then(res => {
-                    alert(`Tervetuloa ${res.data.firstname} ${res.data.lastname}!`)
+           
                     const user = {
                         firstname: res.data.firstname,
                         lastname: res.data.lastname,
                         email: email,
                     }
                     setUserSession(user, res.data.token)
-                    history.push('/userpage')
+                    history.push({pathname:'/userpage', state:{login:true}})
 
                 }).catch((err) => {
                     alert(err)
@@ -105,7 +103,6 @@ const Login = () => {
                 </div>
             </div>
         </div>
-
     )
 }
 export default Login
