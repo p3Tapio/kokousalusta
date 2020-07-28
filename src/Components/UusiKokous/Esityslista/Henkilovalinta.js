@@ -44,8 +44,7 @@ const Henkilovalinta = ({kokous_id,edit=false, arvot, checkValue=[], check, remo
     return (
         <div className="PJ">       
             {ehdokkaat.length>0?
-            <CheckboxArea type="6" tila={tila} edit={false} arvot={ehdokkaat} check={check} checkValue={checkValue} remove={remove} save={save} uusi={uusi}/>:
-            <div>Ei vielä ehdokkaita, voit asettua itse ehdolle puheenjohtajaksi tai ehdottaa muita.</div>}
+            <CheckboxArea type="6" tila={tila} edit={false} arvot={ehdokkaat} check={check} checkValue={checkValue} remove={remove} save={save} uusi={uusi}/>:""}
            
            {jasenlista}
             

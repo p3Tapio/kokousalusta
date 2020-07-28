@@ -124,8 +124,8 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
   
   let setti = ["",
               "", /*tiedoksi*/
-              <div>mielipide<Mielipide tila={tila} edit={edit} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
-              <div>hyvaksy<Hyvaksy tila={tila} id={id} save={perustelu_save} sisus={perustelu}/></div>,
+              <div><Mielipide tila={tila} edit={edit} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
+              <div><Hyvaksy tila={tila} id={id} save={perustelu_save} sisus={perustelu}/></div>,
               <div><CheckboxArea tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
               <div><Henkilovalinta tila={tila} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>,
               <div><Henkilovalinta tila={tila} type={6} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
