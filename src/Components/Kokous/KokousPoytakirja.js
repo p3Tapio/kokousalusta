@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextEditor } from '../Document/TextEditor';
 
-const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja }) => {
-    console.log('kokous', kokous)
+const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paatokset }) => {
+   
     const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
     const pvmYear = { year: 'numeric' }
     const kokousnumero = kokous.kokousnro + "/" + (new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmYear)
@@ -11,25 +11,24 @@ const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja }) => 
     const osallistuu = osallistujat.map(x => '<li>' + x.firstname + ' ' + x.lastname + '</li>').join(' ')
     let paatosvalta = ''
     if (kokous.pv_aktiivisuus === '0' && kokous.pv_esityslista === '0' && kokous.pv_kesto === '0' && kokous.pv_muu === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
-    else { // TODO keston lisäksi muut päätösvalta kriteerit 
+    else { // TODO keston lisäksi muut päätösvalta kriteerit !!! ---------------------------
         if (kokous.pv_esityslista !== '0') paatosvalta += `<p>Kokous on päätösvaltainen jos vähintään ${kokous.pv_esityslista} kpl kokousosallistujista on avannut esityslistan.</p>`
         if (kokous.pv_aktiivisuus !== '0') paatosvalta += `<p>Kokous on päätösvaltainen jos vähintään ${kokous.pv_aktiivisuus} kpl kokousosallistujista on ottanut asioihin kantaa.</p>`
         if (kokous.pv_kesto !== '0') paatosvalta += kokous.pv_kesto_toteutunut === "true" ? `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta toteutui.</p>` : `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta ei toteutunut.</p>`
         if (kokous.pv_muu !== '') paatosvalta += `<p>${kokous.pv_muu}</p>`
     }
-    // TODO asiakohtien otsikot ja sisältökentät, myös "Tulostaja saa valita, haluaako tulostaa myös käytyjä keskusteluja ja annettuja kommentteja: kyllä/ei." 
-    const pj = puheenjohtaja.length !== 0 ? puheenjohtaja[0].firstname + puheenjohtaja[0].lastname : "kokouksessa ei ole puheenjohtajaa"
-    const [poytakirja, setPoytakirja] = useState(`<h1>${yhdistys}</h1>${otsikko}<h2>${kokousnumero}</h2><h2>${ajat}</h2><h2>Osallistujat</h2><ul>${osallistuu}</ul><p>Puheenjohtaja: ${pj}<h2>Päätösvaltaisuus</h2>${paatosvalta}`)
+    const paatostiedot = paatokset.length !== 0 ? paatokset.map(x => '<h3>' + x.title + '</h3>'  + '<p style="margin-top: -10px;">' + x.paatos+'</p>').join(' ') : 'Kokouksessa ei tehty päätöksiä.'
+    const pj = puheenjohtaja.length !== 0 ? puheenjohtaja[0].firstname +" "+ puheenjohtaja[0].lastname : "kokouksessa ei ole puheenjohtajaa"
+    const [poytakirja, setPoytakirja] = useState(`<h1>${yhdistys}</h1>${otsikko}<h2>Kokous ${kokousnumero}</h2><h2>${ajat}</h2><h2>Osallistujat</h2><ul>${osallistuu}</ul><p>Puheenjohtaja: ${pj}<h2>Päätösvaltaisuus</h2>${paatosvalta}<h2>Asiakohdat</h2>${paatostiedot}`)
 
     const editorContentChange = (poytakirja) => {
         setPoytakirja(poytakirja)
     }
-
     if (poytakirja) {
         return (
             <div className="mt-5 mx-auto col-md-10">
                 <TextEditor editorContentChange={editorContentChange} teksti={poytakirja} />
-                <button className="float-right btn-outline-primary btn-lg mt-1">Tee jotain nappi</button>
+                <button className="float-right btn-outline-primary btn-lg mt-1">Päätä kokous</button>
             </div>
         )
     } else {

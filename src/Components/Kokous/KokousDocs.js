@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import DocumentReadOnly from '../../Components/Document/DocumentReadOnly'
 import request from '../Shared/HttpRequests'
-import { getUser } from '../Auth/Sessions'
+// import { getUser } from '../Auth/Sessions'
 import UploadedDocs from '../Document/UploadedDocs'
 
 const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {

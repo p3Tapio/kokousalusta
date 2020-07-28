@@ -23,7 +23,7 @@ const KokousDetails = (props) => {
     const [puheenjohtaja, setPuheenjohtaja] = useState()
     const [osallistujat, setOsallistujat] = useState()
     const [jasenet, setJasenet] = useState()
-
+    const [paatokset, setPaatokset] = useState()
     const [showComponent, setShowComponent] = useState("asiat")
     const [showTable, setShowTable] = useState(true)
 
@@ -54,6 +54,11 @@ const KokousDetails = (props) => {
             const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
             request.assoc(req).then(res => {
                 setJasenet(res.data)
+            }).catch(err => console.log('err.response', err.response))
+
+            const body3 = JSON.stringify({ call: 'getpaatokset', kokousid: kokousId })
+            request.kokous(body3).then(res => {
+                setPaatokset(res.data)
             }).catch(err => console.log('err.response', err.response))
         }
 
@@ -153,7 +158,7 @@ const KokousDetails = (props) => {
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
-                else if (showComponent === 'poytakirja') component = <KokousPoytakirja kokous={kokous} yhdistys={yhdistys} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} />
+                else if (showComponent === 'poytakirja') component = <KokousPoytakirja kokous={kokous} yhdistys={yhdistys} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} paatokset={paatokset}/>
                 else component = <p>error... </p>
 
                 let text
