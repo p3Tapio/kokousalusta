@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { TextEditor } from '../Document/TextEditor';
+import request from '../Shared/HttpRequests'
 
 const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paatokset }) => {
-   
+
+    console.log('kokous', kokous)
     const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
     const pvmYear = { year: 'numeric' }
     const kokousnumero = kokous.kokousnro + "/" + (new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmYear)
@@ -24,11 +26,30 @@ const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paato
     const editorContentChange = (poytakirja) => {
         setPoytakirja(poytakirja)
     }
+    const handlePaataKokousClick = () => {
+
+        const body = JSON.stringify({call: 'paatakokous', kokousid: kokous.id}) 
+        console.log('body', body)
+        request.kokous(body).then(res => {
+            console.log('res.data', res.data)
+            savePoytakirja()
+        }).catch(err => console.log('err.response', err.response))
+
+    }
+    const savePoytakirja = () => {
+
+        const body = JSON.stringify({call:'postdoc', id_y: kokous.id_y, kokousnro: kokous.kokousnro, type: 'poytakirja', content: poytakirja, draft: 0}) 
+        request.documents(body).then(res => {
+            alert("Kokous on päätetty ja pöytäkirja tallennettu!")
+        }).catch(err => console.log('err.response', err.response))
+
+    }
     if (poytakirja) {
         return (
             <div className="mt-5 mx-auto col-md-10">
-                <TextEditor editorContentChange={editorContentChange} teksti={poytakirja} />
-                <button className="float-right btn-outline-primary btn-lg mt-1">Päätä kokous</button>
+                <TextEditor editorContentChange={editorContentChange} teksti={poytakirja} className="mb-2"/>
+                <button className="float-right btn btn-outline-primary mt-1" onClick={() => handlePaataKokousClick() }>Päätä kokous ja tallenna pöytäkirja</button>
+                <br></br>
             </div>
         )
     } else {

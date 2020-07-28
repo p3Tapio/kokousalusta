@@ -39,6 +39,9 @@ if(isset($_POST["call"])) {
         case 'getpaatokset':
             getPaatokset();
             break; 
+        case 'paatakokous':
+            paataKokous(); 
+            break; 
         default:
             http_response_code(404);
     }
@@ -341,8 +344,20 @@ function getPaatokset() { // body {"call":"getpaatokset","kokousid":"405"}
     }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
-
-
+function paataKokous() {
+    $response = array( "message"=> "Kokouksen päättäminen epäonnistui.");
+    http_response_code(400);
+    if(isset($_POST['kokousid'])) {
+        $kokousid = (int)$_POST['kokousid'];
+        $q = "UPDATE kokous SET loppu = 1 WHERE id = '$kokousid';";
+        $yhteys = connect(); 
+        if($yhteys->query($q)) {
+            $response = array( "message"=> "Kokouksen on päätetty.");
+            http_response_code(200); 
+        }
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
 function connect() {
     include("../dbdetails.php");
     $yhteys = new mysqli($host, $user, $password, $db) or die("Connection fail ".mysqli_connect_error());

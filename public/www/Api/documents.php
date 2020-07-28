@@ -56,6 +56,8 @@ function postDocument() {
 function getDocuments() {
 
     $response = array("message"=> "Haku epäonnistui.");
+    http_response_code(400);
+    
     if(isset($_POST["kokousid"])) {
 
         $kokousid = (int)$_POST["kokousid"];
@@ -68,6 +70,7 @@ function getDocuments() {
         while($row = mysqli_fetch_assoc($res)) {
             $rows[] = $row; 
         }
+        http_response_code(200);
         echo json_encode($rows, JSON_UNESCAPED_UNICODE); 
         mysqli_close($yhteys);
         exit(); 
