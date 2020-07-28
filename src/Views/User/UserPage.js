@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import Modal from 'react-modal'
 import Rodal from 'rodal'
 import 'rodal/lib/rodal.css';
 import JoinAssoc from '../../Components/User/JoinAssoc'

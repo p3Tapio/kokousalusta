@@ -59,6 +59,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
 
         request.documents(data).then(() => {
             alert('Tiedosto tallennettu!')
+            window.location.reload() 
         }).catch(err => console.log('savedocument error: ', err))
     }
 
