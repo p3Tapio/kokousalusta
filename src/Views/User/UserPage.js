@@ -10,8 +10,7 @@ import request from '../../Components/Shared/HttpRequests'
 const UserPage = (props) => {
 
     const user = getUser()
-    // const [isModalOpen, setIsModalOpen] = useState(props.location.state !== undefined && props.location.state.login ? true : false)
-    const [isModalOpen, setIsModalOpen] = useState(true)
+    const [isModalOpen, setIsModalOpen] = useState(props.location.state !== undefined && props.location.state.login ? true : false)
     const [yhdistykset, setYhdistykset] = useState([])
     const [showForm, setShowForm] = useState(true)
     console.log('isModalOpen', isModalOpen)
@@ -59,9 +58,9 @@ const TervetuloaModal = ({ isModalOpen, setIsModalOpen }) => {
     console.log('user', user)
 
     return (
-        <Rodal visible={isModalOpen} onClose={() => setIsModalOpen(false)} animation={'door'} height={100} className="justify-content-center" >
-            <div className="Modal" onClick={() => setIsModalOpen(false)}>
-                <h5 className="modal-title mx-auto">Tervetuloa {user.firstname}! </h5>
+        <Rodal visible={isModalOpen} onClose={() => setIsModalOpen(false)} animation={'door'} duration={400} height={150} width={300}>
+            <div style={{width:"100%", height:"100%", position:"relative"}} onClick={() => setIsModalOpen(false)}>
+                <h5  style={{position:"absolute", top:"40%", left:"25%"}}>Tervetuloa {user.firstname}! </h5>
             </div>
         </Rodal>
     )
