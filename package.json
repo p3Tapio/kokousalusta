@@ -22,7 +22,8 @@
     "react-modal": "^3.11.2",
     "react-pdf": "^4.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "rodal": "^1.8.1"
   },
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
