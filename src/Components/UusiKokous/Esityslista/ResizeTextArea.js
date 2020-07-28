@@ -11,7 +11,7 @@ const ResizeTextArea = ({sisus,id=0,save,placeholder="",edit=false,avaa,alku=0,l
     useEffect(() => {
     
       Tarea.current.style.minHeight = 'auto'
-      Tarea.current.style.minHeight = (Tarea.current.scrollHeight-15)+'px'}, [sisus])  
+      Tarea.current.style.minHeight = (Tarea.current.scrollHeight-15)+'px'}, [sisus,edit])  
 
       let sisusta;
 

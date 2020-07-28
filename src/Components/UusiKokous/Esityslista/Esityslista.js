@@ -43,7 +43,11 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
       updateParams.append("alku", data[1])
       updateParams.append("loppu", data[2])
       updateParams.append("draft", data[3]) /* 0 = draft , 1= julkaise */
-    } else {
+    } else if (type === "paatos"){
+      setItems(items.map(items => (items.id === id) ? { ...items, paatos: data[0],tila:data[1] } : items))
+      updateParams.append("param", data[0])
+      updateParams.append("tila", data[1])
+    } else {  updateParams.append("param", data)
       updateParams.append("param", data)
     }
     updateParams.append("id", id);

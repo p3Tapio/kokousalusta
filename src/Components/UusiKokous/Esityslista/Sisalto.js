@@ -26,6 +26,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
     setKuvaus(data)
 
   }
+ 
 
   const perustelu_save = (id,data) => {/*save(id,data,500,"perustelu")*/setPerustelu(data);}
 

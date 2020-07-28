@@ -92,9 +92,6 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous',$user);";
 	$sql.= "CALL valinnat('$kohta','$kokous','$user');";
 	$sql.= "CALL esityskohta_mielipiteet('$kohta','$kokous','$user');";
-	/*
-	$sql.= "CALL esityskohta_mielipide_draft('$kohta','$kokous','$user');";
-	*/
 	$multi_result = $con -> multi_query($sql);
 	$i=0;
 	if ($multi_result) {
@@ -113,6 +110,7 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 				$result->free();
 			}
 		} while ($con->next_result());
+		
 		echo json_encode($rowsall);
 	} 
 	exit(0);
@@ -142,10 +140,14 @@ else if(isset($_POST['save']) && isset($_POST['id']) && isset($_POST['param']) &
 				$draft = $_POST['draft'];
 				$alku = $_POST['alku'];
 				$loppu = $_POST['loppu'];
-				$sql = "CALL esityskohta_mielipide_lisaa('$kohta','$kokous','$user','$draft','$alku','$loppu','$param')";
-				echo $sql;
-			} 
-
+				$sql = "CALL esityskohta_mielipide_lisaa('$kohta','$kokous','$user','$draft','$alku','$loppu','$param')";} 
+			break;
+		case "paatos":
+			if (isset($_POST['tila'])){
+				$tila = $_POST['tila'];
+				$sql = "CALL esityskohta_paatos_muuta('$kohta','$kokous','$user','$param','$tila')";} 
+			
+			break;
 			
 	}
 	$result = $con -> query($sql);
