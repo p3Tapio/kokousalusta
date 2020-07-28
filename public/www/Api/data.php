@@ -69,16 +69,22 @@ else if(isset($_POST['check_remove']) && isset($_POST['kohta']) && isset($_POST[
 	exit(0);
 }
 
-
+			
 
 
 else if(isset($_POST['check_uusi']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
 	$kokous = (int)$_POST['kokous_id'];
 	$data = strip_tags($_POST['check_uusi']);
 	$kohta = (int)$_POST['kohta'];
+	
 	$sql = "CALL esityskohta_valinnat_lisaa('$kohta','$kokous','$user','$data')";
+/*	$file = fopen("mitaihmetta","w");
+	echo fwrite($file,$sql);
+	fclose($file);*/
+
 	$result = $con -> query($sql);
-	echo $sql;
+	/*echo $sql;
+	*/
 	exit(0);
 }
 

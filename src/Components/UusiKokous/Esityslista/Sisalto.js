@@ -38,16 +38,12 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
       params.append ("multi",multi)
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) => reload())    
   }
-  const check_uusi = (data="") => {
+  const check_uusi = (data) => {
     var params = new URLSearchParams()
     params.append ("check_uusi", data)       
     params.append ("kohta", id)
     params.append ("kokous_id", kokous_id)
-    axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-      
-      reload(1)
-      
-    })    
+    axios.post(url+'data.php', params, {withCredentials: true}).then((response) => reload())
   }
   const check_remove = (vid) => {
     var params = new URLSearchParams();      
@@ -66,7 +62,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
     save(id,data,500,"mielipide")
   }
 
-  const reload = (param=0) => {
+  const reload = () => {
     var params = new URLSearchParams()
     params.append ("avaakohta", id)
     params.append ("kokous_id", kokous_id)

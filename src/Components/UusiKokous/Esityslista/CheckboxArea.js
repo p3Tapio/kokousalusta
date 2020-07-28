@@ -12,19 +12,22 @@ const CheckboxArea = ({edit=true, arvot=[], checkValue=[], check, remove, save, 
     
     
     
-    
+    const thisuusi = () => {
+        
+        uusi(0)
+    }
     
     const this_remove = (id) => {if(tila!="3")remove(id)}
     const this_save = (id,nnimi) => {if(tila!="3")save(id,nnimi)}
     const this_check = (id) => {if(tila!="3")check(id,multi)}
     edit=false;
     let lisaa;
-    if (type=="3" && tila !="3") lisaa = <button className="uusi add" onClick={uusi}>Valinta</button>
+    if (type=="3" && tila !="3") lisaa = <button className="uusi add" onClick={()=>thisuusi()}>Valinta</button>
 
     return (
         <div>
             {arvot.map(arvot => 
-                 <div><EditableCheckbox
+                 <EditableCheckbox
                  arvo={(checkValue && checkValue.includes(arvot.id))} 
                  summa={summa} 
                  tila={tila}
@@ -36,7 +39,7 @@ const CheckboxArea = ({edit=true, arvot=[], checkValue=[], check, remove, save, 
                  nimi={arvot.nimi}
                  key={arvot.id}
                  id={arvot.id} />
-                 </div> )}    
+                  )}    
             {lisaa}
          <br/>
         </div>
@@ -67,7 +70,7 @@ const EditableCheckbox = ({tila,maara=0,edit,id,nimi,arvo,check,remove,save,summ
             {ruutu}
             {(edit==0 && maara ==0)?
             
-            <input onChange={this_save} spellCheck="false" className="ruutuvalinta" type="text" value={nimi} autofocus></input>:
+            <input onChange={this_save} spellCheck="false" className="ruutuvalinta" type="text" value={nimi} autoFocus></input>:
             
             <div spellCheck="false" className="ruutuvalinta">{nimi}</div>}
             {(edit==0 && maara==0)?<div className="remove" onClick={thisremove}></div>:""}
