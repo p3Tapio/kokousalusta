@@ -4,7 +4,7 @@ import PrivateRoute from './Components/Auth/PrivateRoute'
 import './Style/App.css'
 import 'bootswatch/dist/flatly/bootstrap.min.css'; 
 import Navbar from './Components/Shared/Navbar'
-// import Home from './Views/Home'
+import Home from './Views/Home'
 import Login from './Views/Auth/Login';
 import Register from './Views/Auth/Register'
 import UserPage from './Views/User/UserPage';
@@ -22,7 +22,7 @@ function App() {
         <Navbar />
         <div className="container" style={{width:"1100px",maxWidth:"100%",margin:"0 auto",padding:"0"}}>
           <Switch >
-            <Route exact path='/' component={Login}/>
+            <Route exact path='/' component={Home}/>
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register} />
             <PrivateRoute path='/userpage' component={UserPage}/>

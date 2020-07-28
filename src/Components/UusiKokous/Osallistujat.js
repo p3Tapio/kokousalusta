@@ -65,9 +65,9 @@ const Osallistujat = ({ puheenjohtaja, osallistujat, setOsallistujat, saveOsalli
                     <h6>Kaikki yhdistyksen jäsenet ovat osallistujalistalla</h6>
                 }
             </div>
-            <div className="form-group text-right">
+            {/* <div className="form-group text-right">
                 <button onClick={() => { setShowComponent('paatosvaltaisuus'); saveOsallistujat() }} type="submit" className="btn btn-outline-primary mt-3">Seuraava</button>
-            </div>
+            </div> */}
             <hr />
         </div >
 

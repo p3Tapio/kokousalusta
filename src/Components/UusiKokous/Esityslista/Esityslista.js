@@ -119,11 +119,11 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
              />)}
         {lisaa}
       </div>
-      { setShowComponent ? 
+      {/* { setShowComponent ? 
         <div className="text-right">
         <button onClick={() => { setShowComponent('osallistujat'); saveKokousDraft() }} className="btn btn-outline-primary mt-3">Seuraava</button>
       </div>
-      :<></>}
+      :<></>} */}
     </div>
   )
 }
