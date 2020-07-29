@@ -81,13 +81,15 @@ const Mielipide = ({kokous_id,kohta_id,tila,save,edit=false, arvot=[],kuvaus,pos
         {(arvot.length > 0)?<div className="MielipideHeader disable-select">Mielipiteet({arvot.length})</div>:""}
         
         {arvot.map(arvot =>
+        <div>
             <div key={arvot.id} className="mielipide_container" onClick={(ev)=>{setMielibool(false);positio(arvot.alku,arvot.loppu)}}>
                 <div className="kelloaika">{arvot.aika}</div>
-                <div className="nimipallo">{arvot.firstname[0]}{arvot.lastname[0]}</div>
-                <div className="mielipide_otsake" >{osa(arvot.alku,arvot.loppu)}</div>
-                <div className="mielipide_teksti">{arvot.mielipide}</div>
+                <div className="nimipallo" style={{background: "#ddd",color:"black" }}>{arvot.firstname[0]}{arvot.lastname[0]}</div>
+                <div className="mielipide_otsake" ><b>{osa(arvot.alku,arvot.loppu)}</b></div>
                 
-                <div>
+                <div className="mielipide_teksti">{arvot.mielipide}
+             </div>   
+                
                 <Kannata/>
                 <Kommentit 
                     thread_id={arvot.id}

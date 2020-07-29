@@ -28,16 +28,17 @@
     
 }
 .mielipide_container{
-    
-    
+    z-index:100;
+    border-top:2px solid rgba(44,62,80, 0.5);
     /*padding-left: 25px;*/
     z-index:30px;
     height:fit-content;
-    width:calc(100% + 20px);
-    margin-left:-25px;
+    width:calc(100% + 30px);
+    margin-left:-30px;
     position: relative;
-    outline: 1px solid transparent;
+    
     background-color: #FFF;
+    
     padding-bottom:20px;
 }
 .mielipide_valittu {
@@ -45,8 +46,8 @@
 }
 .mielipide_otsake{
     position:absolute;
-    top:0px;
-    
+    top:5px;
+    white-space: nowrap;
     padding-left:5px;
     font-size:12px;
     
@@ -54,12 +55,13 @@
 }
 .mielipide_teksti {
     white-space:pre-wrap;
-    border-top:20px solid #f9f9f9;
-    padding:5px 5px 5px 5px;
+    border-top:32px solid rgba(44,62,80, 0.1);;
+    
+    padding:10px 5px 5px 5px;
     font-size:12px;
-    background-color: hsl(209, 100%, 81%,20%);
+    background-color: #fff;
     width:calc (100% - 40px);
-    border-bottom:2px solid #DDD;
+    
 }
 .nimipallo {
     z-index: 1;
@@ -67,13 +69,13 @@
     color:#FFF;
     position:absolute;
     display:block;
-    width:20px;
-    height:20px;
+    width:32px;
+    height:32px;
     /*padding: 0px 5px 0px 5px;*/
     position:absolute;
-    line-height: 20px;
+    line-height: 32px;
     text-align: center;
-    font-size:10px;
+    font-size:12px;
     top:0px;
     right:0px;
     
@@ -81,15 +83,16 @@
 .kelloaika {
     padding:2px;
     font-size:10px;
-    padding-right: 30px;
-    float:right;
+    padding-right: 40px;
+    position: absolute;
+    top:0px;
+    right:0;
 }
 
 .MielipideHeader {
- margin-top:30px;
- 
- background-color: #FFF;   
     
+    
+    background-color: #FFF;   
     padding:20px 30px 20px 30px;
     font-weight: bold;
 }

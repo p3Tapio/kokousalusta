@@ -2,8 +2,8 @@ import React from 'react'
 
 const Kannata = () => {
     return (
-        <div>
-              
+        <div className="kannata">
+              kannata
         </div>
     )
 }
