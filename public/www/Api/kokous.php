@@ -36,6 +36,12 @@ if(isset($_POST["call"])) {
         case 'vaihdapvm':
             vaihdaPvm(); 
             break; 
+        case 'getpaatokset':
+            getPaatokset();
+            break; 
+        case 'paatakokous':
+            paataKokous(); 
+            break; 
         default:
             http_response_code(404);
     }
@@ -317,6 +323,39 @@ function vaihdaPvm() {//  body {"call":"vaihdapvm","kokousid":"33","enddate":"20
         }
     }
     mysqli_close($yhteys);
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function getPaatokset() { // body {"call":"getpaatokset","kokousid":"405"}
+    $response = array( "message"=> "Kokouksen päätöksien haku epäonnistui.");
+    http_response_code(400);
+    if(isset($_POST['kokousid'])) {
+        $kokousid = (int)$_POST['kokousid'];
+        $q = "CALL esityskohta_getpaatokset($kokousid);";
+        $yhteys = connect(); 
+        $res = $yhteys->query($q); 
+        $rows = []; 
+        while($row = mysqli_fetch_assoc($res)) {
+            $rows[] = $row; 
+        }
+        http_response_code(200); 
+        echo json_encode($rows, JSON_UNESCAPED_UNICODE); 
+        mysqli_close($yhteys);
+        exit(); 
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+}
+function paataKokous() {
+    $response = array( "message"=> "Kokouksen päättäminen epäonnistui.");
+    http_response_code(400);
+    if(isset($_POST['kokousid'])) {
+        $kokousid = (int)$_POST['kokousid'];
+        $q = "UPDATE kokous SET loppu = 1 WHERE id = '$kokousid';";
+        $yhteys = connect(); 
+        if($yhteys->query($q)) {
+            $response = array( "message"=> "Kokouksen on päätetty.");
+            http_response_code(200); 
+        }
+    }
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 function connect() {

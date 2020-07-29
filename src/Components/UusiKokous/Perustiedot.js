@@ -52,9 +52,9 @@ const Perustiedot = ({ setShowComponent, handlePerustiedotChange, saveKokousDraf
                         <input type="checkbox" className="custom-control-input" onChange={handlePerustiedotChange} id="avaa" value={perustiedot.avoinna} checked={perustiedot.avoinna} />
                         <label className="custom-control-label" htmlFor="avaa">Avaa kokoustila heti osallistujille</label>
                     </div><p>Tila: {x}</p>
-                    <div className="text-right">
+                    {/* <div className="text-right">
                         <button onClick={() => { setShowComponent('esityslista'); saveKokousDraft() }} className="btn btn-outline-primary mt-3">Seuraava</button>
-                    </div>
+                    </div> */}
                 </div>
                 <hr />
             </div>

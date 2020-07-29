@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import DocumentReadOnly from '../../Components/Document/DocumentReadOnly'
 import request from '../Shared/HttpRequests'
-import { getUser } from '../Auth/Sessions'
+// import { getUser } from '../Auth/Sessions'
 import UploadedDocs from '../Document/UploadedDocs'
 
 const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
@@ -40,27 +40,28 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
         setShowTable(!showTable)
         setUploadOrNot(true)
     }
-    const handleFileUpload = (ev) => {
-        if (ev.target.files[0].type === 'application/pdf') {
-            if (window.confirm(`Haluatko lisätä tiedoston "${ev.target.files[0].name}" tietokantaan?`)) {
-                saveDocument(ev.target.files[0])
-            }
-        } else {
-            alert("Tiedoston tulee olla pdf-muodossa")
-        }
-    }
-    const saveDocument = (file) => {
+    // const handleFileUpload = (ev) => {
+    //     if (ev.target.files[0].type === 'application/pdf') {
+    //         if (window.confirm(`Haluatko lisätä tiedoston "${ev.target.files[0].name}" tietokantaan?`)) {
+    //             saveDocument(ev.target.files[0])
+    //         }
+    //     } else {
+    //         alert("Tiedoston tulee olla pdf-muodossa")
+    //     }
+    // }
+    // const saveDocument = (file) => {
 
-        let data = new FormData()
-        data.append('kokousid', kokous.id)
-        data.append('user', getUser().email)
-        data.append('yhdistys', yhdistys)
-        data.append('file', file)
+    //     let data = new FormData()
+    //     data.append('kokousid', kokous.id)
+    //     data.append('user', getUser().email)
+    //     data.append('yhdistys', yhdistys)
+    //     data.append('file', file)
 
-        request.documents(data).then(() => {
-            alert('Tiedosto tallennettu!')
-        }).catch(err => console.log('savedocument error: ', err))
-    }
+    //     request.documents(data).then(() => {
+    //         alert('Tiedosto tallennettu!')
+    //         window.location.reload() 
+    //     }).catch(err => console.log('savedocument error: ', err))
+    // }
 
     let component
     if (uploadOrNot) {
@@ -116,7 +117,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
                 </>
                 : uploadOrNot ? <UploadedDocs setShowTable={setShowTable} upload={upload} /> : <></>}
 
-            {showTable
+            {/* {showTable
                 ? <div class="float-right mx-2">
                     <form method="POST" >
                         <label for="inputFile" className="btn btn-outline-primary">Lisää asiakirja</label>
@@ -125,7 +126,7 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
                     </form>
                 </div>
                 : <></>
-            }
+            } */}
             {/* // TODO tämä ei saisi näkyä kuin pj:lle ja vain kun table on näkyvissä: */}
 
         </div >

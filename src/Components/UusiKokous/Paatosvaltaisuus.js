@@ -40,9 +40,9 @@ const Paatosvaltaisuus = ({ setShowComponent, handlePaatosvaltaChange, saveKokou
                         <small className="form-text text-muted">Kirjoita haluamasi päätösvaltaisuuskriteeri kenttään</small>
                     </div>
                 </form>
-                <div className="form-group text-right">
-                    <button onClick={handleClick} type="submit" className="btn btn-outline-primary mt-3" >Seuraava</button>
-                </div>
+                {/* <div className="form-group text-right">
+                <button onClick={() => { setShowComponent('yhteenveto'); saveKokousDraft() }} type="submit" className="btn btn-outline-primary mt-3" >Seuraava</button>
+                </div> */}
             </div>
         </div>
     )
