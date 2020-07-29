@@ -20,14 +20,12 @@ const KokousDocs = ({ kokous, yhdistys, setShowTable, showTable }) => {
         request.documents(body).then(res => {
             setKokousDocuments(res.data)
         }).catch(err => {
-            console.log('err.response.data.message', err.response.data.message)
-            console.log('err', err)
+            console.log('error: ', err.response)
         })
-        const body2 = JSON.stringify({ call: "getuploads", kokousid: kokous.id, yhdistys: yhdistys })  // voiko php-metodin tehdä siten että se toimii myös vain yhdistyksen nimellä? 
-        request.documents(body2).then(res => {
-            console.log('res.data', res.data)
-            setUploadedDocs(res.data)
-        }).catch(err => console.log('getuploads error: ', err))
+        // const body2 = JSON.stringify({ call: "getuploads", kokousid: kokous.id, yhdistys: yhdistys })  // voiko php-metodin tehdä siten että se toimii myös vain yhdistyksen nimellä? 
+        // request.documents(body2).then(res => {
+        //     setUploadedDocs(res.data)
+        // }).catch(err => console.log('getuploads error: ', err))
     }, [kokous.id, yhdistys])
 
     const handleOpenDocumentClick = (item) => {

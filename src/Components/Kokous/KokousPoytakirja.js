@@ -4,7 +4,6 @@ import request from '../Shared/HttpRequests'
 
 const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paatokset }) => {
 
-    console.log('kokous', kokous)
     const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
     const pvmYear = { year: 'numeric' }
     const kokousnumero = kokous.kokousnro + "/" + (new Date(kokous.startDate)).toLocaleDateString('fi-FI', pvmYear)
@@ -29,9 +28,7 @@ const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paato
     const handlePaataKokousClick = () => {
 
         const body = JSON.stringify({call: 'paatakokous', kokousid: kokous.id}) 
-        console.log('body', body)
         request.kokous(body).then(res => {
-            console.log('res.data', res.data)
             savePoytakirja()
         }).catch(err => console.log('err.response', err.response))
 

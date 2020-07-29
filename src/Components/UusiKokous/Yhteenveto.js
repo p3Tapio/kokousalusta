@@ -51,9 +51,8 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
             paatosvaltaisuus: paatosvaltaisuus,
             valmis: true
         })
-        console.log('uusiKokous', uusiKokous)
+   
         request.kokous(uusiKokous).then(res => {
-            console.log('Kokous tallennettu ', res.data)
             saveDocumentKokouskutsu()   /// ks yllä
         }).catch(err => {
             alert(err.response.data.message)
@@ -71,7 +70,6 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         })
 
         request.documents(kokouskutsuDocument).then((res) => {
-            console.log('res.data', res.data)
             saveOsallistujat() /// ks yllä
         }).catch(err => {
             alert(err.response.data.message)
