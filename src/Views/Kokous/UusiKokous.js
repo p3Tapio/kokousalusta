@@ -42,7 +42,6 @@ const UusiKokous = (props) => {
                         const alkaa = res.data.startDate === "1970-01-01" ? '' : new Date(res.data.startDate)
                         const loppuu = res.data.endDate === "1970-01-01" ? '' : new Date(res.data.endDate)
 
-                        console.log('res.data.startDate', res.data.startDate)
                         setPerustiedot({
                             otsikko: res.data.otsikko,
                             kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmYear),
@@ -61,10 +60,9 @@ const UusiKokous = (props) => {
 
                         const body2 = JSON.stringify({ call: 'getosallistujat', id: res.data.id })
                         request.osallistujat(body2).then(res => {
-                            console.log('res.data', res.data)
                             setOsallistujat(res.data)
                             setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
-                        }).catch(err => console.log('err.response.data', err.response.data))
+                        }).catch(err => console.log('err.response', err.response))
 
                         const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
                         request.assoc(req).then(res => {
@@ -75,13 +73,10 @@ const UusiKokous = (props) => {
                         const delReq = JSON.stringify({ call: "deletedraft", kokousid: res.data.id })
                         request.kokous(delReq)
                             .then(res => {
-                                console.log('res.data ---- delReq ', res.data)
-
                                 setId_k(res.data['id'])
-
                                 getKokousNro()
                                 return;
-                            }).catch(err => console.log('err.response.data', err.response.data))
+                            }).catch(err => console.log('err.response', err.response))
                     }
                 } else {
                     getKokousNro()
@@ -110,15 +105,11 @@ const UusiKokous = (props) => {
         const pvmYear = { year: 'numeric' };
         const now = Date();
         const body = JSON.stringify({ call: 'kokousnro', yhdistys: yhdistys })
-        console.log('body', body)
+     
         request.kokous(body).then(res => {
-            console.log('res.data --- getkokousnro', res.data)
-
             setPerustiedot({ ...perustiedot, kokousNro: res.data.kokousnro + "/" + (new Date(now)).toLocaleDateString('fi-FI', pvmYear) })
             setId_y(res.data.id_y)
-
         })
-
     }
     const handleMenuClick = (ev) => {
 
@@ -129,7 +120,6 @@ const UusiKokous = (props) => {
             let params2 = new URLSearchParams();
             params2.append("otsakkeet", perustiedot.kokousid)
             request.data(params2).then(res => {
-                console.log("esityskohta_otsakkeet", res.data)
                 setEsityslista(res.data)
                 setShowComponent(x)
             })
@@ -150,8 +140,6 @@ const UusiKokous = (props) => {
     }
 
     const saveKokousDraft = (param) => { // -- TODO estä tallennus jos ei muuta dataa kuin kokousnro 
-
-        console.log('saveKokousDraft()')
 
         const uusiKokous = JSON.stringify({
             call: 'luokokous',
@@ -190,8 +178,6 @@ const UusiKokous = (props) => {
             request.osallistujat(body).then(res => {
                 console.log('res.data', res.data)
             }).catch(err => console.log('Error res.data ', err.response.data))
-
-            console.log('saveOsallistujat() ---- osallistujat ', osallistujat)
         }
     }
     const handlePerustiedotChange = (ev) => {

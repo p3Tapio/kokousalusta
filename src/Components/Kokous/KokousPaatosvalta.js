@@ -1,11 +1,19 @@
 import React from 'react'
 
-const KokousPaatosvalta = ({ kokous }) => {
+const KokousPaatosvalta = ({ kokous, osallistujat, puheenjohtaja }) => {
 
     let tila = "Ei päätösvaltainen."
     let tila_kesto = "Ei päätösvaltainen."
+    let tila_esityslista = "Ei Päätösvaltainen."
+ 
+    const kaikki = puheenjohtaja.concat(osallistujat)
+    const avannutEsityslistan = kaikki.map(x => x.pv_avannut).reduce((a, v) => (v ==="1" ? a + 1 : a), 0)
+
     if (kokous.pv_kesto !== '0') {
         if (kokous.pv_kesto_toteutunut === 'true') tila_kesto = "Päätösvaltainen."
+    } 
+    if(kokous.pv_esityslista !== '0') {
+        if(kokous.pv_esityslista <= avannutEsityslistan) tila_esityslista = "Päätösvaltainen."
     }
 
     let paatosvaltaMaaritys
@@ -28,7 +36,7 @@ const KokousPaatosvalta = ({ kokous }) => {
         <div className="col-sm-10 mt-3 mx-auto">
             <h6>{paatosvaltaMaaritys}</h6>
             {kokous.pv_esityslista === '0' ? <></>
-                : <li className="text-sm-nowrap">jos vähintään {kokous.pv_esityslista} osallistujista on avannut esityslistan.<span>&nbsp;</span>Tila: {tila}</li>
+                : <li className="text-sm-nowrap">jos vähintään {kokous.pv_esityslista} osallistujista on avannut esityslistan.<span>&nbsp;</span>Tila: {tila_esityslista}</li>
             }
             {kokous.pv_aktiivisuus === '0' ? <></>
                 : <li className="text-sm-nowrap">jos vähintään {kokous.pv_aktiivisuus} osallistujista on ottanut asioihin kantaa.<span>&nbsp;&nbsp;</span>Tila: {tila}</li>

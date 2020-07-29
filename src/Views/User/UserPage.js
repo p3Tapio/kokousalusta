@@ -12,13 +12,11 @@ const UserPage = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(props.location.state !== undefined && props.location.state.login ? true : false)
     const [yhdistykset, setYhdistykset] = useState([])
     const [showForm, setShowForm] = useState(true)
-    console.log('isModalOpen', isModalOpen)
 
     useEffect(() => {
 
         const body = JSON.stringify({ call: 'getmemberships', email: user.email })
         request.assoc(body).then(res => {
-            console.log("res.data", res.data)
             setYhdistykset(res.data)
         }).catch(err => {
             if (err.response.data) console.log('err.response.data', err.response.data)
@@ -54,7 +52,6 @@ export default UserPage
 const TervetuloaModal = ({ isModalOpen, setIsModalOpen }) => {
 
     const user = getUser()
-    console.log('user', user)
 
     return (
         <Rodal visible={isModalOpen} onClose={() => setIsModalOpen(false)} animation={'door'} duration={400} height={150} width={300}>
