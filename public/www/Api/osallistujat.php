@@ -34,17 +34,15 @@ function getOsallistujat() {
     $response = array( "message"=> "Osallistujien haku epäonnistui.");
     http_response_code(400);
 
-    if(isset($_POST['id']) && isset($_POST['email'])) {
-        $kokousId = (int)$_POST['id'];
-        $email = htmlspecialchars(strip_tags($_POST['email']));
 
-        $q = "CALL osallistujat_avannutesityslistan('$email', $kokousId);";
+    if(isset($_POST['id'])) {
+        $kokousId = (int)$_POST['id'];
         $yhteys = connect(); 
 
-        if(!$yhteys->query($q)) {
-            mysqli_close($yhteys);
-            echo json_encode($response, JSON_UNESCAPED_UNICODE); 
-            exit(); 
+        if(isset($_POST['email'])) {
+            $email = htmlspecialchars(strip_tags($_POST['email']));
+            $q = "CALL osallistujat_avannutesityslistan('$email', $kokousId);";
+            $yhteys->query($q);
         }
 
         $q = "CALL osallistujat_getosallistujat($kokousId)";
@@ -59,7 +57,6 @@ function getOsallistujat() {
         mysqli_close($yhteys);
         exit(); 
     }
-
     echo json_encode($response, JSON_UNESCAPED_UNICODE); 
 }
 function postOsallistujat() {

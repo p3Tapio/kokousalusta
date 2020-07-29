@@ -203,7 +203,8 @@ const KokousDetails = (props) => {
                                 : <></>
                             }
                             <button className="text-primary" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
-                            {kokous.loppu === "0" ? <button className="text-primary" onClick={handleMenuClick} name="poytakirja" >Pöytäkirja</button> : <></>}
+                            {/* TODO pöytäkirja näkyville vasta kun päätöksiä on syntynyt ???  */}
+                            {kokous.loppu === "0" && kokousRooli === 'puheenjohtaja' ? <button className="text-primary" onClick={handleMenuClick} name="poytakirja" >Pöytäkirja</button> : <></>}
                         </div>
                         {component}
                     </div>
