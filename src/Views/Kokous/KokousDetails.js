@@ -155,14 +155,14 @@ const KokousDetails = (props) => {
                 let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
                 else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} />
-                else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} />
+                else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} kokous={kokous}/>
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
                 else if (showComponent === 'poytakirja') component = <KokousPoytakirja kokous={kokous} yhdistys={yhdistys} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} paatokset={paatokset}/>
                 else component = <p>error... </p>
 
                 let text
-                if (Date.parse(kokous.endDate) < new Date()) text = "Kokous on päättynyt"
+                if (Date.parse(kokous.endDate) < new Date() || kokous.loppu ==="1") text = "Kokous on päättynyt"
                 else if (Date.parse(kokous.endDate) > new Date() && Date.parse(kokous.startDate) < new Date()) text = "Kokous on käynnissä"
                 else text = "Kokous ei ole vielä alkanut"
 
@@ -189,7 +189,7 @@ const KokousDetails = (props) => {
                                 <small>({text})</small>
                             </div>
                             <div className="mt-4 float-right">
-                                <button className="btn btn-danger mb-2 ml-2" type="button" title="Peru osallistumisesi kokoukseen" id="poistu" data-toggle="modal" data-target='#poistuModal' >Peru osallistumisesi</button>
+                                {kokous.loppu === "0" ? <button className="btn btn-danger mb-2 ml-2" type="button" title="Peru osallistumisesi kokoukseen" id="poistu" data-toggle="modal" data-target='#poistuModal' >Peru osallistumisesi</button> : <></>}
                                 <PoistuModal handlePJPoistuuKokouksesta={handlePJPoistuuKokouksesta} handleOsallistujatClick={handleOsallistujatClick} kokousRooli={kokousRooli} />
                             </div>
                             <div className="clearfix"></div>
@@ -199,12 +199,12 @@ const KokousDetails = (props) => {
                             <button className="text-primary valittu_menu" onClick={handleMenuClick} name="asiat" >Asiakohdat</button>
                             <button className="text-primary" onClick={handleMenuClick} name="asiakirjat">Asiakirjat</button>
                             <button className="text-primary" onClick={handleMenuClick} name="osallistujat">Osallistujat</button>
-                            {kokousRooli === 'puheenjohtaja'
+                            {kokousRooli === 'puheenjohtaja' && kokous.loppu === "0"
                                 ? <>     <button className="text-primary" onClick={handleMenuClick} name="kokousaika">Kokousaika</button></>
                                 : <></>
                             }
                             <button className="text-primary" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
-                            <button className="text-primary" onClick={handleMenuClick} name="poytakirja" >Pöytäkirja</button>
+                            {kokous.loppu === "0" ? <button className="text-primary" onClick={handleMenuClick} name="poytakirja" >Pöytäkirja</button> : <></>}
                         </div>
                         {component}
                     </div>

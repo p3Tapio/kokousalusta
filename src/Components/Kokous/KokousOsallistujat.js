@@ -1,12 +1,12 @@
 import React from 'react'
 
-const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli, handleOsallistujatClick }) => {
+const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli, handleOsallistujatClick, kokous }) => {
 
     jasenet = jasenet.filter(jasen => !osallistujat.find(({ email }) => jasen.email === email))
     jasenet = jasenet.filter(jasen => !puheenjohtaja.find(({ email }) => jasen.email === email))
-   
+
     return (
-        <div style={{marginTop:"4px"}} >
+        <div style={{ marginTop: "4px" }} >
             < table className="table table-hover table-responsive-sm">
                 <thead>
                     <tr className="table-primary"><th>Etunimi</th><th>Sukunimi</th><th>Sähköpostiosoite</th><th></th></tr>
@@ -17,7 +17,7 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
                             <td>{item.firstname}</td>
                             <td>{item.lastname}</td>
                             <td>{item.email}</td>
-                            {kokousRooli === 'puheenjohtaja' ? <td><button className="btn btn-outline-danger btn-sm" name={item.email} id="varalle" onClick={handleOsallistujatClick}>Poista kokouksesta</button></td> : <td></td>}
+                            {kokousRooli === 'puheenjohtaja' && kokous.loppu === "0" ? <td><button className="btn btn-outline-danger btn-sm" name={item.email} id="varalle" onClick={handleOsallistujatClick}>Poista kokouksesta</button></td> : <td></td>}
                         </tr>)}
                 </tbody>
             </ table>
@@ -34,12 +34,12 @@ const KokousOsallistujat = ({ osallistujat, jasenet, puheenjohtaja, kokousRooli,
                                     <td>{item.firstname}</td>
                                     <td>{item.lastname}</td>
                                     <td>{item.email}</td>
-                                    {kokousRooli === 'puheenjohtaja' ? <td><button className="btn btn-outline-success btn-sm" name={item.email} id="osallistujaksi" onClick={handleOsallistujatClick}>Siirrä kokoukseen</button></td> : <td></td>}
+                                    {kokousRooli === 'puheenjohtaja' && kokous.loppu === "0" ? <td><button className="btn btn-outline-success btn-sm" name={item.email} id="osallistujaksi" onClick={handleOsallistujatClick}>Siirrä kokoukseen</button></td> : <td></td>}
                                 </tr>)}
 
                         </tbody>
                     </ table> </>
-                : <><hr/><p className="ml-2">Kaikki yhdistyksen jäsenet osallistuvat kokoukseen.</p></>}
+                : <><hr /><p className="ml-2">Kaikki yhdistyksen jäsenet osallistuvat kokoukseen.</p></>}
         </div>
     )
 }
