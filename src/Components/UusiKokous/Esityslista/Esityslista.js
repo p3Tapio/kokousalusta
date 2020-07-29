@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import EsitysKohta from './EsitysKohta'
 import '../../../Style/Esityslista.css'
+
 var timer;
 var updateParams = new URLSearchParams();
 let auki = new Map();
@@ -12,31 +13,22 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
   const [avaa, setKohdat] = useState(new Array());
   console.log('Esityslista.js --- kokousid', kokousid)
   
-
-
   useEffect(() => {
     if (kokousid == -1) return;
     let params = new URLSearchParams();
     params.append("kokous_id", kokousid)
-    axios.post(url + 'data.php', params, { withCredentials: true }).then((response) => {
+    axios.post(url + 'data.php', params, { withCredentials: true }).then((response) => setItems(response.data[0]))}, [kokousid])
 
-      setItems(response.data[0])
-    })
-  }, [kokousid])
-
-
-
-  const axiosSave = () => {
-      
+  const axiosSave = () => {      
       let updateParams2 = updateParams;
       updateParams = new URLSearchParams();  
       axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {}) }
 
 
-  const save = (id, data, delay, type, kohta) => {
-    if (updateParams.get("id") !== id || updateParams.get("type") !== type) axiosSave();
+  const save = (thread, data, delay, type, kohta) => {
+    if (updateParams.get("kohta") !== kohta || updateParams.get("type") !== type) axiosSave();
     if (type === "otsake")
-      setItems(items.map(items => (items.id === id) ? { ...items, n: data } : items))
+      setItems(items.map(items => (items.id === kohta) ? { ...items, n: data } : items))
     updateParams = new URLSearchParams();
     if (type === "mielipide") {
       updateParams.append("param", data[0])
@@ -44,13 +36,13 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
       updateParams.append("loppu", data[2])
       updateParams.append("draft", data[3]) /* 0 = draft , 1= julkaise */
     } else if (type === "paatos"){
-      setItems(items.map(items => (items.id === id) ? { ...items, paatos: data[0],tila:data[1] } : items))
+      setItems(items.map(items => (items.id === kohta) ? { ...items, paatos: data[0],tila:data[1] } : items))
       updateParams.append("param", data[0])
       updateParams.append("tila", data[1])
     } else {  updateParams.append("param", data)
       updateParams.append("param", data)
     }
-    updateParams.append("id", id);
+    updateParams.append("thread", thread);
     updateParams.append("kohta", kohta);
     updateParams.append("kokous_id", kokousid)
     updateParams.append("save", type)
@@ -116,7 +108,9 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
             poista={lisaa_ja_poista}
             tila={items.tila}
             paatos={items.paatos}
-             />)}
+             />
+    
+             )}
         {lisaa}
       </div>
       { setShowComponent ? 

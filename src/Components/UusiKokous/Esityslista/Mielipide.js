@@ -1,19 +1,22 @@
 import React, { useRef, useEffect, useState} from 'react';
 import ResizeTextArea from './ResizeTextArea'
 import '../../../Style/Mielipide.css';
+import Kommentit from './Kommentit';
+import Kannata from './Kannata';
 
 
 var alku=0;
 var loppu=0;
 var thisdata =""
-const Mielipide = ({tila,id,save,edit=false, arvot=[],kuvaus,positio}) => {
+const Mielipide = ({kokous_id,kohta_id,tila,save,edit=false, arvot=[],kuvaus,positio}) => {
+    console.log("ARVOT",arvot)
     const [kohta,setKohta] = useState("")
     const [perustelu,setPerustelu] = useState("")
     const [mbool,setMielibool] =useState(false);
     
     
     const laheta_setup = () => {
-        let sendi = document.getElementById("send_mielipide"+id);
+        let sendi = document.getElementById("send_mielipide"+kohta_id);
         if(sendi !=null){
             if (thisdata.length >0)
                 sendi.classList.add("msend2")
@@ -30,7 +33,7 @@ const Mielipide = ({tila,id,save,edit=false, arvot=[],kuvaus,positio}) => {
     }
 
     const julkaise = () => {
-        save(id,[thisdata,alku,loppu,1])
+        save(kohta_id,[thisdata,alku,loppu,1])
         alku=0;loppu=0;
         thisdata =""
         setPerustelu("");
@@ -43,10 +46,7 @@ const Mielipide = ({tila,id,save,edit=false, arvot=[],kuvaus,positio}) => {
             let sel = window.getSelection();
             if (sel.rangeCount) {
                 let element = sel.getRangeAt(0).commonAncestorContainer;
-                if(element && element.parentNode !==null && element.parentNode.id === ("kuvaus"+id)){
-                   
-                    //let pos = getInputSelection(element.querySelector(".areaText"))
-                    
+                if(element && element.parentNode !==null && element.parentNode.id === ("kuvaus"+kohta_id)){
                     alku = sel.anchorOffset;
                     let offset = sel.focusOffset;
                     if(offset < alku ){
@@ -56,12 +56,9 @@ const Mielipide = ({tila,id,save,edit=false, arvot=[],kuvaus,positio}) => {
                         loppu = offset;
                     }
                     laheta_setup()
-        
-                
                     setMielibool(alku!=loppu);
                     setKohta(window.getSelection().toString());
-                }
-                
+                } 
             }
         })
         }, [])  
@@ -73,25 +70,31 @@ const Mielipide = ({tila,id,save,edit=false, arvot=[],kuvaus,positio}) => {
     }
     
     let mielipide = ""
-    if(mbool && tila!=3) 
-        mielipide = <div>
-    <div className="mteksti">Mielipide asiasta:<br></br><b> {kohta} </b></div>
-    <div className="perustelu" onMouseDown={()=>{positio(alku,loppu)}}><ResizeTextArea  edit={true} sisus={perustelu} save={this_save}/></div>
-    <div className="msend" id={"send_mielipide"+id} onClick={() => julkaise()}>Lähetä</div></div>
+    if(mbool && tila!=3) mielipide = <div>
+        <div className="mteksti  disable-select">Mielipide asiasta:<br></br><b> {kohta} </b></div>
+        <div className="perustelu" onMouseDown={()=>{positio(alku,loppu)}}><ResizeTextArea  edit={true} sisus={perustelu} save={this_save}/></div>
+        <div className="msend disable-select" id={"send_mielipide"+kohta_id} onClick={() => julkaise()}>Lähetä</div></div>
     
     return (<div>
           
         {mielipide}
-        {(arvot.length > 0)?<div className="MielipideHeader">Mielipiteet({arvot.length})</div>:""}
+        {(arvot.length > 0)?<div className="MielipideHeader disable-select">Mielipiteet({arvot.length})</div>:""}
         
         {arvot.map(arvot =>
-            <div className="mielipide_container" onClick={(ev)=>{setMielibool(false);positio(arvot.alku,arvot.loppu)}}>
+            <div key={arvot.id} className="mielipide_container" onClick={(ev)=>{setMielibool(false);positio(arvot.alku,arvot.loppu)}}>
                 <div className="kelloaika">{arvot.aika}</div>
                 <div className="nimipallo">{arvot.firstname[0]}{arvot.lastname[0]}</div>
                 <div className="mielipide_otsake" >{osa(arvot.alku,arvot.loppu)}</div>
-                
-                
                 <div className="mielipide_teksti">{arvot.mielipide}</div>
+                
+                <div>
+                <Kannata/>
+                <Kommentit 
+                    thread_id={arvot.id}
+                    kohta_id={kohta_id}
+                    kokous_id={kokous_id}
+                    maara={arvot.kommentit}/>
+                </div>
              </div>                   
                                 ) }    
         </div>)

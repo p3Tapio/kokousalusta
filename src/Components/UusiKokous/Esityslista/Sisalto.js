@@ -6,12 +6,15 @@ import Mielipide from './Mielipide'
 import Hyvaksy from './Hyvaksy'
 import Henkilovalinta from './Henkilovalinta'
 import '../../../Style/Sisalto.css'
-import Paatos from './Paatos'
+import DatePicker, { registerLocale } from "react-datepicker";
 
 const url = process.env.REACT_APP_HOST_URL
 
 const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
+  const [pickerDate, setPickerDate] = useState()
   
+
+
   const [valinnat,setValinnat] =useState([])
   const [valintaArvot,setValintaArvot] = useState([])
   const [kuvaus,setKuvaus] = useState([])
@@ -58,8 +61,27 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
     save(id,nnimi,500,"check");
     setValinnat(valinnat.map(arvot => (arvot.id === id)?{ ...arvot, nimi:nnimi}:arvot))
   }
-  const mielipide_save = (id,data) => {
-    save(id,data,500,"mielipide")
+  const mielipide_save = (_id,data) => {
+    if(data[3]==0)
+      save(_id,data,500,"mielipide")
+    else {
+      
+      var params = new URLSearchParams()
+      params.append("param", data[0])
+      params.append("save", "mielipide")
+      params.append("alku", data[1])
+      params.append("loppu", data[2])
+      params.append("draft", 1) 
+      params.append("thread", _id);
+      params.append("kohta", id);
+      params.append("kokous_id", kokous_id)
+      axios.post(url+'data.php', params, {withCredentials: true}).then((response) =>reload());    
+    }
+  
+
+
+
+
   }
 
   const reload = () => {
@@ -70,26 +92,23 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
       if(response.data[2]!=-1)setValintaArvot(JSON.parse(response.data[2]))
         else setValintaArvot([])
       if(response.data[1]!=-1){
-        
         setValinnat(JSON.parse(response.data[1]))   
-        
       }
         else setValinnat([])
-      
       if(response.data[0]!=-1){
         setKuvaus(JSON.parse(response.data[0]))
-        
       }
         else {
           setKuvaus("");
-         
         }
       set_k_Loppu("");
       set_k_Valittu("");
-      if(response.data[3]!=-1)setMielipiteet(JSON.parse(response.data[3]))
+      if(response.data[3]!=-1){setMielipiteet(JSON.parse(response.data[3]))
+        setTyyppi(1);
+      }
         else setMielipiteet([]);
      
-      
+       
     })}
   
   const osa = (s,e) => {
@@ -120,14 +139,11 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
   
   let setti = ["",
               "", /*tiedoksi*/
-              <div><Mielipide tila={tila} edit={edit} id={id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
+              <div><Mielipide tila={tila} edit={edit} kohta_id={id} kokous_id={kokous_id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
               <div><Hyvaksy tila={tila} id={id} save={perustelu_save} sisus={perustelu}/></div>,
               <div><CheckboxArea tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
               <div><Henkilovalinta tila={tila} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>,
               <div><Henkilovalinta tila={tila} type={6} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
-
-              
-              
               [type]
 
     return (
@@ -145,29 +161,22 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
 
         {setti}
 
-        
-
-
+        <div style={{paddingLeft:"40px",zIndex:"10"}}><div>deadline: </div>
+        <DatePicker
+                            name='deadline'
+                            locale="fi"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            selected={pickerDate}
+                            onChange={date => setPickerDate(date)}
+                            selectsStart
+                         
+            
+         />
+      </div>  
            
          
       </div>
-      {
-      
-      
-      /*}
-      <div className="sisalto"><div className="add uusi">Deadline</div></div>  
-      <div className="sisalto"><div className="add uusi">Lisää liite</div></div>
-      <div className="sisalto" ><div className="add uusi">Päätös</div></div>
-      
-      <div className="sisalto" style={{marginBottom:"10px"}}>
-         <Checkbox nimi='Vaadi perustelu' check={vaadiperustelu}></Checkbox>
-         <Checkbox nimi='Salli käyttäjien lisätä ehdotuksia (datepicker deadline)' check={vaadiperustelu}></Checkbox>
-         <Checkbox nimi='Saa valita monta' check={vaadiperustelu}></Checkbox>
-         <Checkbox nimi='Kakkosvalinta' check={vaadiperustelu}></Checkbox>datestamp on aina viimeisin eka
-         <Checkbox nimi='Vastaukset anonyymeinä' check={vaadiperustelu}></Checkbox>
-         <div style={{clear:"both"}}/>
-         
-    </div> */}
       
       </div>
     )

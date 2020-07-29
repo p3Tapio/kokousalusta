@@ -37,7 +37,7 @@
   text-align:center;
   width:50px;
   height:37px;font-family: Helvetica, Arial, sans-serif;
-  border-radius:0px;font-size:10px;margin-right:2px;-webkit-box-shadow: 0px 2px 3px #000000;box-shadow: 0px 2px 3px #000000;z-index:100;border: 1px solid #000;border-radius:2px;}
+  border-radius:0px;font-size:10px;margin-right:2px;-webkit-box-shadow: 0px 2px 3px #000000;box-shadow: 0px 2px 3px #000000;z-index:10;border: 1px solid #000;border-radius:2px;}
 .taulu .paivays {
   left:5px;
   top:0px;
@@ -52,6 +52,40 @@
 .paivays_alku {background: linear-gradient(180deg, #55BF55 0px,  #55BF55 13px, #fff 13px, #F9f9f9 15px, #eee 100%);}
 .kk {height:18px;}
 .paivays_nro {transform: scale(1.4,1.7);font-weight:bold;}
+
+
+.kommentoija {
+  z-index: 1;
+  color:#FFF;
+  position:absolute;
+  display:block;
+  width:20px;
+  height:20px;
+  
+  line-height: 22px;
+  text-align: center;
+  font-size:10px;
+}
+.kommentti_container {
+  border-top:1px solid #00000011;
+  position: relative;
+}
+.kommenttiaika {
+  font-size:8px;
+  position:absolute;
+  bottom:0;
+  right:0;
+  
+}
+.kommenttikommentti {
+  min-height: 22px;
+  
+  padding-left: 30px;
+  margin-bottom: 1px;
+  background-color: #dddddd11;
+  
+  white-space: pre-wrap;
+}
 
 
 
