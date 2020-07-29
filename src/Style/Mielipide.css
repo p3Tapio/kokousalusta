@@ -1,6 +1,7 @@
 .mielipide .areaText {
     background-color: transparent;
     padding-left: 25px;
+    
     height:auto;
 }
 .mteksti {
@@ -12,6 +13,7 @@
     width:calc(100% - 45px);
     border:1px solid #ccc;
     padding:5px;
+    padding-bottom:50px;
 }
 .msend {
     margin-left:25px;
