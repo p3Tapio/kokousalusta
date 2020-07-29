@@ -36,12 +36,11 @@ const KokousDetails = (props) => {
 
         if (getSessionRole()) {
             const body = JSON.stringify({ call: 'getkokous', id: kokousId })
-
             request.kokous(body).then(res => {
                 setKokous(res.data)
-            }).catch(err => console.log('err.response.data', err.response.data))
+            }).catch(err => console.log('err.response', err.response))
 
-            const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId })
+            const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId, email: user.email })
             request.osallistujat(body2).then(res => {
                 setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
                 setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
@@ -49,7 +48,7 @@ const KokousDetails = (props) => {
                 if (osal[0]) {
                     setKokousRooli(osal[0].role)
                 } else history.push({ pathname: `/assoc/${yhdistys}`, state: { yhdistys_id } })
-            }).catch(err => console.log('err.response.data', err.response.data))
+            }).catch(err => console.log('err.response', err.response))
 
             const req = JSON.stringify({ call: 'getallmembers', yhdistys: yhdistys })
             request.assoc(req).then(res => {
@@ -157,7 +156,7 @@ const KokousDetails = (props) => {
                 else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} />
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} kokous={kokous}/>
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
-                else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} />
+                else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja}/>
                 else if (showComponent === 'poytakirja') component = <KokousPoytakirja kokous={kokous} yhdistys={yhdistys} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} paatokset={paatokset}/>
                 else component = <p>error... </p>
 

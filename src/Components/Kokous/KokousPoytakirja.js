@@ -3,9 +3,9 @@ import { TextEditor } from '../Document/TextEditor';
 import request from '../Shared/HttpRequests'
 
 const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paatokset }) => {
-    console.log('paatokset', paatokset)
-
-    paatokset = paatokset.filter(x => x.tila === "3")
+    
+    const kaikki = puheenjohtaja.concat(osallistujat)
+    const avannutEsityslistan = kaikki.map(x => x.pv_avannut).reduce((a, v) => (v ==="1" ? a + 1 : a), 0)
 
     const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
     const pvmYear = { year: 'numeric' }
@@ -16,11 +16,12 @@ const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paato
     let paatosvalta = ''
     if (kokous.pv_aktiivisuus === '0' && kokous.pv_esityslista === '0' && kokous.pv_kesto === '0' && kokous.pv_muu === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
     else { // TODO keston lisäksi muut päätösvalta kriteerit !!! ---------------------------
-        if (kokous.pv_esityslista !== '0') paatosvalta += `<p>Kokous on päätösvaltainen jos vähintään ${kokous.pv_esityslista} kpl kokousosallistujista on avannut esityslistan.</p>`
+        if (kokous.pv_esityslista !== '0') paatosvalta += kokous.pv_esityslista <= avannutEsityslistan ? `<p>Kokouksen asialistan tuli avata vähintään ${kokous.pv_esityslista} kpl osallistujista. Kokous päätösvaltainen, koska osallistujista ${avannutEsityslistan} kpl avasi esityslistan.</p>` : `<p>Kokouksen esityslistaa ei avannut riittävä määrä (${kokous.pv_esityslista} kpl) osallistujista.</p>`
         if (kokous.pv_aktiivisuus !== '0') paatosvalta += `<p>Kokous on päätösvaltainen jos vähintään ${kokous.pv_aktiivisuus} kpl kokousosallistujista on ottanut asioihin kantaa.</p>`
         if (kokous.pv_kesto !== '0') paatosvalta += kokous.pv_kesto_toteutunut === "true" ? `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta toteutui.</p>` : `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta ei toteutunut.</p>`
         if (kokous.pv_muu !== '') paatosvalta += `<p>${kokous.pv_muu}</p>`
     }
+    paatokset = paatokset.filter(x => x.tila === "3")
     const paatostiedot = paatokset.length !== 0 ? paatokset.map(x => x.paatos !== '' ? '<h3>' + x.title + '</h3>' + '<p style="margin-top: -10px;">' + x.paatos + '</p>' : '<h3>' + x.title + '</h3>').join(' ') : 'Kokouksessa ei tehty päätöksiä.'
     const pj = puheenjohtaja.length !== 0 ? puheenjohtaja[0].firstname + " " + puheenjohtaja[0].lastname : "kokouksessa ei ole puheenjohtajaa"
     const [poytakirja, setPoytakirja] = useState(`<h1>${yhdistys}</h1>${otsikko}<h2>Kokous ${kokousnumero}</h2><h2>${ajat}</h2><h2>Osallistujat</h2><ul>${osallistuu}</ul><p>Puheenjohtaja: ${pj}<h2>Päätösvaltaisuus</h2>${paatosvalta}<h2>Asiakohdat</h2>${paatostiedot}`)
