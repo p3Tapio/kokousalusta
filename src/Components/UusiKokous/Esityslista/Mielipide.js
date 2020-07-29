@@ -19,9 +19,9 @@ const Mielipide = ({kokous_id,kohta_id,tila,save,edit=false, arvot=[],kuvaus,pos
         let sendi = document.getElementById("send_mielipide"+kohta_id);
         if(sendi !=null){
             if (thisdata.length >0)
-                sendi.classList.add("msend2")
+                sendi.classList.add("sendilite")
             else
-                sendi.classList.remove("msend2")
+                sendi.classList.remove("sendilite")
         }
     }
 
@@ -73,7 +73,7 @@ const Mielipide = ({kokous_id,kohta_id,tila,save,edit=false, arvot=[],kuvaus,pos
     if(mbool && tila!=3) mielipide = <div>
         <div className="mteksti  disable-select">Mielipide asiasta:<br></br><b> {kohta} </b></div>
         <div className="perustelu" onMouseDown={()=>{positio(alku,loppu)}}><ResizeTextArea  edit={true} sisus={perustelu} save={this_save}/></div>
-        <div className="msend disable-select" id={"send_mielipide"+kohta_id} onClick={() => julkaise()}>Lähetä</div></div>
+        <div className="sendibutton disable-select" id={"send_mielipide"+kohta_id} onClick={() => julkaise()}>Lähetä</div></div>
     
     return (<div>
           

@@ -11,7 +11,14 @@ const Kommentit = ({thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
     const this_save = (_id,data) => {
         
         setKommentti(data);
-        
+        let sendi = document.getElementById("send_kommentti"+kohta_id);
+        if(sendi !=null){
+            
+            if (data.length > 0)
+                sendi.classList.add("sendilite")
+            else
+                sendi.classList.remove("sendilite")
+        }
         
         
     }
@@ -68,7 +75,7 @@ const Kommentit = ({thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
          <div className="kommenttilikepeukku">PEUKKU</div></div>)}
         <ResizeTextArea edit={true} placeholder="kirjoita kommentti" sisus={kommentti} save={this_save}/>
         
-        <div className="sendibutton" onClick={()=>julkaise()}>send</div></div>:""}
+        <div className="sendibutton" id={"send_kommentti"+kohta_id} onClick={()=>julkaise()}>send</div></div>:""}
         </div>
     )
 }

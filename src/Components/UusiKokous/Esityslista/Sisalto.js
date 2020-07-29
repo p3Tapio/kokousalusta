@@ -161,8 +161,8 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
 
         {setti}
 
-        <div style={{paddingLeft:"40px",zIndex:"10"}}><div>deadline: </div>
-        <DatePicker
+{/*        <div style={{paddingLeft:"40px",zIndex:"10"}}><div>deadline: </div>
+       <DatePicker
                             name='deadline'
                             locale="fi"
                             dateFormat="dd/MM/yyyy"
@@ -172,8 +172,8 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
                             selectsStart
                          
             
-         />
-      </div>  
+        
+      </div>  />*/}
            
          
       </div>
