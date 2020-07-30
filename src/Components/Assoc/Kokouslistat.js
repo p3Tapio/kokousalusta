@@ -36,7 +36,7 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys, yhdistys_id }) => {
             (<>
                 {menneet.length === 0
                     ? <><h5>Yhdistyksellä ei ole menneitä kokouksia</h5></>
-                    : <><h5 className="mt-4">Päättyneet kokoukset</h5>
+                    : <>
                         <KokousTable kokous={menneet} yhdistys={yhdistys} status="paattynyt" yhdistys_id={yhdistys_id}/>
                     </>}
             </>)
@@ -45,7 +45,7 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys, yhdistys_id }) => {
             (<>
                 {tulevat.length === 0
                     ? <><h5>Yhdistyksellä ei ole tulevia kokouksia</h5></>
-                    : <><h5 className="mt-4">Tulevat kokoukset</h5>
+                    : <>
                         <KokousTable kokous={tulevat}  yhdistys={yhdistys} status="tuleva" yhdistys_id={yhdistys_id}/>
                     </>}
             </>)

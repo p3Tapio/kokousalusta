@@ -80,7 +80,6 @@ const UusiKokous = (props) => {
                     }
                 } else {
                     getKokousNro()
-
                 }
             }).catch(err => console.log('err.response.data', err.response.data))
         }
