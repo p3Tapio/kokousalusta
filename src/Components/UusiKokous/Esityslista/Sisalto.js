@@ -140,10 +140,10 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
   let setti = ["",
               "", /*tiedoksi*/
               <div><Mielipide tila={tila} edit={edit} kohta_id={id} kokous_id={kokous_id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
-              <div><Hyvaksy tila={tila} id={id} save={perustelu_save} sisus={perustelu}/></div>,
-              <div><CheckboxArea tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
-              <div><Henkilovalinta tila={tila} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>,
-              <div><Henkilovalinta tila={tila} type={6} kohtaid={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
+              <div><Hyvaksy kokous_id={kokous_id} kohta_id={id} tila={tila} save={perustelu_save} sisus={perustelu}/></div>,
+              <div><CheckboxArea kokous_id={kokous_id} kohta_id={id} tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
+              <div><Henkilovalinta tila={tila} kohta_id={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>,
+              <div><Henkilovalinta tila={tila} type={6} kohta_id={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
               [type]
 
     return (
@@ -161,19 +161,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
 
         {setti}
 
-{/*        <div style={{paddingLeft:"40px",zIndex:"10"}}><div>deadline: </div>
-       <DatePicker
-                            name='deadline'
-                            locale="fi"
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            selected={pickerDate}
-                            onChange={date => setPickerDate(date)}
-                            selectsStart
-                         
-            
-        
-      </div>  />*/}
+
            
          
       </div>

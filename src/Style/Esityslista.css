@@ -32,7 +32,7 @@ border-left:5px solid #9fc8d6cc;
 }
  .esitys_item .paivays {
     top:5px;
-    left:5px;
+    right:5px;
     position:absolute;
     z-index:1;
   }
@@ -89,7 +89,7 @@ border-left:5px solid #9fc8d6cc;
 
 
 .valinta_iconit, .valinta_iconit2 {
-position:absolute;top:10px;right:0px;opacity:1;
+position:absolute;top:10px;opacity:1;
 }
 
 .valinta_iconit2 .p_k, .valinta_iconit .p_k {
@@ -98,6 +98,8 @@ position:absolute;top:10px;right:0px;opacity:1;
 
     
 }
+.valinta_iconit {right:50px;}
+.valinta_iconit2 {left:14px;}
 .kohta_valittu * {
     fill:#2c3e5011;
     

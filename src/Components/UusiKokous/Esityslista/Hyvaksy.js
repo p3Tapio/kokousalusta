@@ -15,7 +15,7 @@ import '../../../Style/Hyvaksy.css';
  */
 
 
-const Hyvaksy = ({id,save,sisus}) => {
+const Hyvaksy = ({kohta_id,kokous_id, save,sisus}) => {
     const this_save = (id,data) => {
         save(id,data)
     }
@@ -25,7 +25,7 @@ const Hyvaksy = ({id,save,sisus}) => {
     return (
         <div className="asiakohta_hyvaksy">
             
-            <Checkbox check={this_check} nimi = "hyväksyn"/>
+            <Checkbox kohta_id={kohta_id} check={this_check} nimi = "hyväksyn"/>
                 <div className="asiakohta_perustelu">
                 
                 <ResizeTextArea  edit={true} sisus={sisus} save={this_save} placeholder={"Ehdota muutosta"}/>

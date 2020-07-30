@@ -5,7 +5,7 @@ import CheckboxArea from './CheckboxArea'
 
 
 
-const Henkilovalinta = ({kokous_id,edit=false, arvot, checkValue=[], check, remove, save, uusi, type="5", tila}) => {
+const Henkilovalinta = ({kohta_id, kokous_id,edit=false, arvot, checkValue=[], check, remove, save, uusi, type="5", tila}) => {
     const [users, setUsers] = useState([])
     const [ei_ehdokkaat,setEiEhdokkaat] = useState([])
     const [ehdokkaat,setEhdokkaat] = useState([])
@@ -25,6 +25,7 @@ const Henkilovalinta = ({kokous_id,edit=false, arvot, checkValue=[], check, remo
                 obj["id"]=x.id;
                 obj["maara"]=x.maara;
                 aania+=parseInt(x.maara);
+                obj['kommentit']=x.kommentit;
                 obj["nimi"] = hash.get(x.nimi)
                 hash.delete(x.nimi)
                 return obj;}))
@@ -38,13 +39,13 @@ const Henkilovalinta = ({kokous_id,edit=false, arvot, checkValue=[], check, remo
     let jasenlista;
     if (tila!="3") jasenlista =
     <div>{ei_ehdokkaat.length>0?<button onClick={()=>setEhdokasBool(!ehdokasBool)} className="pj_ehdota" >{!ehdokasBool?"Lisää ehdokas":"pienennä"}</button>:""}   
-    {ehdokasBool?ei_ehdokkaat.map(x=>  <div className="pj_ehdokkaita" onClick={()=>uusi(x.id)}>{x.firstname} {x.lastname}</div>):""}</div>
+    {ehdokasBool?ei_ehdokkaat.map(x=>  <div className="pj_ehdokkaita" key={x.id} onClick={()=>uusi(x.id)}>{x.firstname} {x.lastname}</div>):""}</div>
 
     
     return (
         <div className="PJ">       
             {ehdokkaat.length>0?
-            <CheckboxArea type="6" tila={tila} edit={false} arvot={ehdokkaat} check={check} checkValue={checkValue} remove={remove} save={save} uusi={uusi}/>:""}
+            <CheckboxArea type="6" kohta_id={kohta_id} kokous_id={kokous_id} tila={tila} edit={false} arvot={ehdokkaat} check={check} checkValue={checkValue} remove={remove} save={save} uusi={uusi}/>:""}
            
            {jasenlista}
             
