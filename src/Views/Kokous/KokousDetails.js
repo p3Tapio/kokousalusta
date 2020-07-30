@@ -109,7 +109,7 @@ const KokousDetails = (props) => {
         }
     }
     const handlePJPoistuuKokouksesta = (syy) => {
-   
+
         setOsallistujat(osallistujat.filter(x => x.email !== user.email))
         const body = JSON.stringify({ call: 'poistaosallistuja', kokousid: kokousId, email: user.email })
 
@@ -129,22 +129,21 @@ const KokousDetails = (props) => {
 
     }
     const handleVaihdaKokousaika = (date) => {
-
+  
         if (typeof date === 'object' && Date.parse(date) !== Date.parse(kokous.endDate)) {
-            const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
-            const uusiPvm = date.toISOString().split('T')[0]
-            if (window.confirm(`Haluatko vaihtaa kokouksen uudeksi päättymispäiväksi ${(new Date(uusiPvm)).toLocaleDateString('fi-FI', pvmForm)}?`)) {
-                setKokous({ ...kokous, endDate: uusiPvm })
-                const body = JSON.stringify({ call: 'vaihdapvm', kokousid: kokousId, enddate: date })
-                request.kokous(body).then(res => {
-                    alert(res.data.message)
-                }).catch(err => alert(err.response.data.message))
-            }
+                const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
+                const uusiPvm = date.toISOString().split('T')[0]
+                if (window.confirm(`Haluatko vaihtaa kokouksen uudeksi päättymispäiväksi ${(new Date(uusiPvm)).toLocaleDateString('fi-FI', pvmForm)}?`)) {
+                    setKokous({ ...kokous, endDate: uusiPvm })
+                    const body = JSON.stringify({ call: 'vaihdapvm', kokousid: kokousId, enddate: date })
+                    request.kokous(body).then(res => {
+                        alert(res.data.message)
+                    }).catch(err => alert(err.response.data.message))
+                } 
         } else {
             alert("Määritä uusi päättymispäivä ennen tallentamista")
         }
     }
-   
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
 
         if (kokous && kokousRooli) {
@@ -154,14 +153,14 @@ const KokousDetails = (props) => {
                 let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
                 else if (showComponent === 'asiat') component = <Esityslista kokousid={kokousId} />
-                else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} kokous={kokous}/>
+                else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} kokous={kokous} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
-                else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja}/>
-                else if (showComponent === 'poytakirja') component = <KokousPoytakirja kokous={kokous} yhdistys={yhdistys} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} paatokset={paatokset}/>
+                else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} />
+                else if (showComponent === 'poytakirja') component = <KokousPoytakirja kokous={kokous} yhdistys={yhdistys} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} paatokset={paatokset} />
                 else component = <p>error... </p>
 
                 let text
-                if (Date.parse(kokous.endDate) < new Date() || kokous.loppu ==="1") text = "Kokous on päättynyt"
+                if (Date.parse(kokous.endDate) < new Date() || kokous.loppu === "1") text = "Kokous on päättynyt"
                 else if (Date.parse(kokous.endDate) > new Date() && Date.parse(kokous.startDate) < new Date()) text = "Kokous on käynnissä"
                 else text = "Kokous ei ole vielä alkanut"
 
