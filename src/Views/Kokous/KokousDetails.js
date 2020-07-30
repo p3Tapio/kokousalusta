@@ -99,7 +99,6 @@ const KokousDetails = (props) => {
             window.location.reload();
         }
         if (runRequest) {
-            console.log('body', body)
             request.osallistujat(body).then(res => {
                 alert(res.data.message)
             }).catch(err => {
@@ -121,7 +120,6 @@ const KokousDetails = (props) => {
         })
 
         const body2 = JSON.stringify({ call: 'pjpoistui', kokousid: kokousId, syy: syy, pv: 10 })
-        console.log('body2', body2)
         request.osallistujat(body2).then(res => {
             window.location.reload();
         }).catch(err => console.log('err.response', err.response))

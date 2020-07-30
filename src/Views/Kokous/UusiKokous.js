@@ -176,7 +176,7 @@ const UusiKokous = (props) => {
 
             request.osallistujat(body).then(res => {
                 console.log('res.data', res.data)
-            }).catch(err => console.log('Error res.data ', err.response.data))
+            }).catch(err => console.log('Error res ', err.response))
         }
     }
     const handlePerustiedotChange = (ev) => {
