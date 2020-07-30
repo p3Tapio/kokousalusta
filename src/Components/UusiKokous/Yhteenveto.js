@@ -6,6 +6,7 @@ import request from '../Shared/HttpRequests'
 import Loading from '../Shared/Loading';
 
 const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
+    
     const [loading, setLoading] = useState(false)
     let history = useHistory()
     let user = getUser()
@@ -84,7 +85,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         kokousosallistujat = [user].concat(kokousosallistujat)
         kokousosallistujat = [call].concat(kokousosallistujat)
         const body = JSON.stringify(kokousosallistujat)
-
+ 
         request.osallistujat(body).then(res => {
             sendInviteEmail();
         }).catch(err => alert(err.response.data.message))

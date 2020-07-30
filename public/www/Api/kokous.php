@@ -165,7 +165,7 @@ function deleteKokousDraft() {
     if(isset($_POST['kokousid'])) {
         
         $kokousid = (int)$_POST['kokousid'];
-        $sql = "CALL kokous_deletekokousdraft($kokousid)"; 
+        $sql = "CALL kokous_deletekokousdraft($kokousid)"; /* <-- kovakoodattu yhdistysid TODO tarvitaan $_SESSION['yhdistys'] */
         $response = array("message"=> $sql);
         $yhteys = connect(); 
         if($result = $yhteys->query($sql)) {
