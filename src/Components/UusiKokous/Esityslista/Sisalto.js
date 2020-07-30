@@ -10,7 +10,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 
 const url = process.env.REACT_APP_HOST_URL
 
-const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
+const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila}) => {
   const [pickerDate, setPickerDate] = useState()
   
 
@@ -151,7 +151,7 @@ const Sisalto = ({id,save,type,kokous_id,edit=false,tila}) => {
       <div id="sisalto">  
     
          {
-            [<div className="kuvaus"><ResizeTextArea edit={true} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
+            [<div className="kuvaus"><ResizeTextArea edit={parseInt(tila)===0 && parseInt(oikeudet)===0} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
               <div className="kuvaus"><div  id={"kuvaus"+id} className="areaText">{kuvaus}</div></div>,
               <div className="kuvaus"><div  id={"kuvaus"+id} onMouseDown={()=>setTyyppi(1)}className="areaText">
                 {k_alku}<span className='korostus'>{k_valittu}</span>{k_loppu}</div></div>]

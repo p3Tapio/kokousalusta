@@ -7,8 +7,9 @@ var timer;
 var updateParams = new URLSearchParams();
 let auki = new Map();
 const url = process.env.REACT_APP_HOST_URL
-const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "true", saveKokousDraft, setShowComponent = null}) => {
+const Esityslista = ({ puheenjohtaja, setEsityslista, esityslista, kokousid = "-1", edit = "true", saveKokousDraft, setShowComponent = null}) => {
   const [items, setItems] = useState([])
+  
   
   const [avaa, setKohdat] = useState(new Array());
   console.log('Esityslista.js --- kokousid', kokousid)
@@ -81,12 +82,13 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
       window.clearTimeout(timer);
       axiosSave();
     }
-    setKohdat ((avaa.includes(id))?avaa.filter(x=> (x!=id)):[...avaa, id]);
+    setKohdat ((avaa.includes(id))?avaa.filter(x=> (x!=id)):[...avaa, id]); // lisää clickattu kohta listaan tai poista se == avataan sen sisältö
   }
   
   let lisaa;
   if (edit) lisaa = <button className="lisaa_esitysitem" onClick={()=>lisaa_ja_poista()}>Asiakohta</button>
   console.log('items', items)
+  let admin;
   return (
     <div>
       <div id="esitys_container">
@@ -94,17 +96,17 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
           <EsitysKohta
             kokous_id={kokousid}
             vaihda_tyyppi={vaihda_tyyppi}
+            type={items.type}
             avaa={avaaItem}
             save={save}
-            type={items.type}
             auki={avaa.includes(items.id)}
-            owner={items.o}
+            oikeudet={items.oikeudet}
             type={items.type}
+            pj = {puheenjohtaja}
             title={items.n}
             id={items.id}
             key={items.id}
             alkaa={items.s}
-            loppuu={items.e}
             poista={lisaa_ja_poista}
             tila={items.tila}
             paatos={items.paatos}
@@ -113,11 +115,6 @@ const Esityslista = ({ setEsityslista, esityslista, kokousid = "-1", edit = "tru
              )}
         {lisaa}
       </div>
-      {/* { setShowComponent ? 
-        <div className="text-right">
-        <button onClick={() => { setShowComponent('osallistujat'); saveKokousDraft() }} className="btn btn-outline-primary mt-3">Seuraava</button>
-      </div>
-      :<></>} */}
     </div>
   )
 }

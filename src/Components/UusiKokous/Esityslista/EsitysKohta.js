@@ -9,10 +9,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import fi from 'date-fns/locale/fi';
 import { FaHandshake,FaUserCheck,FaComment,FaComments,FaGavel } from 'react-icons/fa';
 const url = process.env.REACT_APP_HOST_URL
-const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save,poista,paatos,tila}) => {
+const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save,poista,paatos,tila}) => {
   
   const [startDate, setStartDate] = useState((alkaa!=="0000-00-00")?new Date(alkaa):"")
-  const [endDate, setEndDate] = useState((loppuu!=="0000-00-00")?new Date(alkaa):"")
+  
   var sisalto
   let alku
   let loppu
@@ -78,25 +78,26 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
                   <FaUserCheck onMouseEnter={()=>thisinfo(5)} onClick={()=>thisvaihda_tyyppi(5)} className ={(type==5)?"kohta_valittu p_k":"p_k"}/>,
                   <FaGavel onMouseEnter={()=>thisinfo(6)} className ="kohta_valittu p_k"/>]
   
-  let nappit = (type==0)?
+  let nappit =  (type==0 && tila == 0 && parseInt(oikeudet)===0)?
   <div className="valinta_iconit">{nappeja[1]}{nappeja[2]}{nappeja[3]}{nappeja[4]}{nappeja[5]}<div className="kohta_info" id={"info"+id}>{thisinfo(type,1)}</div></div>:
   <div className="valinta_iconit2">{nappeja[type]}<div className="kohta_info" id={"info"+id}>{thisinfo(type,1)}</div></div>;
-  sisalto = (auki)?<Sisalto key={id} kokous_id={kokous_id} id={id} type={type} save={this_save} tila={tila}/>:""; 
+  sisalto = (auki)?<Sisalto key={id} pj={pj} oikeudet={oikeudet} oikeudet={oikeudet} kokous_id={kokous_id} id={id} type={type} save={this_save} tila={tila}/>:""; 
 
   return (
     <div className="esitys_item">
       {loppu}
       
-      <div onClick= {this_avaa} className="otsake">{alku}<ResizeTextArea edit={true} id={id} sisus={title} save={this_save}/></div>
+      <div onClick= {this_avaa} className="otsake">{alku}<ResizeTextArea edit={tila==0 && parseInt(oikeudet)===0} id={id} sisus={title} save={this_save}/></div>
       <div>
-        {nappit}
+        {(parseInt(tila)==3)?"":nappit}
         
-        {(parseInt(tila)!=0 && parseInt(type)!=1)?<Paatos tila={tila} kokous_id={kokous_id} kohta_id={id} paatos={paatos} save={paatos_save}/>:""}      
+        {(parseInt(tila)==3 || pj)?
+          <Paatos tila={tila} kokous_id={kokous_id} kohta_id={id} paatos={paatos} save={paatos_save}/>:""}      
         {sisalto}
         <div className={"nro"}/>
         {(parseInt(tila)!=3)?"":<div className={"nro_"+parseInt(tila)}/>}
       </div>
-      {(parseInt(tila)!=3)?<div  onClick= {this_avaa} className="raahaa" id={"r"+id}></div>:""}
+      {(parseInt(tila)!=3 && pj )?<div  onClick= {this_avaa} className="raahaa" id={"r"+id}></div>:""}
       {/*  <div onClick={()=>poista("poista_kohta",id)}>poista </div> */}
     </div>
   )

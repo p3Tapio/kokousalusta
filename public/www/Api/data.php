@@ -119,6 +119,7 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous',$user);";
 	$sql.= "CALL valinnat('$kohta','$kokous','$user');";
 	$sql.= "CALL esityskohta_mielipiteet('$kohta','$kokous','$user');";
+	
 	$multi_result = $con -> multi_query($sql);
 	$i=0;
 	if ($multi_result) {
@@ -211,7 +212,7 @@ else if(isset($_POST['Uusi']) && isset($_POST['kokous_id'])){
 } else {
 		if(isset($_POST['kokous_id'])){
 			$kokous = (int)$_POST['kokous_id']; 
-			$sql = "CALL esityskohdat('$kokous'); ";
+			$sql = "CALL esityskohdat('$kokous','$user'); ";
 		} else 
 		{
 			exit();

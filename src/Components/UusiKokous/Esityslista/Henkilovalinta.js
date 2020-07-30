@@ -5,7 +5,7 @@ import CheckboxArea from './CheckboxArea'
 
 
 
-const Henkilovalinta = ({kohta_id, kokous_id,edit=false, arvot, checkValue=[], check, remove, save, uusi, type="5", tila}) => {
+const Henkilovalinta = ({kohta_id, admin=false, kokous_id,edit=false, arvot, oikeudet="1",checkValue=[], check, remove, save, uusi, type="5", tila}) => {
     const [users, setUsers] = useState([])
     const [ei_ehdokkaat,setEiEhdokkaat] = useState([])
     const [ehdokkaat,setEhdokkaat] = useState([])
