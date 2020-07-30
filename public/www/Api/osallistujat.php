@@ -72,6 +72,7 @@ function postOsallistujat() {
         
         $yhteys = connect(); 
         $sql = "CALL osallistujat_poistakaikkiosallistujat($kokousid)";
+   
         if($yhteys->query($sql)) {
            
             foreach($_POST as $item) {
@@ -79,6 +80,7 @@ function postOsallistujat() {
                 $email =  htmlspecialchars(strip_tags($item['email']));
                 
                 $q = "CALL osallistujat_insertosallistujat($id_y, $kokousid, '$role', '$email')";
+        
                 $yhteys = connect(); 
         
                 if($yhteys->query($q)) {

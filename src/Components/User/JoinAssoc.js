@@ -33,13 +33,10 @@ const JoinAssoc = ({ yhdistykset, setShowForm }) => {
 
         const user = getUser()
         const body = JSON.stringify({ call: 'joinyhdistys', email: user.email, yhdistys: yhdistys })
-        console.log('body', body)
 
         request.assoc(body).then((res) => {
-            console.log('(setnewmember: ', res.data)
             alert(res.data.message)
             window.location.reload()
-
         }).catch(err => {
             alert(err.response.data.message)  
             if(err.response.data.message.includes('Olet jo yhdistyksen')) window.location.reload() 

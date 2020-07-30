@@ -14,7 +14,6 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
         if (window.confirm('Haluatko avata kokoustilan osallistujille?')) {
             setLoading(true)
             const body = JSON.stringify({ call: 'openkokous', id: id })
-            console.log('body', body)
             request.kokous(body).then(res => {
                 alert(res.data.message)
                 window.location.reload()

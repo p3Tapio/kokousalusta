@@ -99,7 +99,6 @@ const KokousDetails = (props) => {
             window.location.reload();
         }
         if (runRequest) {
-            console.log('body', body)
             request.osallistujat(body).then(res => {
                 alert(res.data.message)
             }).catch(err => {
@@ -121,7 +120,6 @@ const KokousDetails = (props) => {
         })
 
         const body2 = JSON.stringify({ call: 'pjpoistui', kokousid: kokousId, syy: syy, pv: 10 })
-        console.log('body2', body2)
         request.osallistujat(body2).then(res => {
             window.location.reload();
         }).catch(err => console.log('err.response', err.response))
@@ -142,6 +140,21 @@ const KokousDetails = (props) => {
                 } 
         } else {
             alert("Määritä uusi päättymispäivä ennen tallentamista")
+        }
+    }
+    const openKokous = (id) => {
+
+        if (window.confirm('Haluatko avata kokoustilan osallistujille?')) {
+            const body = JSON.stringify({ call: 'openkokous', id: kokousId })
+            request.kokous(body).then(res => {
+                alert(res.data.message)
+                window.location.reload()
+            }).catch(err => {
+                alert(err.response.data.message)
+            })
+            // TODO luo asiakohta nimeltään ”Avaus” - ”Puheenjohtaja etunimi sukunimi avasi kokouksen pp.kk.vvvvv, klo hh:mm.”
+            // axios.post --> id_k, user.firstname, user.lastname, timestamp
+            // huom: kokous aukeaa myös automaattisesti jolloin speksien teksti on hieman harhaanjohtava? Vaihtoehtoisesti: "Kokoustila avattiin käyttäjille pp.kk.vvvv, klo hh:mm" ???  
         }
     }
     if (getSessionRole() && getSessionRole().yhdistys === yhdistys) {
@@ -171,7 +184,8 @@ const KokousDetails = (props) => {
                             <Link to={{ pathname: `/assoc/${yhdistys}`, state: { id_y: yhdistys_id } }}>Yhdistyksen pääsivu</Link>
                             <hr />
                             <div className="mb-3">
-                                <h4>{kokous.otsikko} </h4>
+                             <h4>{kokous.otsikko} </h4>
+                             {kokous.avoinna === "1" ? <></> : <div><h5 style={{color:'red', fontWeight:'bold'}}>Kokoustila on suljettu.</h5><p style={{marginTop:'-5px', marginBottom:'12px', cursor:'pointer'}}  onClick={() => openKokous()}>Avaa kokoustila osallistujille.</p></div>}
                             </div>
                             <div className="float-left" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
                                 <p>Puheenjohtaja:</p>

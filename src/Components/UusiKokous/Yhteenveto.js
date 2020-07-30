@@ -6,6 +6,7 @@ import request from '../Shared/HttpRequests'
 import Loading from '../Shared/Loading';
 
 const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosvaltaisuus, yhdistys, id_y }) => {
+    
     const [loading, setLoading] = useState(false)
     let history = useHistory()
     let user = getUser()
@@ -51,11 +52,11 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
             paatosvaltaisuus: paatosvaltaisuus,
             valmis: true
         })
-   
         request.kokous(uusiKokous).then(res => {
             saveDocumentKokouskutsu()   /// ks yllä
         }).catch(err => {
             alert(err.response.data.message)
+            setLoading(false)
         })
     }
     const saveDocumentKokouskutsu = () => {
@@ -84,10 +85,9 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         kokousosallistujat = [user].concat(kokousosallistujat)
         kokousosallistujat = [call].concat(kokousosallistujat)
         const body = JSON.stringify(kokousosallistujat)
-
+ 
         request.osallistujat(body).then(res => {
             sendInviteEmail();
-            console.log('Osallistujatiedot tallennettu ', res.data)
         }).catch(err => alert(err.response.data.message))
 
     }
