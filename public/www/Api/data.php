@@ -10,7 +10,7 @@ $user = $_SESSION['user_id'];
 $sql = 0;
 
 include("../connect.php");
-if(isset($_POST['hae_kommentit'])){
+if(isset($_POST['hae_kommentit'])){ /* <--- issetit puuttuu */
 	$kokous = (int)$_POST['kokous_id'];
 	$thread = (int)$_POST['thread'];
 	$kohta = (int) $_POST['kohta'];
@@ -24,11 +24,16 @@ if(isset($_POST['hae_kommentit'])){
 			$tyyppi=2;
 		break;
 	}
-	
 	$sql = "CALL esityskohta_kommentit('$kohta','$thread','$user','$kokous','$tyyppi')";
-	
-	
 }
+else if(isset($_POST['kannata']) && isset($_POST['kohta_id']) && isset($_POST['tyyppi'])){
+	$kohta = (int)$_POST['kohta_id'];
+	$tyyppi = (int)$_POST['tyyppi'];
+	$xid = (int) $_POST['kannata'];
+	$sql = "call esityskohta_like('$user','$tyyppi','$xid');";
+	echo $sql;
+	exit(0);
+} 
 
 else if(isset($_POST['otsakkeet'])){
 	$kokous = (int)$_POST['otsakkeet'];
@@ -76,9 +81,6 @@ else if(isset($_POST['paatos_valitse'])&& isset($_POST['kohta']) && isset($_POST
 	
 }
 
-
-
-
 else if(isset($_POST['check_remove']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
 	$kokous = (int)$_POST['kokous_id'];
 	$kohta = (int)$_POST['kohta'];
@@ -88,22 +90,12 @@ else if(isset($_POST['check_remove']) && isset($_POST['kohta']) && isset($_POST[
 	exit(0);
 }
 
-			
-
-
 else if(isset($_POST['check_uusi']) && isset($_POST['kohta']) && isset($_POST['kokous_id'])){
 	$kokous = (int)$_POST['kokous_id'];
 	$data = strip_tags($_POST['check_uusi']);
 	$kohta = (int)$_POST['kohta'];
-	
 	$sql = "CALL esityskohta_valinnat_lisaa('$kohta','$kokous','$user','$data')";
-/*	$file = fopen("mitaihmetta","w");
-	echo fwrite($file,$sql);
-	fclose($file);*/
-
 	$result = $con -> query($sql);
-	/*echo $sql;
-	*/
 	exit(0);
 }
 

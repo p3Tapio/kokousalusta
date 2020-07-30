@@ -89,7 +89,7 @@ const Mielipide = ({kokous_id,kohta_id,tila,save,edit=false, arvot=[],kuvaus,pos
                 <div className="mielipide_teksti">{arvot.mielipide}
              </div>   
                 
-                <Kannata/>
+                <Kannata id={arvot.id} kohta_id={kohta_id}/>
                 <Kommentit 
                     thread_id={arvot.id}
                     kohta_id={kohta_id}

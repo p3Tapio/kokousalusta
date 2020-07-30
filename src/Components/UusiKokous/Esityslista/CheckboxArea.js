@@ -1,9 +1,8 @@
 import React, { useState  } from 'react';
 import '../../../Style/CheckboxArea.css';
-import ReactDatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import Kommentit from './Kommentit';
-import { CalendarCheck } from 'react-bootstrap-icons';
+
 
 var summa;
 const CheckboxArea = ({kohta_id, kokous_id, edit=true, arvot=[], checkValue=[], check, remove, save, uusi,multi=0,type="3",tila}) => {

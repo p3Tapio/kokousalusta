@@ -7,7 +7,7 @@ import '../../../Style/Paatos.css'
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import fi from 'date-fns/locale/fi';
-import { FaHands, FaHandsHelping,FaHandshake,FaPenSquare,FaRegCheckSquare,FaUserCheck,FaComment,FaComments,FaGavel } from 'react-icons/fa';
+import { FaHandshake,FaUserCheck,FaComment,FaComments,FaGavel } from 'react-icons/fa';
 const url = process.env.REACT_APP_HOST_URL
 const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save,poista,paatos,tila}) => {
   

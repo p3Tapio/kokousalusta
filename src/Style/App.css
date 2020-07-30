@@ -134,7 +134,25 @@
   z-index: 1;
   
 }
-
+/* ---------------------------------*/
+.kannatan_harmaa {
+  padding-left:20px;
+  line-height: 20px;
+  height:10px;
+  color:#ddd;
+  margin-top: 10px;
+  display:inline-block;
+}
+.kannata_maara {
+  display:inline-block;
+  margin-left: 20px;
+}
+.kannatan_harmaa * {
+  margin-top: -5px;
+  fill:#eee;
+  stroke-width: 10px;
+  stroke:#999;
+}
 
 /* ------ LOADER ----------------- */
 
