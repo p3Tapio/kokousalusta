@@ -12,9 +12,22 @@ $sql = 0;
 include("../connect.php");
 if(isset($_POST['hae_kommentit'])){
 	$kokous = (int)$_POST['kokous_id'];
-	$thread = $_POST['thread'];
-	$kohta = $_POST['kohta'];
-	$sql = "CALL esityskohta_kommentit('$kohta','$thread','$user','$kokous')";
+	$thread = (int)$_POST['thread'];
+	$kohta = (int) $_POST['kohta'];
+	
+	$tyyppi = 0;
+	switch(strip_tags($_POST['hae_kommentit'])){
+		case "mielipide":
+			$tyyppi=1;
+		break;
+		case "valinta":
+			$tyyppi=2;
+		break;
+	}
+	
+	$sql = "CALL esityskohta_kommentit('$kohta','$thread','$user','$kokous','$tyyppi')";
+	
+	
 }
 
 else if(isset($_POST['otsakkeet'])){
@@ -163,10 +176,14 @@ else if(isset($_POST['save']) && isset($_POST['thread']) && isset($_POST['param'
 				$sql = "CALL esityskohta_paatos_muuta('$kohta','$kokous','$user','$param','$tila')";} 	
 			break;
 		case "kommentti_mielipide":
-				$sql = "CALL esityskohta_kommentoi_mielipide('$kohta','$kokous','$user','$thread','$param')";
+				$sql = "CALL esityskohta_kommentoi('$kohta','$kokous','$user','$thread','$param',1)";
 				echo $sql;
-
 			break;
+		case "kommentti_valinta":
+			$sql = "CALL esityskohta_kommentoi('$kohta','$kokous','$user','$thread','$param',2)";
+			
+			echo $sql;
+		break;
 			
 	}
 	if ($sql !== 0)

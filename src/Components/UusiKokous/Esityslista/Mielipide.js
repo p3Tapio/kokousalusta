@@ -9,7 +9,6 @@ var alku=0;
 var loppu=0;
 var thisdata =""
 const Mielipide = ({kokous_id,kohta_id,tila,save,edit=false, arvot=[],kuvaus,positio}) => {
-    console.log("ARVOT",arvot)
     const [kohta,setKohta] = useState("")
     const [perustelu,setPerustelu] = useState("")
     const [mbool,setMielibool] =useState(false);

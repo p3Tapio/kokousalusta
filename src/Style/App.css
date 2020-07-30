@@ -37,7 +37,7 @@
   text-align:center;
   width:50px;
   height:37px;font-family: Helvetica, Arial, sans-serif;
-  border-radius:0px;font-size:10px;margin-right:2px;-webkit-box-shadow: 0px 2px 3px #000000;box-shadow: 0px 2px 3px #000000;z-index:10;border: 1px solid #000;border-radius:2px;}
+  border-radius:0px;font-size:10px;margin-right:2px;-webkit-box-shadow: 0px 2px 3px #000000;box-shadow: 0px 2px 3px #000000;border: 1px solid #000;border-radius:2px;}
 .taulu .paivays {
   left:5px;
   top:0px;
@@ -56,7 +56,7 @@
 
 
 .kommentoija {
-  z-index: 1;
+  
   color:#FFF;
   position:absolute;
   display:block;
@@ -124,6 +124,16 @@
 }
 
 
+.paivaysspicker {
+  position:absolute;
+  left:5px;
+  width: 120px;
+  border:none;
+  height:10px;
+  top:2px;
+  z-index: 1;
+  
+}
 
 
 /* ------ LOADER ----------------- */

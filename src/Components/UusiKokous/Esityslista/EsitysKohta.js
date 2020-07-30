@@ -4,6 +4,9 @@ import Paatos from './Paatos'
 import Sisalto from './Sisalto'
 import ResizeTextArea from './ResizeTextArea'
 import '../../../Style/Paatos.css'
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import fi from 'date-fns/locale/fi';
 import { FaHands, FaHandsHelping,FaHandshake,FaPenSquare,FaRegCheckSquare,FaUserCheck,FaComment,FaComments,FaGavel } from 'react-icons/fa';
 const url = process.env.REACT_APP_HOST_URL
 const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save,poista,paatos,tila}) => {
@@ -13,6 +16,7 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
   var sisalto
   let alku
   let loppu
+  registerLocale('fi', fi)
 
   const this_save = (_id,data,delay,type) => {
     save(_id,data,delay,type,id)
@@ -48,8 +52,22 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
 
   }
 
-  if(tila!=3 && startDate!=null && startDate !=="") alku = <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
-  
+  const vaihda_aika = () => {
+    
+  }
+
+  if(tila!=3 && startDate!=null && startDate !=="") alku = <div tabIndex="0" onClick={()=>vaihda_aika()}>
+    <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
+       {/* <div className="paivaysspicker">
+       <DatePicker
+            
+                            locale="fi"
+                            dateFormat="dd/MM/yyyy"
+                            className="form-control"
+                            selected={startDate}
+                            onChange={date => setStartDate(date)}
+                            selectsStart/></div> */}
+    </div>
 
   let nappeja = [ "",
                   <FaComment onMouseEnter={()=>thisinfo(1)}  onClick={()=>thisvaihda_tyyppi(1)} className ={(type==1)?"kohta_valittu p_k":"p_k"}/>,
@@ -68,8 +86,8 @@ const EsitysKohta = ({vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=fa
   return (
     <div className="esitys_item">
       {loppu}
-      {alku}
-      <div onClick= {this_avaa} className="otsake"><ResizeTextArea edit={true} id={id} sisus={title} save={this_save}/></div>
+      
+      <div onClick= {this_avaa} className="otsake">{alku}<ResizeTextArea edit={true} id={id} sisus={title} save={this_save}/></div>
       <div>
         {nappit}
         
