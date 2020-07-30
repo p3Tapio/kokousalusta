@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import request from '../Shared/HttpRequests'
 import { Link } from 'react-router-dom'
-import { FaKey } from 'react-icons/fa';
+import { FaKey, FaCheck } from 'react-icons/fa';
+import { IconContext } from 'react-icons'
 import Kalenteri from '../UusiKokous/Esityslista/Kalenteri'
 
 const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
@@ -25,7 +26,8 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
             // huom: kokous aukeaa myös automaattisesti jolloin speksien teksti on hieman harhaanjohtava? Vaihtoehtoisesti: "Kokoustila avattiin käyttäjille pp.kk.vvvv, klo hh:mm" ???  
         }
     }
-    
+    console.log('kokous', kokous)
+
     if (!loading) {
         return (
             <div className="bg">
@@ -37,21 +39,21 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
                             <div className={(item.avoinna === '1' || item.role === 'puheenjohtaja') ? "taulu" : "taulu disable"} key={item.kokousnro}>
                                 <Kalenteri pvm={item.startDate} alku={false} />
                                 <Kalenteri pvm={item.endDate} alku={false} />
-                                <div className="tauluAlku tauluotsikko">{item.otsikko}</div>
+                                <div className="tauluAlku tauluotsikko" style={{ whiteSpace: "nowrap" }}>{item.otsikko} {item.loppu === "1" ? <IconContext.Provider value={{ color: 'rgba(44,62,80)', size: '15px' }}><FaCheck title="Kokous on päättynyt" /></IconContext.Provider> : <></>}</div>
+
                                 <div className="taulukokousnro">{item.kokousnro}/{(new Date(item.endDate)).toLocaleDateString('fi-FI', pvmYear)}</div>
+
                                 {item.avoinna === '1'
                                     ? <></>
                                     : <>
                                         <div className="taulutila">kokoustila on suljettu</div>
-                                        {item.role === 'puheenjohtaja' ? <>
-                                            <div className="taulunapit">
-                                                <div style={{ whiteSpace: "nowrap" }}>
-                                                    {<button onClick={(event) => { event.preventDefault(); openKokous(item.id) }} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary" style={{ marginLeft: '5px' }}><FaKey /></button>}
-                                                </div>
-                                            </div></>
-                                            : <></>}
-                                    </>
+                                        <div className="taulunapit">
+                                            <div style={{ whiteSpace: "nowrap" }}>
+                                                {item.role === 'puheenjohtaja' ? <button onClick={(event) => { event.preventDefault(); openKokous(item.id) }} id={item.id} title="Avaa kokoustila" className="btn btn-outline-primary" style={{ marginLeft: '5px' }}><FaKey /></button> : <></>}
+                                            </div>
+                                        </div></>
                                 }
+
                             </div>
                         </Link>
                     )}
@@ -59,7 +61,7 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
             </div>
         )
     } else {
-       return <p className="mt-4 mx-4">Ladataan tietoja .... </p>
+        return <p className="mt-4 mx-4">Ladataan tietoja .... </p>
     }
 }
 export default KokousTable

@@ -8,9 +8,10 @@ const Kokouslistat = ({ kokoukset, showComponent, yhdistys, yhdistys_id }) => {
     const [menneet, setMenneet] = useState([]);
     
     useEffect(() => {
+        console.log('kokoukset', kokoukset)
         if (kokoukset) {
             kokoukset.map((item) => {
-                if (Date.parse(item.endDate) < new Date()) setMenneet(menneet => [...menneet, item])
+                if (Date.parse(item.endDate) < new Date() || item.loppu === "1") setMenneet(menneet => [...menneet, item])
                 else if (Date.parse(item.endDate) > new Date() && Date.parse(item.startDate) < new Date()) {
                     setKaynnissa(kaynnissa => [...kaynnissa, item])
                 }
