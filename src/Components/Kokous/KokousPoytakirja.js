@@ -16,7 +16,7 @@ const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paato
     let paatosvalta = ''
     if (kokous.pv_aktiivisuus === '0' && kokous.pv_esityslista === '0' && kokous.pv_kesto === '0' && kokous.pv_muu === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
     else { // TODO keston lisäksi muut päätösvalta kriteerit !!! ---------------------------
-        if (kokous.pv_esityslista !== '0') paatosvalta += kokous.pv_esityslista <= avannutEsityslistan ? `<p>Kokouksen asialistan tuli avata vähintään ${kokous.pv_esityslista} kpl osallistujista. Kokous päätösvaltainen, koska osallistujista ${avannutEsityslistan} kpl avasi esityslistan.</p>` : `<p>Kokouksen esityslistaa ei avannut riittävä määrä (${kokous.pv_esityslista} kpl) osallistujista.</p>`
+        if (kokous.pv_esityslista !== '0') paatosvalta += kokous.pv_esityslista <= avannutEsityslistan ? `Kokouksen asialistan avasi vaadittu ${kokous.pv_esityslista} kpl osallistujista.` : `<p>Kokouksen esityslistaa ei avannut riittävä määrä (${kokous.pv_esityslista} kpl) osallistujista.</p>`
         if (kokous.pv_aktiivisuus !== '0') paatosvalta += `<p>Kokous on päätösvaltainen jos vähintään ${kokous.pv_aktiivisuus} kpl kokousosallistujista on ottanut asioihin kantaa.</p>`
         if (kokous.pv_kesto !== '0') paatosvalta += kokous.pv_kesto_toteutunut === "true" ? `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta toteutui.</p>` : `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta ei toteutunut.</p>`
         if (kokous.pv_muu !== '') paatosvalta += `<p>${kokous.pv_muu}</p>`

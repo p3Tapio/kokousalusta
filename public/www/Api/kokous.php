@@ -313,7 +313,13 @@ function vaihdaPvm() {//  body {"call":"vaihdapvm","kokousid":"33","enddate":"20
         $kokousid = (int)$_POST['kokousid']; 
         $endDate = htmlspecialchars(strip_tags($_POST['enddate'])); 
         $endDate = date('Y-m-d', strtotime($endDate));
-
+        $today = date('Y-m-d');
+        if($today > $endDate) {
+            $response = array( "message"=> "Päivämäärän vaihto epäonnistui. Kokouksen päättymispäiväksi ei voi asettaa mennyttä ajankohtaa.");
+            http_response_code(400);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE); 
+            exit(); 
+        }
         $q = "CALL kokous_vaihdapaattymispaiva($kokousid, '$endDate')"; 
         $yhteys = connect(); 
 
