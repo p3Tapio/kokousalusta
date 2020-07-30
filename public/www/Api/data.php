@@ -31,9 +31,20 @@ else if(isset($_POST['kannata']) && isset($_POST['kohta_id']) && isset($_POST['t
 	$tyyppi = (int)$_POST['tyyppi'];
 	$xid = (int) $_POST['kannata'];
 	$sql = "call esityskohta_like('$user','$tyyppi','$xid');";
-	echo $sql;
-	exit(0);
-} 
+	} 
+else if(isset($_POST['hae_liket']) && isset($_POST['kohta_id']) && isset($_POST['tyyppi'])){
+	$kohta = (int)$_POST['kohta_id'];
+	$tyyppi = (int)$_POST['tyyppi'];
+	$xid = (int) $_POST['hae_liket'];
+	$sql = "call esityskohta_liket('$user','$tyyppi','$xid');";
+	$result = $con -> query($sql);
+ 	if($row = mysqli_fetch_assoc($result)){
+		echo "[".$row['maara'].",".$row['mina']."]";
+	 }	
+	 exit(0);
+	
+}
+
 
 else if(isset($_POST['otsakkeet'])){
 	$kokous = (int)$_POST['otsakkeet'];
@@ -50,7 +61,6 @@ else if(isset($_POST['otsakkeet'])){
 }
 
 else if(isset($_POST['poista_kohta']) && isset($_POST['kokous_id'])) {
-	
 	$kokous = (int)$_POST['kokous_id'];
 	$kohta = (int)$_POST['poista_kohta'];
 	$sql = "CALL esityskohta_poista('$kokous','$user','$kohta')";

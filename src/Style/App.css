@@ -117,11 +117,6 @@
   
 }
 
-.kannata {
-  display:inline-block;
-  
-  
-}
 
 
 .paivaysspicker {
@@ -135,25 +130,53 @@
   
 }
 /* ---------------------------------*/
-.kannatan_harmaa {
-  padding-left:20px;
-  line-height: 20px;
-  height:10px;
+
+
+.kannatan_harmaa, .kannatan_sininen {
+  padding-left:8px;
+  
+  
   color:#ddd;
-  margin-top: 10px;
-  display:inline-block;
+  margin-top: 0px;
+  display: inline-block;
 }
 .kannata_maara {
+  color:black;
+  
   display:inline-block;
   margin-left: 20px;
 }
 .kannatan_harmaa * {
-  margin-top: -5px;
+  
   fill:#eee;
   stroke-width: 10px;
   stroke:#999;
+  color:#999;
 }
-
+.kannatan_sininen * {
+  
+  fill:#55bFFF;
+  color:#55bFFF;
+  stroke-width: 10px;
+  stroke:#999;
+}
+.kannatan_teksti {
+  margin-left:2spx;display: inline-block;
+}
+.kannata {
+  margin-top: 10px;
+  height:20px;
+}
+.kannata_thumbsi {
+  display: inline-block;
+  height:25px;
+  width:25px;
+}
+.kannata_thumbsi *{
+  margin-top: -10px;
+height:20px;
+width:20px;
+}
 /* ------ LOADER ----------------- */
 
 .loader {
