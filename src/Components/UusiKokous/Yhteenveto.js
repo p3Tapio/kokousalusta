@@ -51,6 +51,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
             paatosvaltaisuus: paatosvaltaisuus,
             valmis: true
         })
+        console.log('uusiKokous', uusiKokous)
    
         request.kokous(uusiKokous).then(res => {
             saveDocumentKokouskutsu()   /// ks yllä

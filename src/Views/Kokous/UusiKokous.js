@@ -123,13 +123,13 @@ const UusiKokous = (props) => {
                 setShowComponent(x)
             })
         } else {
-            let napit = ev.target.parentNode.querySelectorAll("button");
-            for (let i = 0; i < napit.length; i++) {
-                napit[i].classList.remove("valittu_menu");
-            }
             setShowComponent(ev.target.name)
-            ev.target.classList.add("valittu_menu");
         }
+        let napit = ev.target.parentNode.querySelectorAll("button");
+        for (let i = 0; i < napit.length; i++) {
+            napit[i].classList.remove("valittu_menu");
+        }
+        ev.target.classList.add("valittu_menu");
     }
 
     const parse_kokousnro = () => {
