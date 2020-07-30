@@ -57,6 +57,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
             saveDocumentKokouskutsu()   /// ks yllä
         }).catch(err => {
             alert(err.response.data.message)
+            setLoading(false)
         })
     }
     const saveDocumentKokouskutsu = () => {

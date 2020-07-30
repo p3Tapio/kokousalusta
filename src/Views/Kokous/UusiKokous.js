@@ -123,7 +123,7 @@ const UusiKokous = (props) => {
                 setShowComponent(x)
             })
         } else {
-            setShowComponent(ev.target.name)
+            setShowComponent(ev.target.name)      
         }
         let napit = ev.target.parentNode.querySelectorAll("button");
         for (let i = 0; i < napit.length; i++) {
