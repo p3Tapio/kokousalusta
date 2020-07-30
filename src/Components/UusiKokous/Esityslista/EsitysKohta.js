@@ -92,7 +92,7 @@ const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,i
         {(parseInt(tila)==3)?"":nappit}
         
         {(parseInt(tila)==3 || pj)?
-          <Paatos tila={tila} kokous_id={kokous_id} kohta_id={id} paatos={paatos} save={paatos_save}/>:""}      
+          <Paatos pj={pj} tila={tila} kokous_id={kokous_id} kohta_id={id} paatos={paatos} save={paatos_save}/>:""}      
         {sisalto}
         <div className={"nro"}/>
         {(parseInt(tila)!=3)?"":<div className={"nro_"+parseInt(tila)}/>}

@@ -25,7 +25,7 @@ const CheckboxArea = ({kohta_id, kokous_id, edit=true, arvot=[], checkValue=[], 
     if (type=="3" && tila !="3") lisaa = <button className="uusi add" onClick={()=>thisuusi()}>Valinta</button>
 
     return (
-        <div>
+        <div style={{zIndex:"100"}}>
             {arvot.map(arvot => 
                  <div><EditableCheckbox
                  arvo={(checkValue && checkValue.includes(arvot.id))} 

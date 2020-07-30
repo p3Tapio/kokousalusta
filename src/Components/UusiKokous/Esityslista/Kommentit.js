@@ -58,7 +58,7 @@ const Kommentit = ({thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
     }
 
     return (
-        <div className="kommentti">
+        <div className="kommentti" >
             
             <div className="kommenttimaara" onClick={() => {reload();setKommenttiBool(!kommenttiBool)}}>
             {kommenttimaara} &nbsp;

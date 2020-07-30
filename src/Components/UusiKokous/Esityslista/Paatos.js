@@ -17,7 +17,7 @@ import EsitysKohta from './EsitysKohta';
 
 
 
-export const Paatos = ({type,kokous_id,kohta_id,tila,paatos,save}) => {
+export const Paatos = ({pj=false, type,kokous_id,kohta_id,tila,paatos,save}) => {
     var thisdata =""
     const [nappiBool, setnappibool] = useState(false) 
     thisdata = paatos;
@@ -34,8 +34,8 @@ export const Paatos = ({type,kokous_id,kohta_id,tila,paatos,save}) => {
     return (
         <div>
         <div className={"paatos"+tila}>
-            <div className="nuija" onClick={()=>naytavalinnat()}><div className="nuija2"><FaGavel/></div> </div>
-            <div className="paatos_editori"><ResizeTextArea edit={tila!=3} id={kohta_id} sisus={paatos} save={this_save}/></div>
+            {pj?<div className="nuija" onClick={()=>naytavalinnat()}><div className="nuija2"><FaGavel/></div> </div>:""}
+            <div className="paatos_editori"><ResizeTextArea edit={tila!=3 && pj} id={kohta_id} sisus={paatos} save={this_save}/></div>
           </div>
             {nappiBool?
             (tila==3)?<div  className="paatos_valinnat"><div className="avaa" onClick={()=>{setnappibool(false);save(kohta_id,[paatos,2],100)}}>AVAA</div></div>:
