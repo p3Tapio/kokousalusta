@@ -55,24 +55,30 @@ const KokousDetails = (props) => {
                 setJasenet(res.data)
             }).catch(err => console.log('err.response', err.response))
 
-            const body3 = JSON.stringify({ call: 'getpaatokset', kokousid: kokousId })
-            request.kokous(body3).then(res => {
-                setPaatokset(res.data)
-            }).catch(err => console.log('err.response', err.response))
         }
 
     }, [kokousId, yhdistys, user.email, history])
 
+    const handlePoytakirjaMenuClick = () => {
+        const body3 = JSON.stringify({ call: 'getpaatokset', kokousid: kokousId })
+        request.kokous(body3).then(res => {
+            setPaatokset(res.data)
+        }).then(() => handleMenuClick('poytakirja'))
+            .catch(err => console.log('err.response', err.response))
+    }
     const handleMenuClick = (ev) => {
-        let napit = ev.target.parentNode.querySelectorAll("button");
-        for (let i = 0; i < napit.length; i++) {
-            napit[i].classList.remove("valittu_menu");
+
+        if (ev === 'poytakirja') {
+            setShowComponent('poytakirja')
+        } else {
+            let napit = ev.target.parentNode.querySelectorAll("button");
+            for (let i = 0; i < napit.length; i++) {
+                napit[i].classList.remove("valittu_menu");
+            }
+            ev.target.classList.add("valittu_menu");
+            setShowComponent(ev.target.name)
+            if (ev.target.name === 'asiakirjat') setShowTable(true)
         }
-
-        ev.target.classList.add("valittu_menu");
-
-        setShowComponent(ev.target.name)
-        if (ev.target.name === 'asiakirjat') setShowTable(true)
     }
     const handleOsallistujatClick = (ev) => {
 
@@ -127,17 +133,17 @@ const KokousDetails = (props) => {
 
     }
     const handleVaihdaKokousaika = (date) => {
-  
+
         if (typeof date === 'object' && Date.parse(date) !== Date.parse(kokous.endDate)) {
-                const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
-                const uusiPvm = date.toISOString().split('T')[0]
-                if (window.confirm(`Haluatko vaihtaa kokouksen uudeksi päättymispäiväksi ${(new Date(uusiPvm)).toLocaleDateString('fi-FI', pvmForm)}?`)) {
-                    setKokous({ ...kokous, endDate: uusiPvm })
-                    const body = JSON.stringify({ call: 'vaihdapvm', kokousid: kokousId, enddate: date })
-                    request.kokous(body).then(res => {
-                        alert(res.data.message)
-                    }).catch(err => alert(err.response.data.message))
-                } 
+            const pvmForm = { month: 'numeric', day: 'numeric', year: 'numeric' };
+            const uusiPvm = date.toISOString().split('T')[0]
+            if (window.confirm(`Haluatko vaihtaa kokouksen uudeksi päättymispäiväksi ${(new Date(uusiPvm)).toLocaleDateString('fi-FI', pvmForm)}?`)) {
+                setKokous({ ...kokous, endDate: uusiPvm })
+                const body = JSON.stringify({ call: 'vaihdapvm', kokousid: kokousId, enddate: date })
+                request.kokous(body).then(res => {
+                    alert(res.data.message)
+                }).catch(err => alert(err.response.data.message))
+            }
         } else {
             alert("Määritä uusi päättymispäivä ennen tallentamista")
         }
@@ -184,8 +190,8 @@ const KokousDetails = (props) => {
                             <Link to={{ pathname: `/assoc/${yhdistys}`, state: { id_y: yhdistys_id } }}>Yhdistyksen pääsivu</Link>
                             <hr />
                             <div className="mb-3">
-                             <h4>{kokous.otsikko} </h4>
-                             {kokous.avoinna === "1" ? <></> : <div><h5 style={{color:'red', fontWeight:'bold'}}>Kokoustila on suljettu.</h5><p style={{marginTop:'-5px', marginBottom:'12px', cursor:'pointer'}}  onClick={() => openKokous()}>Avaa kokoustila osallistujille.</p></div>}
+                                <h4>{kokous.otsikko} </h4>
+                                {kokous.avoinna === "1" ? <></> : <div><h5 style={{ color: 'red', fontWeight: 'bold' }}>Kokoustila on suljettu.</h5><p style={{ marginTop: '-5px', marginBottom: '12px', cursor: 'pointer' }} onClick={() => openKokous()}>Avaa kokoustila osallistujille.</p></div>}
                             </div>
                             <div className="float-left" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', lineHeight: '8px', whiteSpace: 'nowrap' }}>
                                 <p>Puheenjohtaja:</p>
@@ -217,7 +223,7 @@ const KokousDetails = (props) => {
                             }
                             <button className="text-primary" onClick={handleMenuClick} name="paatosvaltaisuus">Päätösvaltaisuus</button>
                             {/* TODO pöytäkirja näkyville vasta kun päätöksiä on syntynyt ???  */}
-                            {kokous.loppu === "0" && kokousRooli === 'puheenjohtaja' ? <button className="text-primary" onClick={handleMenuClick} name="poytakirja" >Pöytäkirja</button> : <></>}
+                            {kokous.loppu === "0" && kokousRooli === 'puheenjohtaja' ? <button className="text-primary" onClick={handlePoytakirjaMenuClick} name="poytakirja" >Pöytäkirja</button> : <></>}
                         </div>
                         {component}
                     </div>
