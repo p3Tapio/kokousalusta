@@ -63,10 +63,10 @@ const EsitysKohta = ({flags,pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,t
       
   }
 
-
-/*  if(tila!=3 && startDate!=null && startDate !=="") alku = <div tabIndex="0" onClick={()=>vaihda_aika()}>*/
-    /*<Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>*/
-       {/* <div className="paivaysspicker">
+{/*
+  if(tila!=3 && startDate!=null && startDate !=="") alku = <div tabIndex="0" onClick={()=>vaihda_aika()}>
+    <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
+       /* <div className="paivaysspicker">
        <DatePicker
             
                             locale="fi"
@@ -74,9 +74,9 @@ const EsitysKohta = ({flags,pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,t
                             className="form-control"
                             selected={startDate}
                             onChange={date => setStartDate(date)}
-                            selectsStart/></div> */}
+                            selectsStart/></div> 
     </div>
-
+*/}
   let nappeja = [ "",
                   <FaComment onMouseEnter={()=>thisinfo(1)}  onClick={()=>thisvaihda_tyyppi(1)} className ={(type==1)?"kohta_valittu p_k":"p_k"}/>,
                   <FaComments onMouseEnter={()=>thisinfo(2)}  onClick={()=>thisvaihda_tyyppi(2)} className ={(type==2)?"kohta_valittu p_k":"p_k"}/>,
