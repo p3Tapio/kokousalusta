@@ -24,7 +24,7 @@ const CheckboxArea = ({options=false, toggle, flags, kohta_id, kokous_id, edit=t
     edit=false;
 
     let lisaa;
-    if (type=="3" && tila !="3") lisaa = <button className="uusi add" onClick={()=>thisuusi()}>Valinta</button>
+    if (type=="3" && tila !="3" && (options || flags&2 )) lisaa = <button className="uusi add" onClick={()=>thisuusi()}>Valinta</button>
 
     return (
         <div style={{zIndex:"100"}}>

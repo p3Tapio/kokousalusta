@@ -99,7 +99,7 @@ const EsitysKohta = ({flags,pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,t
       <div>
         {nappit}
         
-        {(parseInt(tila)==3 || pj)?
+        {(parseInt(tila)==3 || (pj && parseInt(tila)!==0))?
           <Paatos pj={pj} tila={tila} kokous_id={kokous_id} kohta_id={id} paatos={paatos} save={paatos_save}/>:""}      
         
         <div className={"nro"}/>
