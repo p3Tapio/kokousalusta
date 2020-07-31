@@ -15,8 +15,9 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
     const end = (new Date(perustiedot.endDate)).toLocaleDateString('fi-FI', pvmForm)
     const nimi = perustiedot.otsikko === '' ? '' : `<h3>${perustiedot.otsikko}</h3>`
     const osallistuu = osallistujat.map(x => '<li>' + x.firstname + ' ' + x.lastname + '</li>').join(' ')
-    let otsikot = esityslista_otsakkeet.map(x => '<li>'+x.otsikko+'</li>').join(' ')
+    let otsikot = esityslista_otsakkeet.map(x => x.otsikko !=='' ? '<li>'+ x.otsikko +'</li>' : '<li>Asiakohdalla ei ole otsikkoa</li>').join(' ')
     otsikot = otsikot.length === 0 ? '<p>Kokoukselle ei ole määritelty esityslistaa</p>' : otsikot 
+    // otsikot = otsikot.map(x=> x.otsikko !== '' ? x.otsikko : 'Asiakohdalle ei ole annettu otsikkoa.') 
     let paatosvalta = ''
     if (paatosvaltaisuus.esityslista === '' && paatosvaltaisuus.aktiivisuus === '' && paatosvaltaisuus.kesto === '' && paatosvaltaisuus.muu === '') paatosvalta += '<p>Kokouksen päätösvaltaisuutta ei ole määritelty.</p>'
     else {
