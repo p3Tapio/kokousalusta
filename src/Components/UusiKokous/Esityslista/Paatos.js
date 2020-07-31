@@ -38,7 +38,7 @@ export const Paatos = ({pj=false, type,kokous_id,kohta_id,tila,paatos,save}) => 
             <div className="paatos_editori"><ResizeTextArea placeholder="Päätos" edit={tila!=3 && pj} id={kohta_id} sisus={paatos} save={this_save}/></div>
             {nappiBool?
             (tila==3)?<div  className="paatos_valinnat"><div className="avaa" onClick={()=>{setnappibool(false);save(kohta_id,[paatos,2],100)}}>AVAA</div></div>:
-            <div  className="paatos_valinnat"><div onClick={()=>{setnappibool(false);save(kohta_id,[thisdata,3],100)}}>Hyväksy!</div><div>Lisäaikaa</div><div>Hylkää</div></div>:""}
+            <div  className="paatos_valinnat"><div onClick={()=>{setnappibool(false);save(kohta_id,[thisdata,3],100)}}>Hyväksy!</div></div>:""}
         </div>
        
         

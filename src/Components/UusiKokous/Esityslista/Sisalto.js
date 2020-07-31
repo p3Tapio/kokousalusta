@@ -32,7 +32,7 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
  
 
   
-  const check = (vid,multi=1) => {
+  const check = (vid,multi=0) => {
       var params = new URLSearchParams()
       params.append ("check_valitse", vid)
       params.append ("kokous_id", kokous_id)   

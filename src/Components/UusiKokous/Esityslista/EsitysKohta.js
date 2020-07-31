@@ -7,7 +7,7 @@ import '../../../Style/Paatos.css'
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import fi from 'date-fns/locale/fi';
-import { FaHandshake,FaUserCheck,FaComment,FaComments,FaGavel } from 'react-icons/fa';
+import { FaHandshake,FaUserCheck,FaComment,FaComments,FaGavel, FaTrashAlt } from 'react-icons/fa';
 const url = process.env.REACT_APP_HOST_URL
 const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save,poista,paatos,tila}) => {
   
@@ -56,6 +56,14 @@ const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,i
     
   }
 
+  const poista_kohta = () => {
+    if (window.confirm('Poista asiakohta?')) {
+      poista("poista_kohta",id)
+    } 
+      
+  }
+
+
   if(tila!=3 && startDate!=null && startDate !=="") alku = <div tabIndex="0" onClick={()=>vaihda_aika()}>
     <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
        {/* <div className="paivaysspicker">
@@ -99,7 +107,7 @@ const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,i
         {sisalto}
       </div>
       {(parseInt(tila)!=3 && pj )?<div  onClick= {this_avaa} className="raahaa" id={"r"+id}></div>:""}
-      {/*  <div onClick={()=>poista("poista_kohta",id)}>poista </div> */}
+      {((parseInt(tila) ===0 && parseInt(oikeudet)===0) || pj)?<div className="esityskohta_roskis" onClick={()=>poista_kohta()}><FaTrashAlt/></div> :""}
     </div>
   )
 }

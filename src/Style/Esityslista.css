@@ -114,8 +114,10 @@ position:absolute;top:12px;opacity:1;
 
 }
 
-
-
+.esityskohta_roskis {
+    position: absolute;bottom:5px;left:5px;}
+    .esityskohta_roskis * {
+        fill:#ddd;}
 
 @media screen and (max-width: 500px) {
     .valinta_iconit {

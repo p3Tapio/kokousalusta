@@ -95,7 +95,7 @@ font-size:12px;
     
 }
 .paatos_valinnat div:nth-child(1) {
-    margin-right: 0px;
+    margin-right: 50px;
     float:right;
     width:200px;
     
@@ -119,8 +119,3 @@ font-size:12px;
     padding-right:3px;
 }
 
-.paatos3 .paatos_valinnat {
-
-background-color: #6f999344;
-    
-}
