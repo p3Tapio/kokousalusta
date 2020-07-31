@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'  // BrowserRouter  <--> HashRouter
 import PrivateRoute from './Components/Auth/PrivateRoute'
 import './Style/App.css'
 import 'bootswatch/dist/flatly/bootstrap.min.css'; 
