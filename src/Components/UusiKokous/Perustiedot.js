@@ -32,6 +32,7 @@ const Perustiedot = ({ setShowComponent, handlePerustiedotChange, saveKokousDraf
                             selectsStart
                             startDate={perustiedot.startDate}
                             endDate={perustiedot.endDate}
+                            minDate={new Date()}
                         />
                     </div>
                     <div className="form-group">

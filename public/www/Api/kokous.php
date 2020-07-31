@@ -233,7 +233,7 @@ function luoKokous() {  // perustiedot ensiki tauluun, sitten muut updatella id:
         $otsikko = strip_tags($_POST['otsikko']);
         $kokousnro =  (int)$_POST['kokousnro'];
         $startDate = htmlspecialchars(strip_tags($_POST['startDate'])); 
-        $startDate = date('Y-m-d', strtotime($startDate));
+        $startDate = date('Y-m-d', strtotime($startDate. '+ 1 days'));
         $endDate = htmlspecialchars(strip_tags($_POST['endDate'])); 
         $endDate = date('Y-m-d', strtotime($endDate));
         $avoinna = htmlspecialchars(strip_tags($_POST['avoinna'])); 
@@ -244,9 +244,10 @@ function luoKokous() {  // perustiedot ensiki tauluun, sitten muut updatella id:
         $paatosv_muu  = htmlspecialchars(strip_tags($_POST['paatosvaltaisuus']['muu']));
         $valmis = htmlspecialchars(strip_tags($_POST['valmis']));
         if(!$valmis) $valmis="0"; 
-
         $today = date('Y-m-d');
-        if($valmis == "1") {
+      
+        if($valmis == "1") { 
+         
             if($today > $startDate || $endDate < $startDate) {
                 $response = array( "message"=>"Tarkasta päivämäärät!");
                 http_response_code(400);
