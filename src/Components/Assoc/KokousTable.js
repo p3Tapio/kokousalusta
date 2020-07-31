@@ -26,7 +26,7 @@ const KokousTable = ({ kokous, yhdistys, yhdistys_id }) => {
             // huom: kokous aukeaa myös automaattisesti jolloin speksien teksti on hieman harhaanjohtava? Vaihtoehtoisesti: "Kokoustila avattiin käyttäjille pp.kk.vvvv, klo hh:mm" ???  
         }
     }
-    console.log('kokous', kokous)
+
 
     if (!loading) {
         return (

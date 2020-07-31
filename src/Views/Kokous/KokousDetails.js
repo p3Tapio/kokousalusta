@@ -63,8 +63,14 @@ const KokousDetails = (props) => {
         const body3 = JSON.stringify({ call: 'getpaatokset', kokousid: kokousId })
         request.kokous(body3).then(res => {
             setPaatokset(res.data)
-        }).then(() => handleMenuClick('poytakirja'))
-            .catch(err => console.log('err.response', err.response))
+        }).catch(err => console.log('err.response', err.response))
+
+        const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId, email: user.email })
+        request.osallistujat(body2).then(res => {
+            setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
+            setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
+         }).then(() => handleMenuClick('poytakirja'))
+         .catch(err => console.log('error response: ', err.response) )
     }
     const handleMenuClick = (ev) => {
 
