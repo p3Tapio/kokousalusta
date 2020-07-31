@@ -107,7 +107,7 @@ const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,i
         {sisalto}
       </div>
       {(parseInt(tila)!=3 && pj )?<div  onClick= {this_avaa} className="raahaa" id={"r"+id}></div>:""}
-      {((parseInt(tila) ===0 && parseInt(oikeudet)===0) || pj)?<div className="esityskohta_roskis" onClick={()=>poista_kohta()}><FaTrashAlt/></div> :""}
+      {((parseInt(tila) ===0 && parseInt(oikeudet)===0) || (pj && parseInt(tila)!=3) )?<div className="esityskohta_roskis" onClick={()=>poista_kohta()}><FaTrashAlt/></div> :""}
     </div>
   )
 }
