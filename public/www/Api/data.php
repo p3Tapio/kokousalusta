@@ -206,6 +206,10 @@ else if(isset($_POST['save']) && isset($_POST['thread']) && isset($_POST['param'
 				$sql = "CALL esityskohta_kommentoi('$kohta','$kokous','$user','$thread','$param',3)";
 			
 		break;
+		case "flags":
+			$sql = "CALL esityskohta_toggle_flag('$kokous','$kohta','$param','$user')";
+			echo $sql;
+		break;
 			
 	}
 	if ($sql !== 0)

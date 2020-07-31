@@ -5,7 +5,7 @@ import Kommentit from './Kommentit';
 
 
 var summa;
-const CheckboxArea = ({kohta_id, kokous_id, edit=true, arvot=[], checkValue=[], check, remove, save, uusi,multi=0,type="3",tila}) => {
+const CheckboxArea = ({options=false, toggle, flags, kohta_id, kokous_id, edit=true, arvot=[], checkValue=[], check, remove, save, uusi,multi=0,type="3",tila}) => {
     summa=0; 
     arvot.map(x=> summa+=parseInt(x.maara))
     
@@ -20,7 +20,9 @@ const CheckboxArea = ({kohta_id, kokous_id, edit=true, arvot=[], checkValue=[], 
     const this_remove = (id) => {if(tila!="3")remove(id)}
     const this_save = (id,nnimi) => {if(tila!="3")save(id,nnimi)}
     const this_check = (id) => {if(tila!="3")check(id,multi)}
+
     edit=false;
+
     let lisaa;
     if (type=="3" && tila !="3") lisaa = <button className="uusi add" onClick={()=>thisuusi()}>Valinta</button>
 
@@ -49,7 +51,10 @@ const CheckboxArea = ({kohta_id, kokous_id, edit=true, arvot=[], checkValue=[], 
                 </div>
                   )}    
             {lisaa}
-         <br/>
+            {options?<div><hr/>
+            <Checkbox check={flags&1} click={()=>toggle(kohta_id,1)} nimi={"Sallimonta valintaa"}/>
+            <Checkbox check={flags&2} click={()=>toggle(kohta_id,2)} nimi={"Kaikki voi ehdottaa"}/>
+            </div>:""}
         </div>
     )
 }
@@ -85,11 +90,22 @@ const EditableCheckbox = ({tila,maara=0,edit,id,nimi,arvo,check,remove,save,summ
  
             {(edit==0 && maara==0)?<div className="remove" onClick={thisremove}></div>:""}
             </div>
+            
             </div>
+            
       )
 }
 
-
-
-
 export default CheckboxArea
+const Checkbox = ({check,click,nimi}) => {
+
+   
+   
+
+    return (
+        <div className="valinta" onClick={click}>
+            <div  className={(check)?"green ruutu":"ruutu"} ></div>
+            <div spellCheck="false" className="ruutuvalinta" >{nimi}</div>
+            </div>
+      )
+}

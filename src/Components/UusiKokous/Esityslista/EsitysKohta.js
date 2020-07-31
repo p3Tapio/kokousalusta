@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import fi from 'date-fns/locale/fi';
 import { FaHandshake,FaUserCheck,FaComment,FaComments,FaGavel, FaTrashAlt } from 'react-icons/fa';
 const url = process.env.REACT_APP_HOST_URL
-const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save,poista,paatos,tila}) => {
+const EsitysKohta = ({flags,pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,id,alkaa,loppuu,auki=false,avaa,save,poista,paatos,tila}) => {
   
   const [startDate, setStartDate] = useState((alkaa!=="0000-00-00")?new Date(alkaa):"")
   
@@ -89,7 +89,7 @@ const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,i
   let nappit = (type==0 && /* && tila != 3 && */parseInt(oikeudet)===0)?
   <div className="valinta_iconit">{nappeja[1]}{nappeja[2]}{nappeja[3]}{nappeja[4]}{nappeja[5]}<div className="kohta_info" id={"info"+id}>{thisinfo(type,1)}</div></div>:
   <div className="valinta_iconit2">{nappeja[type]}<div className="kohta_info" id={"info"+id}>{thisinfo(type,1)}</div></div>;
-  sisalto = (auki)?<Sisalto key={id} pj={pj} oikeudet={oikeudet} oikeudet={oikeudet} kokous_id={kokous_id} id={id} type={type} save={this_save} tila={tila}/>:""; 
+  sisalto = (auki)?<Sisalto flags={flags} key={id} pj={pj} oikeudet={oikeudet} oikeudet={oikeudet} kokous_id={kokous_id} id={id} type={type} save={this_save} tila={tila}/>:""; 
 
   return (
     <div className="esitys_item" >
@@ -105,6 +105,7 @@ const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,i
         <div className={"nro"}/>
         {(parseInt(tila)==3)?<div className="nro_3"></div>:""}
         {sisalto}
+        
       </div>
       {(parseInt(tila)!=3 && pj )?<div  onClick= {this_avaa} className="raahaa" id={"r"+id}></div>:""}
       {((parseInt(tila) ===0 && parseInt(oikeudet)===0) || (pj && parseInt(tila)!=3) )?<div className="esityskohta_roskis" onClick={()=>poista_kohta()}><FaTrashAlt/></div> :""}
