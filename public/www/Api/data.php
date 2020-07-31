@@ -23,20 +23,28 @@ if(isset($_POST['hae_kommentit'])){ /* <--- issetit puuttuu */
 		case "valinta":
 			$tyyppi=2;
 		break;
+		case "perustelu":
+			$tyyppi=3;
+		break;
 	}
 	$sql = "CALL esityskohta_kommentit('$kohta','$thread','$user','$kokous','$tyyppi')";
+	
 }
-else if(isset($_POST['kannata']) && isset($_POST['kohta_id']) && isset($_POST['tyyppi'])){
+else if(isset($_POST['kannata']) && isset($_POST['kohta_id']) && isset($_POST['tyyppi']) && isset($_POST['kokous_id'])){
 	$kohta = (int)$_POST['kohta_id'];
+	$kokous = (int)$_POST['kokous_id'];
 	$tyyppi = (int)$_POST['tyyppi'];
 	$xid = (int) $_POST['kannata'];
-	$sql = "call esityskohta_like('$user','$tyyppi','$xid');";
+	$sql = "call esityskohta_like('$user','$tyyppi','$xid','$kokous');";
+	
+	
 	} 
 else if(isset($_POST['hae_liket']) && isset($_POST['kohta_id']) && isset($_POST['tyyppi'])){
 	$kohta = (int)$_POST['kohta_id'];
 	$tyyppi = (int)$_POST['tyyppi'];
 	$xid = (int) $_POST['hae_liket'];
 	$sql = "call esityskohta_liket('$user','$tyyppi','$xid');";
+
 	$result = $con -> query($sql);
  	if($row = mysqli_fetch_assoc($result)){
 		echo "[".$row['maara'].",".$row['mina']."]";
@@ -119,7 +127,8 @@ else if(isset($_POST['avaakohta']) && isset($_POST['kokous_id'])){
 	$sql.= "CALL esityskohta_valinnat('$kohta','$kokous',$user);";
 	$sql.= "CALL valinnat('$kohta','$kokous','$user');";
 	$sql.= "CALL esityskohta_mielipiteet('$kohta','$kokous','$user');";
-	
+	$sql.= "CALL esityskohta_perustelut('$kohta','$kokous','$user');";
+
 	$multi_result = $con -> multi_query($sql);
 	$i=0;
 	if ($multi_result) {
@@ -173,6 +182,13 @@ else if(isset($_POST['save']) && isset($_POST['thread']) && isset($_POST['param'
 				}
 
 			break;
+		case "perustelu":
+			if (isset($_POST['draft'])){
+				$draft = $_POST['draft'];
+				$sql = "CALL esityskohta_perustelu_lisaa('$kohta','$kokous','$user','$draft','$param')";
+				}
+				
+			break;
 		case "paatos":
 			if (isset($_POST['tila'])){
 				$tila = $_POST['tila'];
@@ -185,7 +201,10 @@ else if(isset($_POST['save']) && isset($_POST['thread']) && isset($_POST['param'
 		case "kommentti_valinta":
 			$sql = "CALL esityskohta_kommentoi('$kohta','$kokous','$user','$thread','$param',2)";
 			
-			echo $sql;
+			break;
+		case "kommentti_perustelu":
+				$sql = "CALL esityskohta_kommentoi('$kohta','$kokous','$user','$thread','$param',3)";
+			
 		break;
 			
 	}

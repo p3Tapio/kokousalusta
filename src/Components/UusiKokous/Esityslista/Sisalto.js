@@ -23,7 +23,7 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
   const [k_loppu,set_k_Loppu] = useState([])
   const [mielipiteet,setMielipiteet] = useState([]);
   const [tyyppi,setTyyppi] = useState((type==2 && edit==false)?1:0);
-  const [perustelu,setPerustelu] = useState ("")
+  const [perustelut,setPerustelut] = useState ([])
   const kuvaus_save = (id,data) => {
     save(id,data,500,"kuvaus")
     setKuvaus(data)
@@ -31,8 +31,7 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
   }
  
 
-  const perustelu_save = (id,data) => {/*save(id,data,500,"perustelu")*/setPerustelu(data);}
-
+  
   const check = (vid,multi=1) => {
       var params = new URLSearchParams()
       params.append ("check_valitse", vid)
@@ -77,18 +76,39 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
       params.append("kokous_id", kokous_id)
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) =>reload());    
     }
-  
-
-
-
-
   }
+    const teksti_save = (_id,data,type) => {
+      
+      
+      
+      if(data[1]==0)
+        save(_id,data,500,type)
+      else {
+          var params = new URLSearchParams()
+          params.append("param", data[0])
+          params.append("save", "perustelu")
+          params.append("draft", 1) 
+          params.append("thread", _id);
+          params.append("kohta", id);
+          params.append("kokous_id", kokous_id)
+          axios.post(url+'data.php', params, {withCredentials: true}).then((response) =>reload());    
+    }
+       
+        
+    }
+
+
+
+  
 
   const reload = () => {
     var params = new URLSearchParams()
     params.append ("avaakohta", id)
     params.append ("kokous_id", kokous_id)
     axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
+      
+      if(response.data[4]!=-1)setPerustelut(JSON.parse(response.data[4]))
+        else setPerustelut([])
       if(response.data[2]!=-1)setValintaArvot(JSON.parse(response.data[2]))
         else setValintaArvot([])
       if(response.data[1]!=-1){
@@ -140,7 +160,7 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
   let setti = ["",
               "", /*tiedoksi*/
               <div><Mielipide tila={tila} edit={edit} kohta_id={id} kokous_id={kokous_id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
-              <div><Hyvaksy kokous_id={kokous_id} kohta_id={id} tila={tila} save={perustelu_save} sisus={perustelu}/></div>,
+              <div><Hyvaksy save={teksti_save} kokous_id={kokous_id} kohta_id={id} tila={tila} arvot={perustelut}/></div>,
               <div><CheckboxArea kokous_id={kokous_id} kohta_id={id} tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
               <div><Henkilovalinta tila={tila} kohta_id={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>,
               <div><Henkilovalinta tila={tila} type={6} kohta_id={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
@@ -151,7 +171,7 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
       <div id="sisalto">  
     
          {
-            [<div className="kuvaus"><ResizeTextArea edit={parseInt(tila)===0 && parseInt(oikeudet)===0} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
+            [<div className="kuvaus"><ResizeTextArea edit={(parseInt(tila)===0 && parseInt(oikeudet)===0) ||( pj && type!=2)} id={"id"} sisus={kuvaus} save={kuvaus_save} placeholder="kuvaus"/></div>,
               <div className="kuvaus"><div  id={"kuvaus"+id} className="areaText">{kuvaus}</div></div>,
               <div className="kuvaus"><div  id={"kuvaus"+id} onMouseDown={()=>setTyyppi(1)}className="areaText">
                 {k_alku}<span className='korostus'>{k_valittu}</span>{k_loppu}</div></div>]

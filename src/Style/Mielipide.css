@@ -31,17 +31,18 @@
 }
 .mielipide_container{
     
-    border-top:2px solid rgba(44,62,80, 0.5);
+    border-top:2px solid rgba(124, 168, 212, 0.2);
+    
     /*padding-left: 25px;*/
     z-index:30px;
     height:fit-content;
-    width:calc(100% );
-    
+    width:calc(100%);
+    padding-bottom: 5px;
     position: relative;
     
     background-color: #FFF;
     
-    padding-bottom:20px;
+    
 }
 .mielipide_valittu {
     outline:1px solid #ddd;
@@ -57,7 +58,7 @@
 }
 .mielipide_teksti {
     white-space:pre-wrap;
-    border-top:32px solid rgba(44,62,80, 0.1);;
+    border-top:32px solid rgba(179, 201, 223, 0.1);;
     
     padding:10px 5px 5px 5px;
     font-size:12px;
@@ -95,7 +96,7 @@
     
     
     background-color: #FFF;   
-    padding:20px 30px 20px 30px;
+    padding:20px 30px 20px 50px;
     font-weight: bold;
 }
 

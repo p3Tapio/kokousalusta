@@ -23,7 +23,7 @@ const Esityslista = ({ puheenjohtaja, setEsityslista, esityslista, kokousid = "-
   const axiosSave = () => {      
       let updateParams2 = updateParams;
       updateParams = new URLSearchParams();  
-      axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {}) }
+      axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {console.log("TTTT",response.data)}) }
 
 
   const save = (thread, data, delay, type, kohta) => {
@@ -31,7 +31,11 @@ const Esityslista = ({ puheenjohtaja, setEsityslista, esityslista, kokousid = "-
     if (type === "otsake")
       setItems(items.map(items => (items.id === kohta) ? { ...items, n: data } : items))
     updateParams = new URLSearchParams();
-    if (type === "mielipide") {
+    if (type === "perustelu") {
+      updateParams.append("param", data[0])
+      updateParams.append("draft", data[1])
+      
+    } else if (type === "mielipide") {
       updateParams.append("param", data[0])
       updateParams.append("alku", data[1])
       updateParams.append("loppu", data[2])

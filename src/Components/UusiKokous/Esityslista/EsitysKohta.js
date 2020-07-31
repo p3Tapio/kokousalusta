@@ -78,24 +78,25 @@ const EsitysKohta = ({pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,title,i
                   <FaUserCheck onMouseEnter={()=>thisinfo(5)} onClick={()=>thisvaihda_tyyppi(5)} className ={(type==5)?"kohta_valittu p_k":"p_k"}/>,
                   <FaGavel onMouseEnter={()=>thisinfo(6)} className ="kohta_valittu p_k"/>]
   
-  let nappit =  (type==0 && tila == 0 && parseInt(oikeudet)===0)?
+  let nappit = (type==0 && /* && tila != 3 && */parseInt(oikeudet)===0)?
   <div className="valinta_iconit">{nappeja[1]}{nappeja[2]}{nappeja[3]}{nappeja[4]}{nappeja[5]}<div className="kohta_info" id={"info"+id}>{thisinfo(type,1)}</div></div>:
   <div className="valinta_iconit2">{nappeja[type]}<div className="kohta_info" id={"info"+id}>{thisinfo(type,1)}</div></div>;
   sisalto = (auki)?<Sisalto key={id} pj={pj} oikeudet={oikeudet} oikeudet={oikeudet} kokous_id={kokous_id} id={id} type={type} save={this_save} tila={tila}/>:""; 
 
   return (
-    <div className="esitys_item">
+    <div className="esitys_item" >
       {loppu}
       
-      <div onClick= {this_avaa} className="otsake">{alku}<ResizeTextArea edit={tila==0 && parseInt(oikeudet)===0} id={id} sisus={title} save={this_save}/></div>
+      <div onClick= {this_avaa} className="otsake">{alku}<ResizeTextArea placeholder={"Uusi kohta"} edit={(parseInt(tila) ===0 && parseInt(oikeudet)===0) || pj} id={id} sisus={title} save={this_save}/></div>
       <div>
-        {(parseInt(tila)==3)?"":nappit}
+        {nappit}
         
         {(parseInt(tila)==3 || pj)?
           <Paatos pj={pj} tila={tila} kokous_id={kokous_id} kohta_id={id} paatos={paatos} save={paatos_save}/>:""}      
-        {sisalto}
+        
         <div className={"nro"}/>
-        {(parseInt(tila)!=3)?"":<div className={"nro_"+parseInt(tila)}/>}
+        {(parseInt(tila)==3)?<div className="nro_3"></div>:""}
+        {sisalto}
       </div>
       {(parseInt(tila)!=3 && pj )?<div  onClick= {this_avaa} className="raahaa" id={"r"+id}></div>:""}
       {/*  <div onClick={()=>poista("poista_kohta",id)}>poista </div> */}

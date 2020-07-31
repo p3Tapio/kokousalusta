@@ -1,9 +1,10 @@
 import React, { useState} from 'react';
 import ResizeTextArea from './ResizeTextArea'
 import axios from 'axios';
+import Kannata from './Kannata';
 
 const url = process.env.REACT_APP_HOST_URL
-const Kommentit = ({thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
+const Kommentit = ({tila,thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
     const [kommenttiBool,setKommenttiBool] = useState(false);
     const [kommentti,setKommentti] = useState("")
     const [kommentit,setKommentit] = useState([]);
@@ -29,17 +30,20 @@ const Kommentit = ({thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
         params.append ("kohta", kohta_id)
         params.append ("thread", thread_id)
         axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-           
+           console.log(response.data) 
            setKommentit(response.data[0]);
            setMaara(response.data[0].length)
         })}
     const julkaise = () => {
+        
+        if(kommentti.length==0)return;
         var params = new URLSearchParams()
         params.append ("save", "kommentti_"+tyyppi)  
         params.append("param", kommentti)
         params.append ("kohta", kohta_id)
         params.append("kokous_id", kokous_id)
         params.append ("thread",thread_id)
+        this_save(0,"");
         axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
         console.log("julkaisu",tyyppi,response.data)
         reload()}
@@ -48,13 +52,9 @@ const Kommentit = ({thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
     }
 
     const vari = (txt) => {
-        let nro = 0
-        for(let i=0;i<txt.length;i++){
-            nro += parseInt(txt.charCodeAt(i))
-        }
-        console.log("Numba",txt,nro);
+        
         return "#dddddd77";
-        /*return "rgba("+(1344+nro)%255+","+(nro*4)%255+","+(110+nro)%255+","+0+")"*/
+        
     }
 
     return (
@@ -73,7 +73,8 @@ const Kommentit = ({thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"}) => {
          <div className="KommentoijaFullname"><b>{x.firstname} {x.lastname}</b></div>
          <div className="kommenttiaika">{x.aika} </div>
          <div className="kommenttikommentti">{x.kommentti}</div></div>
-         <div className="kommenttilikepeukku">PEUKKU</div></div>)}
+         <div className="kommenttipeukut"><Kannata kokous_id={kokous_id} id={x.kommentti_id} tyyppi={"kommentti_"+tyyppi} kohta_id={kohta_id} /></div>
+         </div>)}
          
         <ResizeTextArea edit={true} placeholder="kirjoita kommentti" sisus={kommentti} save={this_save}/>
         

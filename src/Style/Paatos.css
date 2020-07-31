@@ -2,13 +2,14 @@
     padding:0px 0px 0px 0px;
     
     display:inline-block;
-    width:calc(100% );
+    
     
     width:calc(100% );
     height:auto;
     background-color: #f9f9f9;
     position:relative;
     border-bottom:2px solid #2c3e5011;
+    
 }
 
 .nuija * {
@@ -21,12 +22,12 @@
 }
 
 .nuija {
-
 display:none;
+z-index:1;
     
     position:absolute;
     bottom:8px;
-    z-index: 5;
+    
     right:5px;
     
     width:30px;
@@ -66,7 +67,8 @@ font-size:12px;
 .paatos_editori .areaText {
     border-radius: 3px;
     color:black;
-    padding:3px 50px 5px 65px;
+    
+    padding:10px 50px 15px 65px;
     font-size: 12px;
     height:auto;
     /*border:1px solid #2c3e50;*/
@@ -74,14 +76,14 @@ font-size:12px;
     
     background-color:  #FFF;
     
-    background-color: #cde4ec33;
+    
 }
 .paatos2 .paatos_editori .areaText{
-    background-color: #ddd;
+    background-color: #f9f9f9;
 } 
 
 .paatos_valinnat div {
-    margin-top:5px;
+    
     border:2px solid #333;
     width:30%;
     padding:5px 0px 5px 0px;
@@ -116,11 +118,7 @@ font-size:12px;
     width:100%;
     padding-right:3px;
 }
-.paatos2 .paatos_valinnat {
-    
-    margin-bottom: 5px;
-    background-color: #ddd;
-}
+
 .paatos3 .paatos_valinnat {
 
 background-color: #6f999344;
