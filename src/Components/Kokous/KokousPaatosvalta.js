@@ -9,8 +9,7 @@ const KokousPaatosvalta = ({ kokous, osallistujat, puheenjohtaja }) => {
     const kaikki = puheenjohtaja.concat(osallistujat)
     const avannutEsityslistan = kaikki.map(x => x.pv_avannut).reduce((a, v) => (v ==="1" ? a + 1 : a), 0)
     const ollutAktiivinen = kaikki.map(x => x.pv_aktiivinen).reduce((a, v) => (v === '1' ? a + 1 : a), 0)
-    console.log('ollutAktiivinen', ollutAktiivinen)
-    console.log('kokous.pv_aktiivisuus', kokous.pv_aktiivisuus)
+
     if (kokous.pv_kesto !== '0') {
         if (kokous.pv_kesto_toteutunut === 'true') tila_kesto = "Päätösvaltainen."
     } 

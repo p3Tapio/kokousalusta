@@ -89,9 +89,9 @@ const KokousDetails = (props) => {
             const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId, email: user.email })
             request.osallistujat(body2).then(res => {
                 setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
-                setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
-                setShowComponent('paatosvaltaisuus')
+                setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))   
             }).catch(err => console.log('err.response', err.response))
+            setShowComponent('paatosvaltaisuus')
             let napit = ev.target.parentNode.querySelectorAll("button");
             for (let i = 0; i < napit.length; i++) {
                 napit[i].classList.remove("valittu_menu");
