@@ -84,6 +84,20 @@ const KokousDetails = (props) => {
 
         if (ev === 'poytakirja') {
             setShowComponent('poytakirja')
+        }
+        if(ev.target.name === 'paatosvaltaisuus') {
+            const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId, email: user.email })
+            request.osallistujat(body2).then(res => {
+                setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
+                setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
+                setShowComponent('paatosvaltaisuus')
+            }).catch(err => console.log('err.response', err.response))
+            let napit = ev.target.parentNode.querySelectorAll("button");
+            for (let i = 0; i < napit.length; i++) {
+                napit[i].classList.remove("valittu_menu");
+            }
+            ev.target.classList.add("valittu_menu");
+
         } else {
             let napit = ev.target.parentNode.querySelectorAll("button");
             for (let i = 0; i < napit.length; i++) {

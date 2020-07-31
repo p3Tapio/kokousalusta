@@ -2,19 +2,25 @@ import React from 'react'
 
 const KokousPaatosvalta = ({ kokous, osallistujat, puheenjohtaja }) => {
 
-    let tila = "Ei päätösvaltainen."
     let tila_kesto = "Ei päätösvaltainen."
     let tila_esityslista = "Ei Päätösvaltainen."
+    let tila_aktiivisuus = "Ei Päätösvaltainen."
  
     const kaikki = puheenjohtaja.concat(osallistujat)
     const avannutEsityslistan = kaikki.map(x => x.pv_avannut).reduce((a, v) => (v ==="1" ? a + 1 : a), 0)
-
+    const ollutAktiivinen = kaikki.map(x => x.pv_aktiivinen).reduce((a, v) => (v === '1' ? a + 1 : a), 0)
+    console.log('ollutAktiivinen', ollutAktiivinen)
+    console.log('kokous.pv_aktiivisuus', kokous.pv_aktiivisuus)
     if (kokous.pv_kesto !== '0') {
         if (kokous.pv_kesto_toteutunut === 'true') tila_kesto = "Päätösvaltainen."
     } 
     if(kokous.pv_esityslista !== '0') {
-        if(kokous.pv_esityslista <= avannutEsityslistan) tila_esityslista = "Päätösvaltainen."
+        if( kokous.pv_esityslista <= avannutEsityslistan) tila_esityslista = "Päätösvaltainen."
     }
+    if(kokous.pv_aktiivisuus !== '0') {
+        if(kokous.pv_aktiivisuus <= ollutAktiivinen) tila_aktiivisuus = "Päätösvaltainen."
+    }
+
 
     let paatosvaltaMaaritys
     let muuKriteeriTeksti
@@ -39,7 +45,7 @@ const KokousPaatosvalta = ({ kokous, osallistujat, puheenjohtaja }) => {
                 : <li className="text-sm-nowrap">jos vähintään {kokous.pv_esityslista} osallistujista on avannut esityslistan.<span>&nbsp;</span>Tila: {tila_esityslista}</li>
             }
             {kokous.pv_aktiivisuus === '0' ? <></>
-                : <li className="text-sm-nowrap">jos vähintään {kokous.pv_aktiivisuus} osallistujista on ottanut asioihin kantaa.<span>&nbsp;&nbsp;</span>Tila: {tila}</li>
+                : <li className="text-sm-nowrap">jos vähintään {kokous.pv_aktiivisuus} osallistujista on ottanut asioihin kantaa.<span>&nbsp;&nbsp;</span>Tila: {tila_aktiivisuus}</li>
             }
             {kokous.pv_kesto === '0' ? <></>
                 : <li className="text-sm-nowrap">jos kokous kestää vähintään  {kokous.pv_kesto} vuorokautta. <span>&nbsp;&nbsp;</span>Tila: {tila_kesto}</li>
