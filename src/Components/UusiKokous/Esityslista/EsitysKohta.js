@@ -64,8 +64,8 @@ const EsitysKohta = ({flags,pj=false,oikeudet="2",vaihda_tyyppi,kokous_id,type,t
   }
 
 
-  if(tila!=3 && startDate!=null && startDate !=="") alku = <div tabIndex="0" onClick={()=>vaihda_aika()}>
-    <Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>
+/*  if(tila!=3 && startDate!=null && startDate !=="") alku = <div tabIndex="0" onClick={()=>vaihda_aika()}>*/
+    /*<Kalenteri pv={startDate.getDate()} kk = {startDate.getMonth()+1} alku={false}/>*/
        {/* <div className="paivaysspicker">
        <DatePicker
             
