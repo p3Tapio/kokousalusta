@@ -59,12 +59,26 @@ const KokousDetails = (props) => {
 
     }, [kokousId, yhdistys, user.email, history])
 
-    const handlePoytakirjaMenuClick = () => {
+    const handlePoytakirjaMenuClick = (ev) => {
         const body3 = JSON.stringify({ call: 'getpaatokset', kokousid: kokousId })
         request.kokous(body3).then(res => {
             setPaatokset(res.data)
-        }).then(() => handleMenuClick('poytakirja'))
-            .catch(err => console.log('err.response', err.response))
+        }).catch(err => console.log('err.response', err.response))
+
+        const body2 = JSON.stringify({ call: 'getosallistujat', id: kokousId, email: user.email })
+        request.osallistujat(body2).then(res => {
+            setOsallistujat(res.data.filter(x => x.role === 'osallistuja'))
+            setPuheenjohtaja(res.data.filter(x => x.role === 'puheenjohtaja'))
+        }).then(() => {
+            handleMenuClick('poytakirja')
+
+        }).catch(err => console.log('error response: ', err.response))
+        
+        let napit = ev.target.parentNode.querySelectorAll("button");
+        for (let i = 0; i < napit.length; i++) {
+            napit[i].classList.remove("valittu_menu");
+        }
+        ev.target.classList.add("valittu_menu");
     }
     const handleMenuClick = (ev) => {
 
