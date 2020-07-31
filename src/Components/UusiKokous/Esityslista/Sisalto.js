@@ -10,11 +10,12 @@ import DatePicker, { registerLocale } from "react-datepicker";
 
 const url = process.env.REACT_APP_HOST_URL
 
-const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila}) => {
+const Sisalto = ({flags,pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila}) => {
+  
   const [pickerDate, setPickerDate] = useState()
   
 
-
+  
   const [valinnat,setValinnat] =useState([])
   const [valintaArvot,setValintaArvot] = useState([])
   const [kuvaus,setKuvaus] = useState([])
@@ -32,12 +33,12 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
  
 
   
-  const check = (vid,multi=1) => {
+  const check = (vid) => {
       var params = new URLSearchParams()
       params.append ("check_valitse", vid)
       params.append ("kokous_id", kokous_id)   
       params.append ("kohta", id)
-      params.append ("multi",multi)
+      params.append ("multi",(flags&1))
       axios.post(url+'data.php', params, {withCredentials: true}).then((response) => reload())    
   }
   const check_uusi = (data) => {
@@ -57,9 +58,19 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
     })    
   }
   const check_save = (id,nnimi, delay) => {
-    save(id,nnimi,500,"check");
-    setValinnat(valinnat.map(arvot => (arvot.id === id)?{ ...arvot, nimi:nnimi}:arvot))
+     
+      save(id,nnimi,500,"check");
+      
+      setValinnat(valinnat.map(arvot => (arvot.id === id)?{ ...arvot, nimi:nnimi}:arvot))
+     
+    
   }
+  const check_toggle = (id,flag) => {
+    
+    save(id,flag,0,"flags");
+    
+  }
+
   const mielipide_save = (_id,data) => {
     if(data[3]==0)
       save(_id,data,500,"mielipide")
@@ -161,9 +172,9 @@ const Sisalto = ({pj=false,oikeudet="2",id,save,type,kokous_id,edit=false,tila})
               "", /*tiedoksi*/
               <div><Mielipide tila={tila} edit={edit} kohta_id={id} kokous_id={kokous_id} arvot={mielipiteet} save={mielipide_save} positio={setPositio} kuvaus={kuvaus}/></div>,
               <div><Hyvaksy save={teksti_save} kokous_id={kokous_id} kohta_id={id} tila={tila} arvot={perustelut}/></div>,
-              <div><CheckboxArea kokous_id={kokous_id} kohta_id={id} tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
+              <div><CheckboxArea options={(parseInt(tila)===0 && parseInt(oikeudet)===0) || (pj && tila!=3)} toggle={check_toggle} flags={flags} kokous_id={kokous_id} kohta_id={id} tila={tila} edit={true} arvot={valinnat} check={check} checkValue={valintaArvot} remove={check_remove} save={check_save} uusi={check_uusi}/></div>,
               <div><Henkilovalinta tila={tila} kohta_id={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>,
-              <div><Henkilovalinta tila={tila} type={6} kohta_id={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
+              <div><Henkilovalinta toggle={check_toggle} tila={tila} type={6} kohta_id={id} kokous_id={kokous_id}  arvot={valinnat} check={check} checkValue={valintaArvot} save={check_save} uusi={check_uusi}/></div>]
               [type]
 
     return (

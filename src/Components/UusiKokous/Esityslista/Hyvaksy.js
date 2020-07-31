@@ -85,20 +85,3 @@ const Hyvaksy = ({arvot=[],tila,kohta_id,kokous_id,save}) => {
 }
 
 export default Hyvaksy
-const Checkbox = ({id,nimi,arvo,check}) => {
-    const thischeck = (event) => {check(id)}
-    
-    const this_save = () => {}
-    
-
-   let ruutu;
-   ruutu = <div  className={(arvo)?"green ruutu":"ruutu"} onClick={thischeck}></div>
-
-    return (
-        <div className="valinta" >
-            {ruutu}
-           
-            <input onChange={this_save} spellCheck="false" className="ruutuvalinta" type="text" value={nimi}></input>
-            </div>
-      )
-}

@@ -28,6 +28,9 @@ const Esityslista = ({ puheenjohtaja, setEsityslista, esityslista, kokousid = "-
 
   const save = (thread, data, delay, type, kohta) => {
     if (updateParams.get("kohta") !== kohta || updateParams.get("type") !== type) axiosSave();
+    if (type === "flags")
+      setItems(items.map(items => (items.id === kohta) ? { ...items, flags: (items.flags ^ parseInt(data)) } : items))
+
     if (type === "otsake")
       setItems(items.map(items => (items.id === kohta) ? { ...items, n: data } : items))
     updateParams = new URLSearchParams();
@@ -114,6 +117,7 @@ const Esityslista = ({ puheenjohtaja, setEsityslista, esityslista, kokousid = "-
             poista={lisaa_ja_poista}
             tila={items.tila}
             paatos={items.paatos}
+            flags={items.flags}
              />
     
              )}
