@@ -39,7 +39,8 @@ border-left:5px solid #9fc8d6cc;
 
 
 .lisaa_esitysitem {border:2px solid #ccc; margin-bottom:20px;outline:1px solid #ddd;margin-top:5px;position:relative;padding:10px;padding-left:70px;color:#999;width:100%;background-color: #f9f9f9;text-align: left;}
-.lisaa_esitysitem::before  {content:"";position: absolute;top:12px;left:50px;display:inline-block;height:12px;width:12px;fill:#FFF;background-size: 12px 12px;background-image: url(./svg/plussa.svg);background-repeat: no-repeat;}
+.lisaa_esitysitem::before  {content:"";position: absolute;
+    top:12px;left:50px;display:inline-block;height:12px;width:12px;fill:#FFF;background-size: 12px 12px;background-image: url(./svg/plussa.svg);background-repeat: no-repeat;}
 .raahaa::before {content:"";position: absolute;top:0px;left:50%;height:16px;width:16px;background-size: 16px 16px;background-image: url(./svg/raahaa.svg);background-repeat: no-repeat;display:none;}
 .raahaa{position:absolute;opacity:0.5;top:5px;left:40px;height:15px;width:calc(100% - 140px);cursor:move;}
 .disable-select {-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none; }
