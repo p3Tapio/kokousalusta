@@ -29,6 +29,7 @@ const Login = () => {
                 history.push({pathname:'/userpage', state:{login:true}})
 
             }).catch(err => {
+                console.log("Error: ", err.response)
                 alert(err.response.data.message)
             })
         } else {
@@ -59,7 +60,8 @@ const Login = () => {
                     history.push({pathname:'/userpage', state:{login:true}})
 
                 }).catch((err) => {
-                    alert(err)
+                    console.log("Error: ", err.response)
+                    alert(err.response.data.message)
                 })
         }
     }
