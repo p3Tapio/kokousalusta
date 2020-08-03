@@ -22,7 +22,7 @@ const KokousPoytakirja = ({ kokous, yhdistys, osallistujat, puheenjohtaja, paato
         if (kokous.pv_kesto !== '0') paatosvalta += kokous.pv_kesto_toteutunut === "true" ? `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta toteutui.</p>` : `<p>Kokoukselle määritelty minimikesto ${kokous.pv_kesto} vuorokautta ei toteutunut.</p>`
         if (kokous.pv_muu !== '') paatosvalta += `<p>${kokous.pv_muu}</p>`
     }
-    paatokset = paatokset.filter(x => x.tila === "3")
+    paatokset = paatokset.filter(x => x.tila === "3" || x.tila === "23")
     const paatostiedot = paatokset.length !== 0 ? paatokset.map(x => x.paatos !== '' ? '<h3>' + x.title + '</h3>' + '<p style="margin-top: -10px;">' + x.paatos + '</p>' : '<h3>' + x.title + '</h3>').join(' ') : 'Kokouksessa ei tehty päätöksiä.'
     const pj = puheenjohtaja.length !== 0 ? puheenjohtaja[0].firstname + " " + puheenjohtaja[0].lastname : "kokouksessa ei ole puheenjohtajaa"
     const [poytakirja, setPoytakirja] = useState(`<h1>${yhdistys}</h1>${otsikko}<h2>Kokous ${kokousnumero}</h2><h2>${ajat}</h2><h2>Osallistujat</h2><ul>${osallistuu}</ul><p>Puheenjohtaja: ${pj}<h2>Päätösvaltaisuus</h2>${paatosvalta}<h2>Asiakohdat</h2>${paatostiedot}`)
