@@ -276,7 +276,7 @@ function sendKokousInvite() {
     http_response_code(400);
     if(isset($_POST['yhdistys']) && isset($_POST['aihe']) && isset($_POST['viesti']) && isset($_POST["osallistujat"])) {
         $yhdistys = htmlspecialchars(strip_tags($_POST['yhdistys']));
-        $aihe = htmlspecialchars(strip_tags($_POST['aihe']));
+        $aihe = $_POST['aihe'];
         $viesti = $_POST['viesti']; 
     
 
