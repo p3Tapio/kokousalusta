@@ -62,9 +62,9 @@ const CheckboxArea = ({options=false, toggle, flags, kohta_id, kokous_id, edit=t
 
 const EditableCheckbox = ({tila,maara=0,edit,id,nimi,arvo,check,remove,save,summa=0}) => {
     
-    const thischeck = () => {check(id)}
-    const thisremove = () => {remove(id)}
-    const this_save = (event) => {save(id,event.target.value)}
+    const thischeck = () => {if(tila==23 || tila == 3)return;check(id)}
+    const thisremove = () => {if(tila==23 || tila == 3)return;remove(id)}
+    const this_save = (event) => {if(tila==23 || tila == 3)return;save(id,event.target.value)}
     const thiskey = (event) => {
         if (event.key === ' '){
             event.preventDefault();
@@ -75,7 +75,7 @@ const EditableCheckbox = ({tila,maara=0,edit,id,nimi,arvo,check,remove,save,summ
    ruutu = <div tabIndex="0" onKeyDown={thiskey} className={(arvo)?"green ruutu":"ruutu"} onClick={thischeck}></div>
     
     return (
-        <div className={(tila=="3")?"":"valintahover"}>
+        <div className={((tila=="3" || tila=="23"))?"":"valintahover"}>
         <div className="valinta" >
             
              

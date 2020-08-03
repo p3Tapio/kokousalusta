@@ -58,6 +58,7 @@ const Kommentit = ({tila,thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"})
     }
 
     return (
+        
         <div className="kommentti" >
             
             <div className="kommenttimaara" onClick={() => {reload();setKommenttiBool(!kommenttiBool)}}>
@@ -75,10 +76,10 @@ const Kommentit = ({tila,thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"})
          <div className="kommenttikommentti">{x.kommentti}</div></div>
          <div className="kommenttipeukut"><Kannata kokous_id={kokous_id} id={x.kommentti_id} tyyppi={"kommentti_"+tyyppi} kohta_id={kohta_id} /></div>
          </div>)}
-         
+        {(tila!=23)?<div>
         <ResizeTextArea edit={true} placeholder="kirjoita kommentti" sisus={kommentti} save={this_save}/>
         
-        <div className="sendibutton" id={"send_kommentti"+thread_id} onClick={()=>julkaise()}>send</div>
+        <div className="sendibutton" id={"send_kommentti"+thread_id} onClick={()=>julkaise()}>send</div></div>:""}
         </div>:""}
         </div>
     )

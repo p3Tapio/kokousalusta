@@ -199,7 +199,7 @@ const KokousDetails = (props) => {
 
                 let component
                 if (showComponent === 'asiakirjat') component = <KokousDocs kokous={kokous} yhdistys={yhdistys} setShowComponent={setShowComponent} setShowTable={setShowTable} showTable={showTable} />
-                else if (showComponent === 'asiat') component = <Esityslista puheenjohtaja={(kokousRooli === "puheenjohtaja")} kokousid={kokousId} />
+                else if (showComponent === 'asiat') component = <Esityslista puheenjohtaja={(kokousRooli === "puheenjohtaja")} edit={(kokous.loppu !== "1")} kokousid={kokousId} />
                 else if (showComponent === 'osallistujat') component = <KokousOsallistujat osallistujat={osallistujat} jasenet={jasenet} puheenjohtaja={puheenjohtaja} kokousRooli={kokousRooli} handleOsallistujatClick={handleOsallistujatClick} kokous={kokous} />
                 else if (showComponent === 'kokousaika') component = <Kokousaika kokous={kokous} handleVaihdaKokousaika={handleVaihdaKokousaika} />
                 else if (showComponent === 'paatosvaltaisuus') component = <KokousPaatosvalta kokous={kokous} osallistujat={osallistujat} puheenjohtaja={puheenjohtaja} />

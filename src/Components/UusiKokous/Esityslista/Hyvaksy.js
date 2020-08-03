@@ -7,7 +7,7 @@ import Kannata from './Kannata';
 import { Outline } from 'react-pdf';
 const url = process.env.REACT_APP_HOST_URL
 var thisdata="";
-const Hyvaksy = ({arvot=[],tila,kohta_id,kokous_id,save}) => {
+const Hyvaksy = ({arvot=[],tila,kohta_id,kokous_id,save,edit=true}) => {
     
     const [perustelu,setPerustelu] = useState("")
     const this_save = (_id,data) => {
@@ -47,8 +47,8 @@ const Hyvaksy = ({arvot=[],tila,kohta_id,kokous_id,save}) => {
     return (
         <div >
             
-            {tila!=3?
-                <div><ResizeTextArea edit={true} placeholder="Ehdota muutosta" sisus={perustelu} save={this_save}/>
+            {(tila!=3 && tila!=23)?
+                <div><ResizeTextArea edit={tila!=23 } placeholder="Ehdota muutosta" sisus={perustelu} save={this_save}/>
                 <div className="sendibutton" id={"send_perustelu"+kohta_id} onClick={()=>julkaise()}>send</div>
                 </div>:""}
                 {(arvot.length > 0)?<div style={{paddingLeft:"40px"}} className="disable-select"><b>Muutos ehdotukset({arvot.length})</b></div>:""}  

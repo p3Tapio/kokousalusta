@@ -366,7 +366,8 @@ function paataKokous() {
     http_response_code(400);
     if(isset($_POST['kokousid'])) {
         $kokousid = (int)$_POST['kokousid'];
-        $q = "UPDATE kokous SET loppu = 1 WHERE id = '$kokousid';";
+        /*$q = "UPDATE kokous SET loppu = 1 WHERE id = '$kokousid';";*/
+        $q = "CALL suljekokous('$kokousid')";
         $yhteys = connect(); 
         if($yhteys->query($q)) {
             $response = array( "message"=> "Kokouksen on päätetty.");
