@@ -42,7 +42,7 @@ const Kannata = ({kokous_id,kohta_id,id,teksti="",tyyppi="mielipide"}) => {
             params.append ("tyyppi", tyypit(tyyppi))
             params.append ("kohta_id",kohta_id)
             axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-                if(param==1)console.log("resdsaf sd",response.data);
+                if(param==1)console.log(response.data);
                if(param==1 && tyypit(tyyppi)==2) console.log(response.data);
               setMaara(response.data[0])
                

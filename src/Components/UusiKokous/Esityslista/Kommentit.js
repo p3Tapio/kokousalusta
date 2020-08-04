@@ -30,7 +30,7 @@ const Kommentit = ({tila,thread_id,kohta_id,maara,kokous_id,tyyppi="mielipide"})
         params.append ("kohta", kohta_id)
         params.append ("thread", thread_id)
         axios.post(url+'data.php', params, {withCredentials: true}).then((response) => {
-           console.log(response.data) 
+        
            setKommentit(response.data[0]);
            setMaara(response.data[0].length)
         })}

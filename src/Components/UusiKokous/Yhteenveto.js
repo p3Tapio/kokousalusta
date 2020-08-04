@@ -97,7 +97,7 @@ const Yhteenveto = ({ perustiedot, esityslista_otsakkeet, osallistujat, paatosva
         const runko = kokouskutsu.substring(kokouskutsu.indexOf("</h3>") + 5)
         const kokousosallistujat = [user].concat(osallistujat)
         const invite = JSON.stringify({ call: 'sendkokousinvite', yhdistys: yhdistys, aihe: aihe, viesti: runko, osallistujat: kokousosallistujat })
-        console.log('invite', invite)
+    
         request.kokous(invite).then(res => {
             alert(res.data.message)
             setLoading(false)

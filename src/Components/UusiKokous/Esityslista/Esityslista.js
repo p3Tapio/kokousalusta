@@ -12,7 +12,6 @@ const Esityslista = ({ puheenjohtaja, setEsityslista, esityslista, kokousid = "-
   
   
   const [avaa, setKohdat] = useState(new Array());
-  console.log('Esityslista.js --- kokousid', kokousid)
   
   useEffect(() => {
     if (kokousid == -1) return;
@@ -23,7 +22,7 @@ const Esityslista = ({ puheenjohtaja, setEsityslista, esityslista, kokousid = "-
   const axiosSave = () => {      
       let updateParams2 = updateParams;
       updateParams = new URLSearchParams();  
-      axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {console.log("TTTT",response.data)}) }
+      axios.post(url + 'data.php', updateParams2, { withCredentials: true }).then((response) => {console.log(response.data)}) }
 
 
   const save = (thread, data, delay, type, kohta) => {
