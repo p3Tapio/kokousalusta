@@ -111,8 +111,8 @@ function getKokous() {
         $startDate = $row['startDate'];
         $pv_kesto = $row['pv_kesto'];
         $erotus = (new DateTime($startDate))->diff(new DateTime($today))->days;
-
-        if($pv_kesto <= $erotus) $pv_kesto_toteutunut = "true"; 
+        
+        if($pv_kesto <= $erotus && $startDate < $today) $pv_kesto_toteutunut = "true"; 
         else $pv_kesto_toteutunut = "false"; 
 
         $row['pv_kesto_toteutunut'] = $pv_kesto_toteutunut;
